@@ -9,6 +9,10 @@ public class Mountain extends Obstacle {
 
     public Mountain(BufferedImage background, Color color) {
         super(background, color);
+
+        if (Game.DEBUG) {
+            System.out.println("Mountain constructed.");
+        }
     }
     
 
