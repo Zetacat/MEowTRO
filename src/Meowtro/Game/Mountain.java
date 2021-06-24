@@ -11,6 +11,8 @@ public class Mountain extends Obstacle {
         super(background, color);
     }
     
+
+    /****** MAIN ******/
     public static void main(String[] args) {
         // read image
         BufferedImage image = null;
@@ -21,7 +23,10 @@ public class Mountain extends Obstacle {
         }
 
         // test Mountain
-        Color color = new Color(219, 231, 182);
+        int red = Integer.parseInt(Game.getConfig().get("mountain.r"));
+        int green = Integer.parseInt(Game.getConfig().get("mountain.g"));
+        int blue = Integer.parseInt(Game.getConfig().get("mountain.b"));
+        Color color = new Color(red, green, blue);
         Mountain mountain = new Mountain(image, color);
         System.out.println("(200, 1000)[Green]: " + mountain.isBlocked(new Position(200, 1000)));
         System.out.println("(300, 1200)[Gray]: " + mountain.isBlocked(new Position(300, 1200)));
