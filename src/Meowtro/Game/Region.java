@@ -15,17 +15,8 @@ public class Region {
     // private List<Station> stations = new ArrayList<Station>();
     private int tranportedPassengerCount = 0;
 
-    public Region(BufferedImage background, Color color, int spawnRate) {
-        // iterate all pixels, check if match color
-        for (int r = 0; r < background.getHeight(); r++) {
-            this.positions.add(new ArrayList<Boolean>());
-            for (int c = 0; c < background.getWidth(); c++) {
-                int pixel = background.getRGB(c, r);
-                Color pixelColor = new Color(pixel);
-                this.positions.get(r).add(color.equals(pixelColor)? true : false);
-            }
-        }
-        // set spawnRate
+    public Region(List<List<Boolean>> positions, int spawnRate) {
+        this.positions = positions;
         this.spawnRate = spawnRate;
     }
 
@@ -38,8 +29,12 @@ public class Region {
         // compute average
         int count = Math.min(satisfactionsSize, Integer.parseInt(Game.getConfig().get("region.satisfaction.window")));
         List<Integer> recentPassengerSatisfactions = this.satisfications.subList(satisfactionsSize - count, satisfactionsSize);
-        OptionalDouble avg = recentPassengerSatisfactions.stream().mapToInt(Integer::intValue).average();
-        return (int)Math.round(avg.getAsDouble());
+        OptionalDouble avgPassengerSatisfactions = recentPassengerSatisfactions.stream().mapToInt(Integer::intValue).average();
+        int regionSatisfaction = (int)Math.round(avgPassengerSatisfactions.getAsDouble());
+
+        if (Game.DEBUG)
+            System.out.println("Region satisfaction = " + regionSatisfaction);
+        return regionSatisfaction;
     }
 
     /****** MAIN ******/

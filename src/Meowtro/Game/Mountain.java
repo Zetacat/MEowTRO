@@ -29,10 +29,8 @@ public class Mountain extends Obstacle {
         }
 
         // test Mountain
-        int red = Integer.parseInt(Game.getConfig().get("mountain.r"));
-        int green = Integer.parseInt(Game.getConfig().get("mountain.g"));
-        int blue = Integer.parseInt(Game.getConfig().get("mountain.b"));
-        Color color = new Color(red, green, blue);
+        String[] rgbStr = Game.getConfig().get("obstacle.mountain").split("\\.", 0);
+        Color color = new Color(Integer.parseInt(rgbStr[0]), Integer.parseInt(rgbStr[1]), Integer.parseInt(rgbStr[2]));
         Mountain mountain = new Mountain(image, color);
         System.out.println("(200, 1000)[Green]: " + mountain.isBlocked(new Position(200, 1000)));
         System.out.println("(300, 1200)[Gray]: " + mountain.isBlocked(new Position(300, 1200)));
