@@ -1,4 +1,4 @@
-package Meowtro.Game;
+package Meowtro;
 
 public class Position {
     

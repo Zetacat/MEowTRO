@@ -1,4 +1,6 @@
 package Meowtro.Game;
+import Meowtro.Position;
+
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;

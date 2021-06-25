@@ -1,4 +1,6 @@
 package Meowtro.Game;
+import Meowtro.Position;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.image.BufferedImage;
