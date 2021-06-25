@@ -3,6 +3,7 @@ package Meowtro.Game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
+import Meowtro.Position;
 
 public class Region {
     
@@ -35,6 +36,10 @@ public class Region {
         if (Game.DEBUG)
             System.out.println("Region satisfaction = " + regionSatisfaction);
         return regionSatisfaction;
+    }
+
+    public boolean containPosition(Position position) {
+        return this.positions.get(position.i).get(position.j);
     }
 
     /****** MAIN ******/

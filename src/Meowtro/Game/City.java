@@ -115,6 +115,31 @@ public class City {
         return positions;
     }
 
+    public Region getRegionByPosition(Position position) {
+        for (Region region: this.regions) {
+            if (region.containPosition(position))
+                return region;
+        }
+        return null;
+    }
+
+    // TODO
+    // public List<Obstacle> blockedBy(Station station1, Station station2) {
+    //     return null;
+    // }
+
+    public int getGlobalStatisfaction() {
+        // compute the average of all region satisfactions
+        int totalSatisfaction = 0;
+        for (Region region: this.regions)
+            totalSatisfaction += region.getRegionSatisfaction();
+        int globalSatisfaction = (int)(Math.round(totalSatisfaction / this.regions.size()));
+        
+        if (Game.DEBUG)
+            System.out.println("GlobalSatisfaction: " + globalSatisfaction);
+        return globalSatisfaction;
+    }
+
     /****** MAIN ******/
     public static void main(String[] args) {
 
