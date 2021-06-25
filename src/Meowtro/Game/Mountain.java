@@ -1,17 +1,25 @@
 package Meowtro.Game;
-import Meowtro.Position;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import Meowtro.Position;
 
 public class Mountain extends Obstacle {
 
     public Mountain(BufferedImage background, Color color) {
         super(background, color);
+        if (Game.DEBUG) {
+            System.out.println("Mountain constructed.");
+        }
+    }
 
+    public Mountain(List<List<Boolean>> positions) {
+        super(positions);
         if (Game.DEBUG) {
             System.out.println("Mountain constructed.");
         }
@@ -29,7 +37,7 @@ public class Mountain extends Obstacle {
         }
 
         // test Mountain
-        String[] rgbStr = Game.getConfig().get("obstacle.mountain").split("\\.", 0);
+        String[] rgbStr = Game.getConfig().get("obstacle.mountain.rgb").split("\\.", 0);
         Color color = new Color(Integer.parseInt(rgbStr[0]), Integer.parseInt(rgbStr[1]), Integer.parseInt(rgbStr[2]));
         Mountain mountain = new Mountain(image, color);
         System.out.println("(200, 1000)[Green]: " + mountain.isBlocked(new Position(200, 1000)));

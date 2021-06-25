@@ -1,6 +1,7 @@
 package Meowtro.Game;
 
 import java.util.Properties;
+import java.util.Set;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,6 +37,10 @@ public class Config {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Set<String> getAllKeys() {
+        return this.properties.stringPropertyNames();
     }
     
     /****** MAIN ******/

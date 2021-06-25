@@ -1,17 +1,25 @@
 package Meowtro.Game;
-import Meowtro.Position;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import Meowtro.Position;
 
 public class River extends Obstacle {
 
     public River(BufferedImage background, Color color) {
         super(background, color);
+        if (Game.DEBUG) {
+            System.out.println("River constructed.");
+        }
+    }
 
+    public River(List<List<Boolean>> positions) {
+        super(positions);
         if (Game.DEBUG) {
             System.out.println("River constructed.");
         }
@@ -28,7 +36,7 @@ public class River extends Obstacle {
         }
 
         // test River
-        String[] rgbStr = Game.getConfig().get("obstacle.river").split("\\.", 0);
+        String[] rgbStr = Game.getConfig().get("obstacle.river.rgb").split("\\.", 0);
         Color color = new Color(Integer.parseInt(rgbStr[0]), Integer.parseInt(rgbStr[1]), Integer.parseInt(rgbStr[2]));
         River river = new River(image, color);
         System.out.println("(200, 1000)[Green]: " + river.isBlocked(new Position(200, 1000)));

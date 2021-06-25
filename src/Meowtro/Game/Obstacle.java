@@ -1,10 +1,10 @@
 package Meowtro.Game;
-import Meowtro.Position;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
+import Meowtro.Position;
 
 public abstract class Obstacle {
     
@@ -20,6 +20,10 @@ public abstract class Obstacle {
                 this.positions.get(r).add(color.equals(pixelColor)? true : false);
             }
         }
+    }
+
+    public Obstacle(List<List<Boolean>> positions) {
+        this.positions = positions;
     }
 
     public Boolean isBlocked(Position position) {
