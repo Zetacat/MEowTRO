@@ -65,10 +65,11 @@ public class City {
             if (colorPixelsPair.getValue().size() < areaThreshold)
                 continue;
             
-            // construct obstacle
+            // construct obstacle or region
+            List<List<Boolean>> positions = this.positionList2Boolean2DList(colorPixelsPair.getValue(), background.getWidth(), background.getHeight());
             if (color2obstacle.containsKey(colorPixelsPair.getKey())) {
+                // construct obstacle
                 Class<? extends Obstacle> obstacleClass = color2obstacle.get(colorPixelsPair.getKey());
-                List<List<Boolean>> positions = this.positionList2Boolean2DList(colorPixelsPair.getValue(), background.getWidth(), background.getHeight());
                 try {
                     this.obstacles.add(obstacleClass.getConstructor(List.class).newInstance(positions));
                 } catch (InstantiationException e) {
@@ -86,12 +87,15 @@ public class City {
                 }
             }         
 
-            // construct region
-            
+            else {
+                // construct region
+                int spawnRate = Integer.parseInt(Game.getConfig().get("spawn.rate.default"));
+                this.regions.add(new Region(positions, spawnRate));
+            }
         }
 
         if (Game.DEBUG)
-            System.out.println("City constructed.");
+            System.out.println(String.format("City constructed. (%d obstacles, %d regions)", this.obstacles.size(), this.regions.size()));
     }
 
     private List<List<Boolean>> positionList2Boolean2DList(List<Position> positionsList, int width, int height) {

@@ -3,8 +3,6 @@ package Meowtro.Game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
-import java.awt.image.BufferedImage;
-import java.awt.Color;
 
 public class Region {
     
@@ -18,6 +16,8 @@ public class Region {
     public Region(List<List<Boolean>> positions, int spawnRate) {
         this.positions = positions;
         this.spawnRate = spawnRate;
+        if (Game.DEBUG)
+            System.out.println("Region constructed.");
     }
 
     public int getRegionSatisfaction() {
