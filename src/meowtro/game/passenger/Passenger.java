@@ -68,7 +68,7 @@ public class Passenger {
     private void die(boolean arrivedDestination) {
         this.isDead = true; 
         if (Game.DEBUG){
-            System.out.println("Passenger die (´×ω×`)");
+            System.out.println("Passenger die ('x_x`)");
             return; 
         }
         this.birthRegion.removePassenger(this, arrivedDestination);
