@@ -8,6 +8,7 @@ import java.util.Map;
 
 import meowtro.Position;
 import meowtro.game.*;
+import meowtro.game.passenger.Passenger;
 import meowtro.metro_system.*;
 import meowtro.metro_system.railway.*;
 import meowtro.metro_system.station.*;

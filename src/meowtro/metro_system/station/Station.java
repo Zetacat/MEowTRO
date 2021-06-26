@@ -6,6 +6,7 @@ import java.util.List;
 
 import meowtro.Position;
 import meowtro.game.*;
+import meowtro.game.passenger.Passenger;
 import meowtro.metro_system.railway.Line;
 import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.train.Locomotive;
