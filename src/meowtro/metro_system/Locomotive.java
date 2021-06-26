@@ -131,6 +131,9 @@ public class Locomotive {
         // TODO: handle speed
     }
 
+    public Station getCurrentStation() {
+        return this.currentStation;
+    }
 
     public Station getNextDstStation(){
         if (currentStation != null){

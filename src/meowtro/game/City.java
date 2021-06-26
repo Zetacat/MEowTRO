@@ -125,9 +125,9 @@ public class City {
     }
 
     public Station getRandomStationFromDifferentRegion(Region region) {
-        // get the region index
+        // get the region index (should have >0 stations)
         int regionIndex = Game.randomGenerator.nextInt(this.regions.size());
-        while (this.regions.get(regionIndex) == region)
+        while (this.regions.get(regionIndex) == region || this.regions.get(regionIndex).getStations().size() == 0)
             regionIndex = Game.randomGenerator.nextInt(this.regions.size());
         // get station index
         int stationIndex = Game.randomGenerator.nextInt(this.regions.get(regionIndex).getStations().size());

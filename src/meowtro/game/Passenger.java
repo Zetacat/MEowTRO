@@ -1,5 +1,6 @@
 package meowtro.game;
 
+import java.util.List;
 import meowtro.Position;
 import meowtro.metro_system.*;
 import meowtro.timeSystem.TimeLine;
@@ -108,6 +109,21 @@ public class Passenger {
             double newPositionJ = this.position.j + (closestStationPosition.j - this.position.j) * ratio;
             this.position = new Position((int) Math.round(newPositionI), (int) Math.round(newPositionJ));
         }
+    }
+
+    public boolean willingToGetOn(Locomotive locomotive) {
+        // calculate the shortest path of all candidate paths
+        List<Station> adjacentStation = locomotive.getCurrentStation().getAdjacents();
+        int shortestPath = Integer.MAX_VALUE;
+        for (Station adjStation: adjacentStation) {
+            int pathThroughAdj2dest = ShortestPathCalculator.findShortestPath(adjStation, this.destinationStation);
+            if (pathThroughAdj2dest < shortestPath)
+                shortestPath = pathThroughAdj2dest;
+        }
+
+        // calculate the shortest path of current path
+        int currentShortestPath = ShortestPathCalculator.findShortestPath(locomotive.getNextDstStation(), this.destinationStation);
+        return (currentShortestPath <= shortestPath);
     }
 
     public void update() {
