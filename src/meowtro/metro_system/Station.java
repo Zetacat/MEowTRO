@@ -8,22 +8,22 @@ import meowtro.Position;
 import meowtro.game.*;
 
 public class Station {
-    // private City city; 
+    private City city; 
     private ArrayList<Railway> railways = new ArrayList<Railway>(); 
     private ArrayList<Passenger> queue = new ArrayList<Passenger>(); 
     private HashSet<Line> lines = new HashSet<Line>(); 
     private ArrayList<Locomotive> arrivedLocomotives = new ArrayList<Locomotive>(); 
     private int level = 0; 
     private Position position; 
-    // private Region region; 
+    private Region region; 
     private int maxLineNum = 6; 
 
 
-    // public Station(City city, Position p){
-    //     this.position = p; 
-    //     this.level = 0; 
-    //     this.city = city; 
-    // }
+    public Station(City city, Position p){
+        this.position = p; 
+        this.level = 0; 
+        this.city = city; 
+    }
 
 
     private int getMaxLineNum(){
@@ -42,9 +42,9 @@ public class Station {
     }
 
 
-    // public void setRegion(Region r){
-    //     this.region = r; 
-    // }
+    public void setRegion(Region r){
+        this.region = r; 
+    }
 
 
     public void addRailway(Railway r){
@@ -190,7 +190,7 @@ public class Station {
         for (Line l: lines){
             l.destroyAll();
         }
-        // city.removeStation; 
+        city.removeStation(this); 
     }
 
 

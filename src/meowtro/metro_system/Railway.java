@@ -16,7 +16,7 @@ public class Railway {
     private ArrayList<RailwayDecorator> railwayDecorators = new ArrayList<RailwayDecorator>(); 
 
     private int fragileThreshold = 240; 
-    private int maxLimitedRemainTimeToLive = 500; 
+    private int maxLimitedRemainTimeToLive = Integer.MAX_VALUE; 
     private int originalPrice = 1000; 
 
     private int length; 
@@ -159,6 +159,7 @@ public class Railway {
 
     public void setRemainTimeToLive(int remainTime){
         this.remainTimeToLive = remainTime; 
+        this.maxLimitedRemainTimeToLive = remainTime; 
     }
 
     public boolean isFragile(){
