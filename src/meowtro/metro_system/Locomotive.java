@@ -2,6 +2,7 @@ package meowtro.metro_system;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,8 @@ public class Locomotive {
 
     private enum State{
         MOVING, 
-        ARRIVE; 
+        ARRIVE_DROP, 
+        ARRIVE_GETON, 
     }
 
     private Station currentStation;  // Station | null
@@ -27,7 +29,10 @@ public class Locomotive {
     private ArrayList<Car> cars = new ArrayList<Car>(); 
 
     private int takePassengerInterval = 10; 
+    private int dropPassengerInterval = 10; 
     private int takePassengerCountdown = 0; 
+    private int dropPassengerCountdown = 0; 
+    private LinkedList<Passenger> getDownQueue = null; 
 
     private State state; 
     private int distThres = 8; 
@@ -118,12 +123,23 @@ public class Locomotive {
         return false; 
     }
 
+
+    private LinkedList<Passenger> getAllPassenger(){
+        LinkedList<Passenger> result = new LinkedList<Passenger>(); 
+        for (Car c: cars){
+            result.addAll(c.getPassengers()); 
+        }
+        return result; 
+    }
+    
+
     public void arrive(Station s){
         this.currentStation = s; 
     }
 
     public void depart(){
         this.takePassengerCountdown = 0; 
+        this.dropPassengerCountdown = 0; 
         currentStation.locomotiveDepart(this);
         this.state = State.MOVING; 
         this.railway = currentStation.getNextRailway(railway); 
@@ -166,6 +182,37 @@ public class Locomotive {
         }
     }
 
+
+    private void dropPassenger(Passenger p){
+        for(Car c: cars){
+            if (c.getPassengers().contains(p)){
+                c.removePassenger(p); 
+            }
+        }
+    }
+
+
+    public void tryDropPassenger(){
+        if (getDownQueue.size() == 0){
+            this.state = State.ARRIVE_GETON; 
+            return; 
+        }
+        if (takePassengerCountdown == 0){
+            while (getDownQueue.size() > 0){
+                Passenger p = getDownQueue.removeFirst(); 
+                if (!(p.willingToGetOn(this))){
+                    dropPassenger(p); 
+                    this.takePassengerCountdown = takePassengerInterval; 
+                    break; 
+                }
+            }
+            // no passenger want to get down
+            this.state = State.ARRIVE_GETON; 
+        }else{
+            this.takePassengerCountdown -= 1; 
+        }
+    }
+
     public void destroy(){
         for (Car c: cars){
             c.destroy();
@@ -189,12 +236,18 @@ public class Locomotive {
                 if (currentStation.getNextRailway(railway) == railway){
                     turnAround();
                 }
-                this.state = State.ARRIVE; 
+                this.currentSpeed = 0; 
+                this.state = State.ARRIVE_DROP; 
+                this.getDownQueue = getAllPassenger(); 
             }
-        }else if (state == State.ARRIVE){
-            this.currentSpeed = 0; 
+        }
+        else if (state == State.ARRIVE_DROP){
+            tryDropPassenger(); 
+        }
+        else if (state == State.ARRIVE_GETON){
             tryTakePassenger(currentStation.getPassengerQueue()); 
-        }else{
+        }
+        else{
             // error
             if (true)
                 System.out.println("Locomotive state error");

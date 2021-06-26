@@ -34,6 +34,9 @@ public class TimeLine{
             reset();
         }
     }
+    public int getCurrentRunSpeed(){
+        return this.runSpeed;
+    }
     public void update(){
         this.totalSeconds += this.timeUnit*this.runSpeed;
         setCalender();

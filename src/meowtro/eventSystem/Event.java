@@ -1,5 +1,5 @@
 package meowtro.eventSystem;
-
+import meowtro.game.City;
 public abstract class Event {
     protected City city;
     protected String name;
