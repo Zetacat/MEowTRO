@@ -98,6 +98,13 @@ public class Railway {
             }
         }
 
+        if (start != null){
+            start.addRailway(this);
+        }
+        if (end != null){
+            end.addRailway(this);
+        }
+
         if (start == null && end == null){
             if (DEBUG)
                 System.out.println("construct Railway() error");
@@ -224,6 +231,10 @@ public class Railway {
 
         l.setSpeed(maxSpeed); 
         return parseAbstractPositionToPosition(newAbstractPosition); 
+    }
+
+    public String toString(){
+        return String.format("%s:%d", line.getColor().toString(), railwayID); 
     }
 
     public void update(){

@@ -146,4 +146,12 @@ public class Line {
         }
         return result; 
     }
+
+    public String toString(){
+        String s = ""; 
+        for (Railway r: railways){
+            s = s + r.toString() + " "; 
+        }
+        return s; 
+    }
 }
