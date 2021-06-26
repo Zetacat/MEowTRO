@@ -20,7 +20,7 @@ public class EventTrigger {
         }
         Event comingEvent = this.yearEvents.get(this.currentEventIndex);
         TimeLine curreTimeLine = TimeLine.getInstance();
-        if(curreTimeLine.getCalenderTime().equals(comingEvent.getHappenedTime())){
+        if(curreTimeLine.matchCalenderwoYear(comingEvent.getHappenedTime())){
             comingEvent.trigger();
         }
         this.currentEventIndex += 1;

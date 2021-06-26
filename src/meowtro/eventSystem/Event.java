@@ -3,7 +3,7 @@ import meowtro.game.City;
 public abstract class Event {
     protected City city;
     protected String name;
-    protected String happenedTimeString;   
+    protected String happenedTimeString;  //"MM-DD HH:MM:SS"
 
     Event(City city, String name, String happenedTimeString){
         this.city = city;
