@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import meowtro.Position;
+import meowtro.game.*;
 
 public class Locomotive {
 

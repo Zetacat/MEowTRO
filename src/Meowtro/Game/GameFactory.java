@@ -1,4 +1,4 @@
-package Meowtro.Game;
+package meowtro.game;
 
 public class GameFactory {
     

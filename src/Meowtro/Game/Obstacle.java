@@ -1,10 +1,16 @@
-package Meowtro.Game;
+package meowtro.game;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import meowtro.Position;
+
 import java.awt.image.BufferedImage;
 import java.awt.Color;
-import Meowtro.Position;
+import java.awt.image.BufferedImage;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.awt.Color;
 
 public abstract class Obstacle {
     

@@ -2,6 +2,8 @@ package meowtro.metro_system;
 import java.util.ArrayList;
 import java.util.List;
 
+import meowtro.game.*;
+
 public class Car {
     private int level; 
     private int capacity = 8; 

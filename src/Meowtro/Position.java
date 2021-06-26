@@ -1,4 +1,4 @@
-package Meowtro;
+package meowtro;
 
 public class Position {
     

@@ -1,4 +1,4 @@
-package Meowtro.Game;
+package meowtro.game;
 
 import java.util.Properties;
 import java.util.Set;

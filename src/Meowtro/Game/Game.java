@@ -1,4 +1,4 @@
-package Meowtro.Game;
+package meowtro.game;
 
 import java.util.ArrayList;
 import java.util.List;

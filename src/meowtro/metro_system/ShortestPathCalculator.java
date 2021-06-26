@@ -3,7 +3,7 @@ import java.util.LinkedList;
 
 
 public class ShortestPathCalculator{
-    static int findShorestPath(Station src, Station dst){
+    public static int findShortestPath(Station src, Station dst){
         int inf = Integer.MAX_VALUE;
         
         LinkedList<Station> stationsToExplore = new LinkedList<Station>(); 
