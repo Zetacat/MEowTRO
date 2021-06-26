@@ -20,7 +20,7 @@ public class Passenger {
     public Passenger(Region birthRegion, Position position, Station destinationStation) {
         this.birthRegion = birthRegion;
         this.position = position;
-        this.spawnTime = TimeLine.getInstance().getCurrentTotalSeconds();
+        this.spawnTime = TimeLine.getInstance().getCurrentTotalTimeUnit();
         this.destinationStation = destinationStation;
         if (Game.DEBUG) {
             System.out.println("Passenger constructed.");
@@ -128,7 +128,7 @@ public class Passenger {
 
     public void update() {
         // self explode if exceed life time limit
-        if (TimeLine.getInstance().getCurrentTotalSeconds() - spawnTime > this.lifeTimeLimit) {
+        if (TimeLine.getInstance().getCurrentTotalTimeUnit() - spawnTime > this.lifeTimeLimit) {
             this.selfExplode();
             return;
         }

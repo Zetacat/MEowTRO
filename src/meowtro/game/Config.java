@@ -55,7 +55,7 @@ public class Config {
     
     /****** MAIN ******/
     public static void main(String[] args) {
-        Config config = new Config("./config.properties", "./local.properties");
+        Config config = new Config("./defaultConfig.properties", "./localConfig.properties");
         config.printConfig();
     }
 }
