@@ -4,10 +4,9 @@ import java.util.List;
 import meowtro.metro_system.railway.*;
 
 public class EarthQuakeEvent extends DisasterEvent{
-    private int remainTimeUnit;
-    public EarthQuakeEvent(City city, String name, String happenedTimeString, int numOfDestroyRailway, int remainTimeUnit){
-        super(city, name, happenedTimeString, numOfDestroyRailway);
-        this.remainTimeUnit = remainTimeUnit;
+    // private int remainTimeUnit;
+    public EarthQuakeEvent(City city, String name, String happenedTimeString, int remainTimeUnit){
+        super(city, name, happenedTimeString, remainTimeUnit);
     }
     public void trigger(){
         List<Line> allLines = this.city.getAllLines();
