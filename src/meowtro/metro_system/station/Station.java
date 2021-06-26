@@ -1,4 +1,4 @@
-package meowtro.metro_system;
+package meowtro.metro_system.station;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,24 +6,37 @@ import java.util.List;
 
 import meowtro.Position;
 import meowtro.game.*;
+import meowtro.game.passenger.Passenger;
+import meowtro.metro_system.railway.Line;
+import meowtro.metro_system.railway.Railway;
+import meowtro.metro_system.train.Locomotive;
 
 public class Station {
-    // private City city; 
+    private City city; 
     private ArrayList<Railway> railways = new ArrayList<Railway>(); 
     private ArrayList<Passenger> queue = new ArrayList<Passenger>(); 
     private HashSet<Line> lines = new HashSet<Line>(); 
     private ArrayList<Locomotive> arrivedLocomotives = new ArrayList<Locomotive>(); 
     private int level = 0; 
     private Position position; 
-    // private Region region; 
+    private Region region; 
     private int maxLineNum = 6; 
 
 
-    // public Station(City city, Position p){
-    //     this.position = p; 
-    //     this.level = 0; 
-    //     this.city = city; 
-    // }
+    /**
+    * Parse game config and set proper value. 
+    */
+    public void init(){
+        this.maxLineNum = Integer.valueOf(Game.getConfig().get("metro_system.station.max_line_num")); 
+    }
+
+
+    public Station(City city, Position p){
+        init(); 
+        this.position = p; 
+        this.level = 0; 
+        this.city = city; 
+    }
 
 
     private int getMaxLineNum(){
@@ -42,9 +55,9 @@ public class Station {
     }
 
 
-    // public void setRegion(Region r){
-    //     this.region = r; 
-    // }
+    public void setRegion(Region r){
+        this.region = r; 
+    }
 
 
     public void addRailway(Railway r){
@@ -190,7 +203,7 @@ public class Station {
         for (Line l: lines){
             l.destroyAll();
         }
-        // city.removeStation; 
+        city.removeStation(this); 
     }
 
 

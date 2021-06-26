@@ -1,7 +1,8 @@
-package meowtro.game;
+package meowtro.game.passenger;
 
 import meowtro.Position;
-import meowtro.metro_system.*;
+import meowtro.game.Region;
+import meowtro.metro_system.station.Station;
 
 public class CutInLineElder extends Passenger {
     

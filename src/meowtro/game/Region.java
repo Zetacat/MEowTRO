@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.OptionalDouble;
 
 import meowtro.Position;
-import meowtro.metro_system.*;
+import meowtro.game.passenger.*;
+import meowtro.metro_system.station.Station;
 
 public class Region {
     
@@ -44,6 +45,14 @@ public class Region {
 
     public List<Station> getStations() {
         return this.stations;
+    }
+
+    public double getSpawnRate() {
+        return this.spawnRate;
+    }
+
+    public void setSpawnRate(double newSpawnRate) {
+        this.spawnRate = newSpawnRate;
     }
 
     public boolean containPosition(Position position) {

@@ -1,4 +1,4 @@
-package meowtro.metro_system;
+package meowtro.metro_system.railway;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,18 +6,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import meowtro.game.City;
+import meowtro.metro_system.Direction;
+import meowtro.metro_system.station.Station;
+import meowtro.metro_system.train.Locomotive;
+
 
 public class Line {
-    // private City city; 
+    private City city; 
     private LinkedList<Railway> railways = new LinkedList<Railway>(); 
     private List<Locomotive> locomotives = new ArrayList<Locomotive>(); 
     private HashSet<Station> stations = new HashSet<Station>(); 
     private LineColor color; 
 
-    // public Line(City city, LineColor color){
-    //     this.city = city; 
-    //     this.color = color; 
-    // }
+    public Line(City city, LineColor color){
+        this.city = city; 
+        this.color = color; 
+    }
 
     public Line(LineColor color){
         this.color = color; 
@@ -143,5 +148,13 @@ public class Line {
             }
         }
         return result; 
+    }
+
+    public String toString(){
+        String s = ""; 
+        for (Railway r: railways){
+            s = s + r.toString() + " "; 
+        }
+        return s; 
     }
 }

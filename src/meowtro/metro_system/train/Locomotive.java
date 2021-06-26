@@ -1,4 +1,4 @@
-package meowtro.metro_system;
+package meowtro.metro_system.train;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +8,10 @@ import java.util.Map;
 
 import meowtro.Position;
 import meowtro.game.*;
+import meowtro.game.passenger.Passenger;
+import meowtro.metro_system.*;
+import meowtro.metro_system.railway.*;
+import meowtro.metro_system.station.*;
 
 public class Locomotive {
 
@@ -19,10 +23,10 @@ public class Locomotive {
 
     private Station currentStation;  // Station | null
     private int level = 0; 
+    private int maxLevel; 
     private int currentSpeed; 
-    private int carNum = 0; 
-    private static Map<Integer, Integer> levelToMaxSpeed; 
-    private static Map<Integer, Integer> levelToMaxCar; 
+    private Map<Integer, Integer> levelToMaxSpeed; 
+    private Map<Integer, Integer> levelToMaxCar; 
     private Railway railway; 
     private Position position; 
     private Direction direction; 
@@ -37,20 +41,36 @@ public class Locomotive {
     private State state; 
     private int distThres = 8; 
 
-    public static void init(){
-        // TODO: import the setting from config
-        levelToMaxSpeed = new HashMap<Integer, Integer>(); 
-        levelToMaxSpeed.put(0, 4); 
-        levelToMaxSpeed.put(1, 8); 
-        levelToMaxSpeed.put(2, 12); 
+    /**
+    * Parse game config and set proper value. 
+    */
+    public void init(){
+        this.maxLevel = Integer.valueOf(Game.getConfig().get("metro_system.locomotive.max_level")); 
+        this.takePassengerCountdown = Integer.valueOf(Game.getConfig().get("metro_system.locomotive.take_passenger_interval")); 
+        this.dropPassengerCountdown = Integer.valueOf(Game.getConfig().get("metro_system.locomotive.drop_passenger_interval")); 
+        this.distThres = Integer.valueOf(Game.getConfig().get("metro_system.locomotive.dist_thres")); 
 
-        levelToMaxCar = new HashMap<Integer, Integer>(); 
-        levelToMaxCar.put(0, 2); 
-        levelToMaxCar.put(0, 4); 
-        levelToMaxCar.put(0, 6); 
+        this.levelToMaxSpeed = new HashMap<Integer, Integer>(); 
+        this.levelToMaxCar = new HashMap<Integer, Integer>(); 
+
+        int level = 0; 
+        for (String s: Game.getConfig().get("metro_system.locomotive.level_to_maxspeed").split("_")){
+            levelToMaxSpeed.put(level, Integer.valueOf(s)); 
+            level += 1; 
+        }
+        if (level < maxLevel)
+            System.out.println("ValueError: metro_system.locomotive.level_to_maxspeed < maxLevel"); 
+        level = 0; 
+        for (String s: Game.getConfig().get("metro_system.locomotive.level_to_maxcar").split("_")){
+            levelToMaxCar.put(level, Integer.valueOf(s)); 
+            level += 1; 
+        }
+        if (level < maxLevel)
+            System.out.println("ValueError: metro_system.locomotive.level_to_maxspeed < maxLevel"); 
     }
 
     public Locomotive(Railway railway, Position position, Direction direction){
+        init();
         this.railway = railway; 
         this.position = position; 
         this.direction = direction;

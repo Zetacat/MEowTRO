@@ -8,7 +8,7 @@ import meowtro.timeSystem.TimeLine;
 
 public class Game {
     
-    private static Config config = new Config("./config.properties");
+    private static Config config = new Config("./defaultConfig.properties", "./localConfig.properties");
     private City city = null;
     private Stack<OnClickEvent> onClickEventStack = new Stack<OnClickEvent>();
     private EventTrigger eventTrigger = null;
@@ -79,4 +79,7 @@ public class Game {
         Game.balance = newBalance;
     }
 
+    public static void setToyConfig(){
+        config = new Config("../resources/defaultConfig.properties", "../resources/defaultConfig.properties"); 
+    }
 }

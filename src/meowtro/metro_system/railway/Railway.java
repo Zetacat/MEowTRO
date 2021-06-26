@@ -1,10 +1,14 @@
-package meowtro.metro_system;
+package meowtro.metro_system.railway;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import meowtro.Position;
+import meowtro.game.Game;
+import meowtro.metro_system.Direction;
+import meowtro.metro_system.station.Station;
+import meowtro.metro_system.train.Locomotive;
 
 public class Railway {
     public int railwayID = -1; 
@@ -16,13 +20,24 @@ public class Railway {
     private ArrayList<RailwayDecorator> railwayDecorators = new ArrayList<RailwayDecorator>(); 
 
     private int fragileThreshold = 240; 
-    private int maxLimitedRemainTimeToLive = 500; 
+    private int maxLimitedRemainTimeToLive = Integer.MAX_VALUE; 
     private int originalPrice = 1000; 
 
     private int length; 
     private HashMap<Locomotive, Integer> positionsInAbstractLine = new HashMap<Locomotive, Integer>(); 
 
+
+    /**
+    * Parse game config and set proper value. 
+    */
+    public void init(){
+        this.fragileThreshold = Integer.valueOf(Game.getConfig().get("metro_system.railway.fragile_threshold")); 
+        this.originalPrice = Integer.valueOf(Game.getConfig().get("metro_system.railway.original_price")); 
+    }
+
+
     public Railway(Station s1, Station s2, Line line){
+        init();
         boolean DEBUG = true; 
         this.line = line; 
 
@@ -98,6 +113,13 @@ public class Railway {
             }
         }
 
+        if (start != null){
+            start.addRailway(this);
+        }
+        if (end != null){
+            end.addRailway(this);
+        }
+
         if (start == null && end == null){
             if (DEBUG)
                 System.out.println("construct Railway() error");
@@ -159,6 +181,7 @@ public class Railway {
 
     public void setRemainTimeToLive(int remainTime){
         this.remainTimeToLive = remainTime; 
+        this.maxLimitedRemainTimeToLive = remainTime; 
     }
 
     public boolean isFragile(){
@@ -223,6 +246,10 @@ public class Railway {
 
         l.setSpeed(maxSpeed); 
         return parseAbstractPositionToPosition(newAbstractPosition); 
+    }
+
+    public String toString(){
+        return String.format("%s:%d", line.getColor().toString(), railwayID); 
     }
 
     public void update(){

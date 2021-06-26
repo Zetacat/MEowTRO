@@ -1,9 +1,10 @@
-package meowtro.metro_system;
+package meowtro.metro_system.railway;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import meowtro.EntityManager;
+import meowtro.metro_system.station.Station;
 
 public class RailwayManager implements EntityManager{
     List<Railway> railways = new ArrayList<Railway>(); 
