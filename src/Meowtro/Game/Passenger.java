@@ -41,18 +41,20 @@ public class Passenger {
     }
 
     public void selfExplode() {
-        this.die();
+        this.die(false);
     }
     
     public void arriveDestination() {
         if (Game.DEBUG)
             System.out.println("Passenger arrive destination.");
-        this.die();
+
+        int ticket = Integer.parseInt(Game.getConfig().get("passenger.ticket.per.station")) * this.traveledStationCount;
+        Game.setBalance(Game.getBalance() + ticket);
+        this.die(true);
     }
 
-    private void die() {
-        // TODO: passenger die
-
+    private void die(boolean arrivedDestination) {
+        this.birthRegion.removePassenger(this, arrivedDestination);
     }
 
     public void enterStation(Station station) {
@@ -79,14 +81,18 @@ public class Passenger {
 
     private void walkTowardClosestStation() {
         Station closestStation = this.findClosestStationInRegion(this.birthRegion);
+        // do not move if no station in region
+        if (closestStation == null)
+            return;
+
         Position closestStationPosition = closestStation.getPosition();
         double distance = this.position.l2distance(closestStationPosition);
-        // enter station if able to reach
         if (distance < this.walkingSpeed) {
+            // enter station if able to reach
             this.enterStation(closestStation);
         }
-        // otherwise, walk toward
         else {
+            // otherwise, walk toward
             double ratio = this.walkingSpeed / distance;
             double newPositionI = this.position.i + (closestStationPosition.i - this.position.i) * ratio;
             double newPositionJ = this.position.j + (closestStationPosition.j - this.position.j) * ratio;

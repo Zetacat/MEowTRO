@@ -17,9 +17,9 @@ public class City {
     
     private List<Region> regions = new ArrayList<Region>();
     private List<Obstacle> obstacles = new ArrayList<Obstacle>();
-    // private List<Line> lines = new ArrayList<Line>();
-    // private List<Station> stations = new ArrayList<Station>();
-    private int totalTransportedPassenger = 0;
+    private List<Line> lines = new ArrayList<Line>();
+    private List<Station> stations = new ArrayList<Station>();
+    private int totalTransportedPassengerCount = 0;
     
 
     public City(BufferedImage background) {
@@ -89,7 +89,7 @@ public class City {
 
             else {
                 // construct region
-                this.regions.add(new Region(positions));
+                this.regions.add(new Region(positions, this));
             }
         }
 
@@ -108,9 +108,9 @@ public class City {
         }
         
         // set positions in positionsList to true
-        for (Position position: positionsList) {
+        for (Position position: positionsList)
             positions.get(position.i).set(position.j, true);
-        }
+        
         return positions;
     }
 
@@ -121,6 +121,30 @@ public class City {
         }
         return null;
     }
+
+    public Station getRandomStationFromDifferentRegion(Region region) {
+        // get the region index
+        int regionIndex = Game.randomGenerator.nextInt(this.regions.size());
+        while (this.regions.get(regionIndex) == region)
+            regionIndex = Game.randomGenerator.nextInt(this.regions.size());
+        // get station index
+        int stationIndex = Game.randomGenerator.nextInt(this.regions.get(regionIndex).getStations().size());
+        return this.regions.get(regionIndex).getStations().get(stationIndex);
+    }
+
+    public void addTotalTransportedPassengerCount() {
+        this.totalTransportedPassengerCount += 1;
+    }
+
+    public void removeLine(Line line) {
+        this.lines.remove(line);
+    }
+
+    public void removeStation(Station station) {
+        Region stationRegion = this.getRegionByPosition(station.getPosition());
+        stationRegion.removeStation(station);
+    }
+
 
     // TODO
     // public List<Obstacle> blockedBy(Station station1, Station station2) {
