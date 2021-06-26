@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.OptionalDouble;
 
 import meowtro.Position;
+import meowtro.game.passenger.CutInLineElder;
+import meowtro.game.passenger.Passenger;
 import meowtro.metro_system.*;
+import meowtro.metro_system.station.Station;
 
 public class Region {
     
@@ -117,8 +120,7 @@ public class Region {
     }
 
     /****** MAIN ******/
-    public static void main(String[] args) {
-
-    }
-
+    // public static void main(String[] args) {
+    //     config = new Config("./defaultConfig.properties", "./localConfig.properties")
+    // }
 }

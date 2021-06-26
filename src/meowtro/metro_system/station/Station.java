@@ -13,6 +13,15 @@ import meowtro.metro_system.railway.LineColor;
 import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.train.Locomotive;
 
+// for testing
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.awt.Color;
+import javax.imageio.ImageIO;
+
+
 public class Station {
     private City city; 
     private ArrayList<Railway> railways = new ArrayList<Railway>(); 
@@ -218,17 +227,34 @@ public class Station {
         Game.setToyConfig();
         Line l = new Line(null, LineColor.RED); 
 
+        // read image
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File("image/map_1.png"));
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
+        // test City
+        City city = new City(image);
+        Region r = new Region(null, city); 
+
         Station s1 = new Station(null , new Position(1, 0)); 
         Station s2 = new Station(null , new Position(2, 0)); 
         Station s3 = new Station(null , new Position(3, 0)); 
         Station s4 = new Station(null , new Position(4, 0)); 
+
+        r.addStation(s1);
+        r.addStation(s2);
+        r.addStation(s3);
+        r.addStation(s4);
 
         Railway r1 = new Railway(s1, s2, l); 
         Railway r2 = new Railway(s3, s1, l); 
         Railway r3 = new Railway(s4, s2, l); 
 
         // s3 - s1 - s2 - s4
-        Passenger p = new Passenger(new Region(new Position(0, 0), city), new Position(4, 0), s3); 
+        Passenger p = new Passenger(r, new Position(4, 0), s3); 
         Locomotive loco = new Locomotive(r3, new Position(4, 0), Direction.FORWARD); 
 
         for (int i = 0; i < 1000; i++){

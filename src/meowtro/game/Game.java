@@ -73,4 +73,7 @@ public class Game {
         Game.balance = newBalance;
     }
 
+    public static void setToyConfig(){
+        config = new Config("../resources/defaultConfig.properties", "../resources/defaultConfig.properties"); 
+    }
 }
