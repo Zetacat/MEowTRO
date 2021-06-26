@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
+import meowtro.timeSystem.TimeLine;
 
 public class Game {
     
@@ -41,7 +42,7 @@ public class Game {
     }
 
     public void startTimeLine() {
-        Timeline.getInstance().reset();
+        TimeLine.getInstance().reset();
     }
 
     public void onClick() {

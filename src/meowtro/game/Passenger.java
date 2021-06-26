@@ -2,6 +2,7 @@ package meowtro.game;
 
 import meowtro.Position;
 import meowtro.metro_system.*;
+import meowtro.timeSystem.TimeLine;
 
 public class Passenger {
     
@@ -15,10 +16,10 @@ public class Passenger {
     private Car currentCar = null;
     private int traveledStationCount = 0;
 
-    public Passenger(Region birthRegion, long spawnTime, Position position, Station destinationStation) {
+    public Passenger(Region birthRegion, Position position, Station destinationStation) {
         this.birthRegion = birthRegion;
         this.position = position;
-        this.spawnTime = spawnTime;
+        this.spawnTime = TimeLine.getInstance().getCurrentTotalSeconds();
         this.destinationStation = destinationStation;
         if (Game.DEBUG) {
             System.out.println("Passenger constructed.");
@@ -111,7 +112,7 @@ public class Passenger {
 
     public void update() {
         // self explode if exceed life time limit
-        if (Timeline.now() - spawnTime > this.lifeTimeLimit) {
+        if (TimeLine.getInstance().getCurrentTotalSeconds() - spawnTime > this.lifeTimeLimit) {
             this.selfExplode();
             return;
         }

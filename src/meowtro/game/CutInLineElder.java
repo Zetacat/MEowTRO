@@ -5,8 +5,8 @@ import meowtro.metro_system.*;
 
 public class CutInLineElder extends Passenger {
     
-    public CutInLineElder(Region birthRegion, long spawnTime, Position position, Station destinationStation) {
-        super(birthRegion, spawnTime, position, destinationStation);
+    public CutInLineElder(Region birthRegion, Position position, Station destinationStation) {
+        super(birthRegion, position, destinationStation);
     }
 
     @Override

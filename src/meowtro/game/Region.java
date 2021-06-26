@@ -78,8 +78,8 @@ public class Region {
         Station destinationStation = this.city.getRandomStationFromDifferentRegion(this);
         Passenger newPassenger = (
             Game.randomGenerator.nextDouble() < this.CutInLineElderProb?
-            new CutInLineElder(this, Timeline.now(), newPassengerPosition, destinationStation): 
-            new Passenger(this, Timeline.now(), newPassengerPosition, destinationStation)
+            new CutInLineElder(this, newPassengerPosition, destinationStation): 
+            new Passenger(this, newPassengerPosition, destinationStation)
         );
         this.passengers.add(newPassenger);
         return newPassenger;
