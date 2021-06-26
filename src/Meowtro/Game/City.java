@@ -89,8 +89,7 @@ public class City {
 
             else {
                 // construct region
-                int spawnRate = Integer.parseInt(Game.getConfig().get("spawn.rate.default"));
-                this.regions.add(new Region(positions, spawnRate));
+                this.regions.add(new Region(positions));
             }
         }
 
@@ -136,7 +135,7 @@ public class City {
         int globalSatisfaction = (int)(Math.round(totalSatisfaction / this.regions.size()));
         
         if (Game.DEBUG)
-            System.out.println("GlobalSatisfaction: " + globalSatisfaction);
+            System.out.println("GlobalSatisfaction: = " + globalSatisfaction);
         return globalSatisfaction;
     }
 

@@ -10,4 +10,8 @@ public class Position {
         this.j = j;
     }
 
+    public double l2distance(Position other) {
+        return Math.sqrt((this.i - other.i) * (this.i - other.i) + (this.j - other.j) * (this.j - other.j));
+    }
+
 }

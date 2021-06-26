@@ -11,6 +11,12 @@ import Meowtro.Position;
 
 public class Mountain extends Obstacle {
 
+    final static public Color color = new Color(
+        Integer.parseInt(Game.getConfig().get("obstacle.mountain.rgb").split("\\.", 0)[0]),
+        Integer.parseInt(Game.getConfig().get("obstacle.mountain.rgb").split("\\.", 0)[1]),
+        Integer.parseInt(Game.getConfig().get("obstacle.mountain.rgb").split("\\.", 0)[2])
+    );
+    
     public Mountain(BufferedImage background, Color color) {
         super(background, color);
         if (Game.DEBUG) {

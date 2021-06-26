@@ -8,15 +8,14 @@ import Meowtro.Position;
 public class Region {
     
     private List<List<Boolean>> positions = new ArrayList<List<Boolean>>();
-    private int spawnRate = 0;
+    private int spawnRate = Integer.parseInt(Game.getConfig().get("spawn.rate.default"));
     private List<Integer> satisfications = new ArrayList<Integer>();
-    // private List<Passenger> passengers = new ArrayList<Passenger>();
-    // private List<Station> stations = new ArrayList<Station>();
+    private List<Passenger> passengers = new ArrayList<Passenger>();
+    private List<Station> stations = new ArrayList<Station>();
     private int tranportedPassengerCount = 0;
 
-    public Region(List<List<Boolean>> positions, int spawnRate) {
+    public Region(List<List<Boolean>> positions) {
         this.positions = positions;
-        this.spawnRate = spawnRate;
         if (Game.DEBUG)
             System.out.println("Region constructed.");
     }
@@ -36,6 +35,10 @@ public class Region {
         if (Game.DEBUG)
             System.out.println("Region satisfaction = " + regionSatisfaction);
         return regionSatisfaction;
+    }
+
+    public List<Station> getStations() {
+        return this.stations;
     }
 
     public boolean containPosition(Position position) {
