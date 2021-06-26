@@ -7,10 +7,6 @@ import meowtro.Position;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.awt.Color;
 
 public abstract class Obstacle {
     

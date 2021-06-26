@@ -1,6 +1,5 @@
 package meowtro.game;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -8,10 +7,6 @@ import javax.imageio.ImageIO;
 
 import meowtro.Position;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.File;
-import java.io.IOException;
 import java.io.File;
 import java.io.IOException;
 

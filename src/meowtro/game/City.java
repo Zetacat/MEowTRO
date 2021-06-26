@@ -20,7 +20,6 @@ public class City {
     private List<Region> regions = new ArrayList<Region>();
     private List<Obstacle> obstacles = new ArrayList<Obstacle>();
     private List<Line> lines = new ArrayList<Line>();
-    private List<Station> stations = new ArrayList<Station>();
     private int totalTransportedPassengerCount = 0;
     
 
