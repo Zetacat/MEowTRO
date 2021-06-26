@@ -2,7 +2,7 @@ package meowtro.timeSystem;
 public class TimeLine{
     private static TimeLine timeLine = new TimeLine();
     private int month, day, hour, minute, second, timeUnit, runSpeed;
-    private long totalTimeUnit;
+    private long totalSeconds;
     private TimeLine(){
         reset();
     }
@@ -13,13 +13,13 @@ public class TimeLine{
         this.minute = 0;
         this.second = 0;
         this.timeUnit = 600; // seconds
-        this.totalTimeUnit = 0;
+        this.totalSeconds = 0;
         this.runSpeed = 1;
         setCalender();
     }
     private void setCalender(){
-        long totalMinutes = this.totalTimeUnit/60;
-        this.second = (int) (this.totalTimeUnit-totalMinutes*60);
+        long totalMinutes = this.totalSeconds/60;
+        this.second = (int) (this.totalSeconds-totalMinutes*60);
         
         long totalHours = totalMinutes / 60;
         this.minute = (int) (totalMinutes-totalHours*60);
@@ -35,7 +35,7 @@ public class TimeLine{
         }
     }
     public void update(){
-        this.totalTimeUnit += this.timeUnit*this.runSpeed;
+        this.totalSeconds += this.timeUnit*this.runSpeed;
         setCalender();
     }
     public static TimeLine getInstance(){
@@ -50,8 +50,8 @@ public class TimeLine{
     public void fastForwardTimeLine(){
         this.runSpeed = 2;
     }
-    public long getCurrentTotalTimeUnit(){
-        return this.totalTimeUnit;
+    public long getCurrentTotalSeconds(){
+        return this.totalSeconds;
     }
     public String getCalenderTime(){
         return String.format("%02dM %02dD %02d:%02d:%02d", this.month, this.day, this.hour, this.minute, this.second);
