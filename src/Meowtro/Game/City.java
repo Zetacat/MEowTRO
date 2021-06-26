@@ -163,6 +163,13 @@ public class City {
         return globalSatisfaction;
     }
 
+    public void update() {
+        for (Region region: this.regions)
+            region.update();
+            
+        // TODO? line.update()?
+    }
+
     /****** MAIN ******/
     public static void main(String[] args) {
 

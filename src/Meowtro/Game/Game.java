@@ -56,6 +56,20 @@ public class Game {
         // TODO: generate popup message
     }
 
+    public void update() {
+
+        // on click events
+        while (!this.onClickEventStack.empty()) {
+            // TODO: onclick event
+        }
+
+        // TODO: check event
+
+        // update city
+        this.city.update();
+        this.globalSatisfaction = this.city.getGlobalStatisfaction();
+    }
+
     public static int getBalance() {
         return Game.balance;
     }

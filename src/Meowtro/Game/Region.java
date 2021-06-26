@@ -105,6 +105,15 @@ public class Region {
         this.passengers.remove(passenger);
     }
 
+    public void update() {
+        // update passengers
+        for (Passenger passenger: this.passengers)
+            passenger.update();
+        
+        // spawn passenger on the probability of spawnRate
+        if (Game.randomGenerator.nextDouble() < this.spawnRate)
+            this.spawnPassenger();
+    }
 
     /****** MAIN ******/
     public static void main(String[] args) {

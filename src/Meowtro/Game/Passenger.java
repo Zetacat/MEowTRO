@@ -7,6 +7,7 @@ public class Passenger {
     private Region birthRegion = null;
     protected Position position = null;
     private long spawnTime = 0;
+    private long lifeTimeLimit = Long.parseLong(Game.getConfig().get("passenger.life.time.limit"));
     protected Station destinationStation = null;
     private double walkingSpeed = Double.parseDouble(Game.getConfig().get("passenger.walking.speed"));
     protected Station currentStation = null;
@@ -41,6 +42,9 @@ public class Passenger {
     }
 
     public void selfExplode() {
+        if (Game.DEBUG)
+            System.out.println("Passenger selfExplode");
+
         this.die(false);
     }
     
@@ -59,6 +63,7 @@ public class Passenger {
 
     public void enterStation(Station station) {
         this.position = station.getPosition();
+        this.currentCar = null;
         // arrive station
         if (station == this.destinationStation) {
             this.arriveDestination();
@@ -73,6 +78,7 @@ public class Passenger {
     public void enterCar(Car car) {
         car.addPassenger(this);
         this.currentCar = car;
+        this.currentStation = null;
     }
 
     public int evaluateSatisfaction() {
@@ -86,6 +92,7 @@ public class Passenger {
         if (closestStation == null)
             return;
 
+        // move
         Position closestStationPosition = closestStation.getPosition();
         double distance = this.position.l2distance(closestStationPosition);
         if (distance < this.walkingSpeed) {
@@ -98,6 +105,24 @@ public class Passenger {
             double newPositionI = this.position.i + (closestStationPosition.i - this.position.i) * ratio;
             double newPositionJ = this.position.j + (closestStationPosition.j - this.position.j) * ratio;
             this.position = new Position((int) Math.round(newPositionI), (int) Math.round(newPositionJ));
+        }
+    }
+
+    public void update() {
+        // self explode if exceed life time limit
+        if (Timeline.now() - spawnTime > this.lifeTimeLimit) {
+            this.selfExplode();
+            return;
+        }
+
+        // walking passenger
+        if (this.currentStation == null && this.currentCar == null) {
+            this.walkTowardClosestStation();
+        }
+
+        // traveling passenger
+        else if (this.currentCar != null) {
+            // TODO: update position for passengers traveling
         }
     }
 }
