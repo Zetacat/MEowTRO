@@ -37,4 +37,11 @@ public class Car {
     public Locomotive getLocomotive(){
         return locomotive; 
     }
+
+    public void destroy(){
+        for (Passenger p: passengers){
+            p.selfExplode();
+        }
+        passengers.clear();
+    }
 }
