@@ -120,6 +120,12 @@ public class Locomotive {
     }
 
     private boolean assignPassengerToCar(Passenger p){
+        for (Car c: cars){
+            if (!c.isFull()){
+                c.addPassenger(p);
+                p.enterCar(c);
+            }
+        }
         return false; 
     }
 

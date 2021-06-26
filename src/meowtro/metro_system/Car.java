@@ -46,4 +46,9 @@ public class Car {
         }
         passengers.clear();
     }
+
+    public boolean isFull() {
+        assert passengers.size() <= capacity; 
+        return passengers.size() == capacity;
+    }
 }
