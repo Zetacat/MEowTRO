@@ -131,17 +131,31 @@ public class Locomotive {
         // TODO: handle speed
     }
 
+
+    public Station getNextDstStation(){
+        if (currentStation != null){
+            return currentStation.getNextRailway(railway).getNextStation(direction); 
+        }
+        return null; 
+    }
+
+
     public void tryTakePassenger(List<Passenger> stationQueue){
         if (stationQueue.size() == 0){
             depart();
         }
         if (takePassengerCountdown == 0){
-            boolean success = assignPassengerToCar(stationQueue.get(0)); 
-            if (success){
-                stationQueue.remove(0); 
-            }else{
-                // Cars are full
-                depart();
+            for (Passenger p: stationQueue){
+                if (p.willingToGetOn(this)){
+                    boolean success = assignPassengerToCar(stationQueue.get(0)); 
+                    if (success){
+                        stationQueue.remove(0); 
+                    }else{
+                        // Cars are full
+                        depart();
+                    }
+                    break; 
+                }
             }
             this.takePassengerCountdown = takePassengerInterval; 
         }else{
@@ -169,6 +183,9 @@ public class Locomotive {
             if (dist(this.position, railway.getNextStation(direction).getPosition()) < distThres){
                 railway.getNextStation(direction).locomotiveArrive(this);
                 this.currentStation = railway.getNextStation(direction); 
+                if (currentStation.getNextRailway(railway) == railway){
+                    turnAround();
+                }
                 this.state = State.ARRIVE; 
             }
         }else if (state == State.ARRIVE){
