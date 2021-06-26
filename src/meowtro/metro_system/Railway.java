@@ -135,10 +135,12 @@ public class Railway {
     }
 
     private int parsePositionToAbstractPosition(Position p){
+        // TODO
         return p.i; 
     }
 
     private Position parseAbstractPositionToPosition(int ap){
+        // TODO
         return new Position(ap, 0); 
     }
 
