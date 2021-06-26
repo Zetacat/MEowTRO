@@ -7,7 +7,9 @@ import java.util.List;
 import meowtro.Position;
 import meowtro.game.*;
 import meowtro.game.passenger.Passenger;
+import meowtro.metro_system.Direction;
 import meowtro.metro_system.railway.Line;
+import meowtro.metro_system.railway.LineColor;
 import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.train.Locomotive;
 
@@ -209,5 +211,29 @@ public class Station {
 
     public void update(){
         // for each arrived
+    }
+
+
+    public static void main(String[] args) {
+        Game.setToyConfig();
+        Line l = new Line(null, LineColor.RED); 
+
+        Station s1 = new Station(null , new Position(1, 0)); 
+        Station s2 = new Station(null , new Position(2, 0)); 
+        Station s3 = new Station(null , new Position(3, 0)); 
+        Station s4 = new Station(null , new Position(4, 0)); 
+
+        Railway r1 = new Railway(s1, s2, l); 
+        Railway r2 = new Railway(s3, s1, l); 
+        Railway r3 = new Railway(s4, s2, l); 
+
+        // s3 - s1 - s2 - s4
+        Passenger p = new Passenger(new Region(new Position(0, 0), city), new Position(4, 0), s3); 
+        Locomotive loco = new Locomotive(r3, new Position(4, 0), Direction.FORWARD); 
+
+        for (int i = 0; i < 1000; i++){
+            l.update(); 
+            p.update(); 
+        }
     }
 }

@@ -14,4 +14,7 @@ public class Position {
         return Math.sqrt((this.i - other.i) * (this.i - other.i) + (this.j - other.j) * (this.j - other.j));
     }
 
+    public String toString(){
+        return String.format("(%d, %d)", i, j); 
+    }
 }

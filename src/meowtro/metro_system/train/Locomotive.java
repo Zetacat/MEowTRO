@@ -75,6 +75,10 @@ public class Locomotive {
         this.position = position; 
         this.direction = direction;
         this.state = State.MOVING; 
+        railway.addLocomotive(this);
+        if (Game.DEBUG){
+            System.out.printf("Locomotive created at (%d, %d)\n", position.i, position.j);
+        }
     }
 
     public Position getPosition(){
@@ -194,6 +198,9 @@ public class Locomotive {
                 if (p.willingToGetOn(this)){
                     boolean success = assignPassengerToCar(stationQueue.get(0)); 
                     if (success){
+                        if (Game.DEBUG){
+                            System.out.printf("Passenger get on locomotive (%d, %d)\n", position.i, position.j);
+                        }
                         stationQueue.remove(0); 
                     }else{
                         // Cars are full
@@ -257,7 +264,7 @@ public class Locomotive {
             this.position = railway.moveLocomotive(this); 
 
             // update current station
-            if (dist(this.position, railway.getNextStation(direction).getPosition()) < distThres){
+            if (railway.isArrived(this, railway.getNextStation(direction))){
                 railway.getNextStation(direction).locomotiveArrive(this);
                 this.currentStation = railway.getNextStation(direction); 
                 if (currentStation.getNextRailway(railway) == railway){

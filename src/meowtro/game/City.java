@@ -13,9 +13,6 @@ import java.awt.Color;
 import javax.imageio.ImageIO;
 
 import meowtro.Position;
-import meowtro.game.obstacle.Obstacle;
-import meowtro.metro_system.railway.*;
-import meowtro.metro_system.station.*;
 import meowtro.metro_system.*;
 
 public class City {

@@ -158,20 +158,17 @@ public class Railway {
 
     private int parsePositionToAbstractPosition(Position p){
         // TODO
-        return p.i; 
+        return Math.max(Math.min((p.i - start.getPosition().i) / Math.abs(end.getPosition().i - start.getPosition().i) * length, length), 0); 
     }
 
     private Position parseAbstractPositionToPosition(int ap){
         // TODO
-        return new Position(ap, 0); 
+        return new Position(start.getPosition().i + ap / length * Math.abs(end.getPosition().i - start.getPosition().i), 0); 
     }
 
     public void addLocomotive(Locomotive l){
         locomotives.add(l); 
-        if (l.getDirection() == Direction.FORWARD){
-            positionsInAbstractLine.put(l, parsePositionToAbstractPosition(l.getPosition())); 
-        }
-        
+        positionsInAbstractLine.put(l, parsePositionToAbstractPosition(l.getPosition())); 
     }
 
     public void removeLocomotive(Locomotive l){
@@ -232,17 +229,28 @@ public class Railway {
     }
 
     public Position moveLocomotive(Locomotive l){
+        if (l == null){
+            if (Game.DEBUG){
+                System.out.println("move null Locomotive");
+            }
+            return null; 
+        }
         int speed = l.getSpeed(); 
         int maxSpeed = l.getMaxSpeed(); 
-
+        
         int orientation = 1; 
         if (l.getDirection() == Direction.BACKWARD){
             orientation = -1; 
         }
         
         int newAbstractPosition = positionsInAbstractLine.get(l) + (speed * orientation); 
+        
         newAbstractPosition = Math.min(newAbstractPosition, length); 
         newAbstractPosition = Math.max(newAbstractPosition, 0); 
+        positionsInAbstractLine.put(l, newAbstractPosition); 
+        if (Game.DEBUG){
+            System.out.printf("Move Locomotive to %d/%d in railway %s\n", newAbstractPosition, length, this.toString());
+        }
 
         l.setSpeed(maxSpeed); 
         return parseAbstractPositionToPosition(newAbstractPosition); 
@@ -257,5 +265,18 @@ public class Railway {
         if (start == null && end == null){
             destroy();
         }
+
+        for (Locomotive l: locomotives){
+            l.update();
+        }
+    }
+
+
+    public boolean isArrived(Locomotive locomotive, Station nextStation) {
+        int abstractPosition = positionsInAbstractLine.get(locomotive); 
+        if (nextStation == end){
+            return abstractPosition == length; 
+        }
+        return abstractPosition == 0;
     }
 }
