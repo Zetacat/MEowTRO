@@ -23,7 +23,16 @@ public class Station {
     private int maxLineNum = 6; 
 
 
+    /**
+    * Parse game config and set proper value. 
+    */
+    public void init(){
+        this.maxLineNum = Integer.valueOf(Game.getConfig().get("metro_system.station.max_line_num")); 
+    }
+
+
     public Station(City city, Position p){
+        init(); 
         this.position = p; 
         this.level = 0; 
         this.city = city; 

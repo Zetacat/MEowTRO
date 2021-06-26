@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import meowtro.Position;
+import meowtro.game.Game;
 import meowtro.metro_system.Direction;
 import meowtro.metro_system.station.Station;
 import meowtro.metro_system.train.Locomotive;
@@ -25,7 +26,18 @@ public class Railway {
     private int length; 
     private HashMap<Locomotive, Integer> positionsInAbstractLine = new HashMap<Locomotive, Integer>(); 
 
+
+    /**
+    * Parse game config and set proper value. 
+    */
+    public void init(){
+        this.fragileThreshold = Integer.valueOf(Game.getConfig().get("metro_system.railway.fragile_threshold")); 
+        this.originalPrice = Integer.valueOf(Game.getConfig().get("metro_system.railway.original_price")); 
+    }
+
+
     public Railway(Station s1, Station s2, Line line){
+        init();
         boolean DEBUG = true; 
         this.line = line; 
 
