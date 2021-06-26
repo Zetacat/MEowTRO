@@ -85,8 +85,8 @@ public class TimeLine{
     }
     public boolean greaterOrEqualThanTime(String duration){
         // in YY-MM-DD HH:MM:SS format
-        long currentTotalSeconds = TimeLine.convertCalenderToSeconds(duration);
-        if(currentTotalSeconds>=this.totalSeconds){
+        long targetTotalSeconds = TimeLine.convertCalenderToSeconds(duration);
+        if(targetTotalSeconds<=this.totalSeconds){
             return true;
         }
         return false;
