@@ -6,18 +6,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import meowtro.game.City;
+
 
 public class Line {
-    // private City city; 
+    private City city; 
     private LinkedList<Railway> railways = new LinkedList<Railway>(); 
     private List<Locomotive> locomotives = new ArrayList<Locomotive>(); 
     private HashSet<Station> stations = new HashSet<Station>(); 
     private LineColor color; 
 
-    // public Line(City city, LineColor color){
-    //     this.city = city; 
-    //     this.color = color; 
-    // }
+    public Line(City city, LineColor color){
+        this.city = city; 
+        this.color = color; 
+    }
 
     public Line(LineColor color){
         this.color = color; 

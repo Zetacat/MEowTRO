@@ -46,8 +46,8 @@ public class Locomotive {
 
         levelToMaxCar = new HashMap<Integer, Integer>(); 
         levelToMaxCar.put(0, 2); 
-        levelToMaxCar.put(0, 4); 
-        levelToMaxCar.put(0, 6); 
+        levelToMaxCar.put(1, 4); 
+        levelToMaxCar.put(2, 6); 
     }
 
     public Locomotive(Railway railway, Position position, Direction direction){
