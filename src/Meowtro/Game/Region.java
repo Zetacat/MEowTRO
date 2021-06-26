@@ -11,6 +11,7 @@ public class Region {
     private List<List<Boolean>> positions = new ArrayList<List<Boolean>>();
     private City city = null;
     private double spawnRate = Double.parseDouble(Game.getConfig().get("spawn.rate.default"));
+    private double CutInLineElderProb = Double.parseDouble(Game.getConfig().get("cut.in.line.elder.prob"));
     private List<Integer> satisfications = new ArrayList<Integer>();
     private List<Passenger> passengers = new ArrayList<Passenger>();
     private List<Station> stations = new ArrayList<Station>();
@@ -72,9 +73,13 @@ public class Region {
             }
         }
 
-        // get random destination station, spawn passenger
+        // get random destination station, random passenger type, spawn passenger
         Station destinationStation = this.city.getRandomStationFromDifferentRegion(this);
-        Passenger newPassenger = new Passenger(this, Timeline.now(), newPassengerPosition, destinationStation);
+        Passenger newPassenger = (
+            Game.randomGenerator.nextDouble() < this.CutInLineElderProb?
+            new CutInLineElder(this, Timeline.now(), newPassengerPosition, destinationStation): 
+            new Passenger(this, Timeline.now(), newPassengerPosition, destinationStation)
+        );
         this.passengers.add(newPassenger);
         return newPassenger;
     }

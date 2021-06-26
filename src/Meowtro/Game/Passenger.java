@@ -4,14 +4,14 @@ import Meowtro.Position;
 
 public class Passenger {
     
-    Region birthRegion = null;
-    Position position = null;
-    long spawnTime = 0;
-    Station destinationStation = null;
-    double walkingSpeed = Double.parseDouble(Game.getConfig().get("passenger.walking.speed"));
-    Station currentStation = null;
-    Car currentCar = null;
-    int traveledStationCount = 0;
+    private Region birthRegion = null;
+    protected Position position = null;
+    private long spawnTime = 0;
+    protected Station destinationStation = null;
+    private double walkingSpeed = Double.parseDouble(Game.getConfig().get("passenger.walking.speed"));
+    protected Station currentStation = null;
+    private Car currentCar = null;
+    private int traveledStationCount = 0;
 
     public Passenger(Region birthRegion, long spawnTime, Position position, Station destinationStation) {
         this.birthRegion = birthRegion;
@@ -66,6 +66,7 @@ public class Passenger {
         // enter station and wait
         else {
             station.insertPassenger(this, -1);
+            this.currentStation = station;
         }
     }
 
