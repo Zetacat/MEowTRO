@@ -1,12 +1,12 @@
 package meowtro.eventSystem;
 
 public abstract class Event {
-    protected Map map;
+    protected City city;
     protected String name;
     protected String happenedTimeString;   
 
-    Event(Map map, String name, String happenedTimeString){
-        this.map = map;
+    Event(City city, String name, String happenedTimeString){
+        this.city = city;
         this.name = name;
         this.happenedTimeString = happenedTimeString;
     }
