@@ -1,4 +1,4 @@
-package meowtro.game;
+package meowtro.game.obstacle;
 
 import java.util.List;
 import java.io.File;
@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import meowtro.Position;
+import meowtro.game.Game;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

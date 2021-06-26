@@ -1,7 +1,9 @@
-package meowtro.game;
+package meowtro.game.passenger;
 
 import java.util.List;
 import meowtro.Position;
+import meowtro.game.Game;
+import meowtro.game.Region;
 import meowtro.metro_system.*;
 import meowtro.metro_system.station.Station;
 import meowtro.metro_system.train.Car;

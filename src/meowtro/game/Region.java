@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.OptionalDouble;
 
 import meowtro.Position;
+import meowtro.game.passenger.*;
 import meowtro.metro_system.*;
 import meowtro.metro_system.station.Station;
 

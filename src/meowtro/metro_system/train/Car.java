@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import meowtro.game.*;
+import meowtro.game.passenger.Passenger;
 
 public class Car {
     private int level; 
