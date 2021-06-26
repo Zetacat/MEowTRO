@@ -1,10 +1,13 @@
-package meowtro.metro_system;
+package meowtro.metro_system.railway;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import meowtro.Position;
+import meowtro.metro_system.Direction;
+import meowtro.metro_system.station.Station;
+import meowtro.metro_system.train.Locomotive;
 
 public class Railway {
     public int railwayID = -1; 

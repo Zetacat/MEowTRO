@@ -1,4 +1,4 @@
-package meowtro.metro_system;
+package meowtro.metro_system.station;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,6 +6,9 @@ import java.util.List;
 
 import meowtro.Position;
 import meowtro.game.*;
+import meowtro.metro_system.railway.Line;
+import meowtro.metro_system.railway.Railway;
+import meowtro.metro_system.train.Locomotive;
 
 public class Station {
     private City city; 

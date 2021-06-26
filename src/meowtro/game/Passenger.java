@@ -3,6 +3,9 @@ package meowtro.game;
 import java.util.List;
 import meowtro.Position;
 import meowtro.metro_system.*;
+import meowtro.metro_system.station.Station;
+import meowtro.metro_system.train.Car;
+import meowtro.metro_system.train.Locomotive;
 import meowtro.timeSystem.TimeLine;
 
 public class Passenger {

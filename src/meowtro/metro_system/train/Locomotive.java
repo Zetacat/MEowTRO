@@ -1,4 +1,4 @@
-package meowtro.metro_system;
+package meowtro.metro_system.train;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +8,9 @@ import java.util.Map;
 
 import meowtro.Position;
 import meowtro.game.*;
+import meowtro.metro_system.*;
+import meowtro.metro_system.railway.*;
+import meowtro.metro_system.station.*;
 
 public class Locomotive {
 

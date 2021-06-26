@@ -2,6 +2,10 @@ package meowtro.metro_system;
 import java.util.LinkedList;
 
 import meowtro.Position;
+import meowtro.metro_system.railway.Line;
+import meowtro.metro_system.railway.LineColor;
+import meowtro.metro_system.railway.Railway;
+import meowtro.metro_system.station.Station;
 
 
 public class ShortestPathCalculator{

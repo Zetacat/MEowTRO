@@ -1,4 +1,4 @@
-package meowtro.metro_system;
+package meowtro.metro_system.train;
 import java.util.ArrayList;
 import java.util.List;
 

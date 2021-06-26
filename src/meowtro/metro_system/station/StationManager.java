@@ -1,4 +1,4 @@
-package meowtro.metro_system;
+package meowtro.metro_system.station;
 
 import meowtro.EntityManager;
 

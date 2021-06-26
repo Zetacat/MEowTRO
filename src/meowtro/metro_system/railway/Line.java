@@ -1,4 +1,4 @@
-package meowtro.metro_system;
+package meowtro.metro_system.railway;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 import meowtro.game.City;
+import meowtro.metro_system.Direction;
+import meowtro.metro_system.station.Station;
+import meowtro.metro_system.train.Locomotive;
 
 
 public class Line {
