@@ -75,6 +75,10 @@ public class Locomotive {
         this.position = position; 
         this.direction = direction;
         this.state = State.MOVING; 
+        railway.addLocomotive(this);
+        if (Game.DEBUG){
+            System.out.printf("Locomotive created at (%d, %d), railway %s\n", position.i, position.j, railway.toString());
+        }
     }
 
     public Position getPosition(){
@@ -168,7 +172,9 @@ public class Locomotive {
         this.dropPassengerCountdown = 0; 
         currentStation.locomotiveDepart(this);
         this.state = State.MOVING; 
+        railway.removeLocomotive(this);
         this.railway = currentStation.getNextRailway(railway); 
+        railway.addLocomotive(this);
         this.currentStation = null; 
         // TODO: handle speed
     }
@@ -194,6 +200,9 @@ public class Locomotive {
                 if (p.willingToGetOn(this)){
                     boolean success = assignPassengerToCar(stationQueue.get(0)); 
                     if (success){
+                        if (Game.DEBUG){
+                            System.out.printf("Passenger get on locomotive (%d, %d)\n", position.i, position.j);
+                        }
                         stationQueue.remove(0); 
                     }else{
                         // Cars are full
@@ -247,9 +256,6 @@ public class Locomotive {
         cars.clear(); 
     }
 
-    private int dist(Position p1, Position p2){
-        return (int) Math.round(Math.sqrt( Math.pow(p1.i - p2.i, 2.0) + Math.pow(p1.j - p2.j, 2.0) )); 
-    }
 
     public void update(){
         if (state == State.MOVING){
@@ -257,9 +263,13 @@ public class Locomotive {
             this.position = railway.moveLocomotive(this); 
 
             // update current station
-            if (dist(this.position, railway.getNextStation(direction).getPosition()) < distThres){
+            if (railway.isArrived(this, railway.getNextStation(direction))){
+                if (Game.DEBUG){
+                    System.out.printf("arrived %s\n", railway.getNextStation(direction).name); 
+                }
                 railway.getNextStation(direction).locomotiveArrive(this);
                 this.currentStation = railway.getNextStation(direction); 
+                
                 if (currentStation.getNextRailway(railway) == railway){
                     turnAround();
                 }

@@ -15,7 +15,7 @@ public class Passenger {
     private Region birthRegion = null;
     protected Position position = null;
     private long spawnTime = 0;
-    private long lifeTimeLimit = Long.parseLong(Game.getConfig().get("passenger.life.time.limit"));
+    private long lifeTimeLimit = Long.parseLong(Game.getConfig().get("passenger.life.time.limit").strip());
     protected Station destinationStation = null;
     private double walkingSpeed = Double.parseDouble(Game.getConfig().get("passenger.walking.speed"));
     protected Station currentStation = null;
@@ -113,6 +113,8 @@ public class Passenger {
             double newPositionI = this.position.i + (closestStationPosition.i - this.position.i) * ratio;
             double newPositionJ = this.position.j + (closestStationPosition.j - this.position.j) * ratio;
             this.position = new Position((int) Math.round(newPositionI), (int) Math.round(newPositionJ));
+            if (Game.DEBUG)
+                System.out.printf("Passenger move to %s", position.toString()); 
         }
     }
 

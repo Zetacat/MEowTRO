@@ -7,11 +7,23 @@ import java.util.List;
 import meowtro.Position;
 import meowtro.game.*;
 import meowtro.game.passenger.Passenger;
+import meowtro.metro_system.Direction;
 import meowtro.metro_system.railway.Line;
+import meowtro.metro_system.railway.LineColor;
 import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.train.Locomotive;
 
+// for testing
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.awt.Color;
+import javax.imageio.ImageIO;
+
+
 public class Station {
+    public String name = "s"; 
     private City city; 
     private ArrayList<Railway> railways = new ArrayList<Railway>(); 
     private ArrayList<Passenger> queue = new ArrayList<Passenger>(); 
@@ -192,7 +204,6 @@ public class Station {
 
     public void locomotiveDepart(Locomotive l){
         this.arrivedLocomotives.remove(l); 
-        l.depart(); 
     }
 
 
@@ -209,5 +220,50 @@ public class Station {
 
     public void update(){
         // for each arrived
+    }
+
+
+    public static void main(String[] args) {
+        Game.setToyConfig();
+        Line l = new Line(null, LineColor.RED); 
+
+        // read image
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File("../image/map_1.png"));
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
+        // test City
+        // City city = new City(image);
+        Region r = new Region(null, null); 
+
+        Station s1 = new Station(null , new Position(100, 0)); 
+        Station s2 = new Station(null , new Position(200, 0)); 
+        Station s3 = new Station(null , new Position(300, 0)); 
+        Station s4 = new Station(null , new Position(400, 0)); 
+        s1.name = "s1"; 
+        s2.name = "s2"; 
+        s3.name = "s3"; 
+        s4.name = "s4"; 
+
+        r.addStation(s1);
+        r.addStation(s2);
+        r.addStation(s3);
+        r.addStation(s4);
+
+        Railway r1 = new Railway(s1, s2, l); 
+        Railway r2 = new Railway(s3, s1, l); 
+        Railway r3 = new Railway(s4, s2, l); 
+
+        // <s3> -r0- <s1> -r1- <s2> -r2- <s4>
+        Passenger p = new Passenger(r, new Position(4, 0), s3); 
+        Locomotive loco = new Locomotive(r1, new Position(4, 0), Direction.FORWARD); 
+
+        for (int i = 0; i < 100; i++){
+            l.update(); 
+            p.update(); 
+        }
     }
 }

@@ -1,7 +1,9 @@
 package meowtro.metro_system.railway;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import meowtro.Position;
@@ -158,25 +160,24 @@ public class Railway {
 
     private int parsePositionToAbstractPosition(Position p){
         // TODO
-        return p.i; 
+        return Math.max(Math.min((p.i - start.getPosition().i) / Math.abs(end.getPosition().i - start.getPosition().i) * length, length), 0); 
     }
 
     private Position parseAbstractPositionToPosition(int ap){
         // TODO
-        return new Position(ap, 0); 
+        return new Position(start.getPosition().i + ap / length * Math.abs(end.getPosition().i - start.getPosition().i), 0); 
     }
 
     public void addLocomotive(Locomotive l){
         locomotives.add(l); 
-        if (l.getDirection() == Direction.FORWARD){
-            positionsInAbstractLine.put(l, parsePositionToAbstractPosition(l.getPosition())); 
-        }
-        
+        positionsInAbstractLine.put(l, parsePositionToAbstractPosition(l.getPosition())); 
     }
 
     public void removeLocomotive(Locomotive l){
-        locomotives.remove(l); 
-        positionsInAbstractLine.remove(l); 
+        if (locomotives.contains(l))
+            locomotives.remove(l); 
+        if (positionsInAbstractLine.containsKey(l))
+            positionsInAbstractLine.remove(l); 
     }
 
     public void setRemainTimeToLive(int remainTime){
@@ -227,22 +228,32 @@ public class Railway {
     }
 
     private int computeLenght(){
-        // TODO
-        return 800; 
+        return (int) start.getPosition().l2distance(end.getPosition()); 
     }
 
     public Position moveLocomotive(Locomotive l){
+        if (l == null){
+            if (Game.DEBUG){
+                System.out.println("move null Locomotive");
+            }
+            return null; 
+        }
         int speed = l.getSpeed(); 
         int maxSpeed = l.getMaxSpeed(); 
-
+        
         int orientation = 1; 
         if (l.getDirection() == Direction.BACKWARD){
             orientation = -1; 
         }
         
         int newAbstractPosition = positionsInAbstractLine.get(l) + (speed * orientation); 
+        
         newAbstractPosition = Math.min(newAbstractPosition, length); 
         newAbstractPosition = Math.max(newAbstractPosition, 0); 
+        positionsInAbstractLine.put(l, newAbstractPosition); 
+        if (Game.DEBUG){
+            System.out.printf("Move Locomotive to %d/%d in railway %s\n", newAbstractPosition, length, this.toString());
+        }
 
         l.setSpeed(maxSpeed); 
         return parseAbstractPositionToPosition(newAbstractPosition); 
@@ -257,5 +268,20 @@ public class Railway {
         if (start == null && end == null){
             destroy();
         }
+
+        LinkedList<Locomotive> updateQueue = new LinkedList<Locomotive>(locomotives); 
+        while (!updateQueue.isEmpty()){
+            Locomotive l = updateQueue.removeFirst(); 
+            l.update();
+        }
+    }
+
+
+    public boolean isArrived(Locomotive locomotive, Station nextStation) {
+        int abstractPosition = positionsInAbstractLine.get(locomotive); 
+        if (nextStation == end){
+            return abstractPosition == length; 
+        }
+        return abstractPosition == 0;
     }
 }

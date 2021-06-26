@@ -18,7 +18,7 @@ public class Game {
     // private ExitPage exitPage = null;
     private int globalSatisfaction = 0;
     // private List<UIElement> uiElements = new ArrayList<UIElement>();
-    private static int balance = Integer.parseInt(Game.config.get("balance.default"));
+    private static int balance = 10; //Integer.parseInt(Game.config.get("balance.default"));
     public static Random randomGenerator = new Random();
     public static boolean DEBUG = true;
 

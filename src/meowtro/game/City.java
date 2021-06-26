@@ -14,9 +14,9 @@ import javax.imageio.ImageIO;
 
 import meowtro.Position;
 import meowtro.game.obstacle.Obstacle;
-import meowtro.metro_system.railway.*;
-import meowtro.metro_system.station.*;
 import meowtro.metro_system.*;
+import meowtro.metro_system.railway.Line;
+import meowtro.metro_system.station.Station;
 
 public class City {
     

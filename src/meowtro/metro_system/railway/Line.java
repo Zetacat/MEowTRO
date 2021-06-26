@@ -150,6 +150,12 @@ public class Line {
         return result; 
     }
 
+    public void update(){
+        for (Railway r: railways){
+            r.update();
+        }
+    }
+
     public String toString(){
         String s = ""; 
         for (Railway r: railways){

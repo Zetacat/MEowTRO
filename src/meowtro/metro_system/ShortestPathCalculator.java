@@ -2,6 +2,7 @@ package meowtro.metro_system;
 import java.util.LinkedList;
 
 import meowtro.Position;
+import meowtro.game.Game;
 import meowtro.metro_system.railway.Line;
 import meowtro.metro_system.railway.LineColor;
 import meowtro.metro_system.railway.Railway;
@@ -47,6 +48,7 @@ public class ShortestPathCalculator{
 
 
     public static void main(String[] args){
+        Game.setToyConfig();
         Line l = new Line(null, LineColor.RED); 
 
         Station s1 = new Station(null , new Position(1, 0)); 
@@ -61,6 +63,6 @@ public class ShortestPathCalculator{
         // s3 - s1 - s2 - s4
 
         System.out.println(l); 
-        System.out.println(ShortestPathCalculator.findShortestPath(s3, s4)); 
+        System.out.println(ShortestPathCalculator.findShortestPath(s3, s4));  // 3
     }
 }
