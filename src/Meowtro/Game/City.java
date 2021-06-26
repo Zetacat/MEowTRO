@@ -146,10 +146,10 @@ public class City {
     }
 
 
-    // TODO
-    // public List<Obstacle> blockedBy(Station station1, Station station2) {
-    //     return null;
-    // }
+    public List<Obstacle> blockedBy(Station station1, Station station2) {
+        // TODO: blocked by
+        return null;
+    }
 
     public int getGlobalStatisfaction() {
         // compute the average of all region satisfactions
