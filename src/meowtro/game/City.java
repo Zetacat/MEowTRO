@@ -139,7 +139,9 @@ public class City {
     public void addTotalTransportedPassengerCount() {
         this.totalTransportedPassengerCount += 1;
     }
-
+    public List<Line> getAllLines(){
+        return this.lines;
+    }
     public void removeLine(Line line) {
         this.lines.remove(line);
     }
