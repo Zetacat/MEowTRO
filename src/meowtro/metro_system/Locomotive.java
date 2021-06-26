@@ -187,6 +187,7 @@ public class Locomotive {
         for(Car c: cars){
             if (c.getPassengers().contains(p)){
                 c.removePassenger(p); 
+                p.enterStation(currentStation);
             }
         }
     }
