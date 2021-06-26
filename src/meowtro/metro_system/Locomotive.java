@@ -125,6 +125,7 @@ public class Locomotive {
         this.takePassengerCountdown = 0; 
         currentStation.locomotiveDepart(this);
         this.state = State.MOVING; 
+        this.railway = currentStation.getNextRailway(railway); 
         this.currentStation = null; 
         // TODO: handle speed
     }
