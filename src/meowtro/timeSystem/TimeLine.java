@@ -1,7 +1,7 @@
 package meowtro.timeSystem;
 public class TimeLine{
     private static TimeLine timeLine = new TimeLine();
-    private int month, day, hour, minute, second, timeUnit, runSpeed;
+    private int month, day, hour, minute, second, timeUnit;
     private long totalSeconds;
     private TimeLine(){
         reset();
@@ -14,7 +14,7 @@ public class TimeLine{
         this.second = 0;
         this.timeUnit = 600; // seconds
         this.totalSeconds = 0;
-        this.runSpeed = 1;
+        // this.runSpeed = 1;
         setCalender();
     }
     private void setCalender(){
@@ -34,25 +34,25 @@ public class TimeLine{
             reset();
         }
     }
-    public int getCurrentRunSpeed(){
-        return this.runSpeed;
-    }
+    // public int getCurrentRunSpeed(){
+    //     return this.runSpeed;
+    // }
     public void update(){
-        this.totalSeconds += this.timeUnit*this.runSpeed;
+        this.totalSeconds += this.timeUnit;
         setCalender();
     }
     public static TimeLine getInstance(){
         return timeLine; 
     }
-    public void pauseTimeLine(){
-        this.runSpeed = 0;
-    }
-    public void startTimeLine(){
-        this.runSpeed = 1;
-    }
-    public void fastForwardTimeLine(){
-        this.runSpeed = 2;
-    }
+    // public void pauseTimeLine(){
+    //     this.runSpeed = 0;
+    // }
+    // public void startTimeLine(){
+    //     this.runSpeed = 1;
+    // }
+    // public void fastForwardTimeLine(){
+    //     this.runSpeed = 2;
+    // }
     public long getCurrentTotalSeconds(){
         return this.totalSeconds;
     }
