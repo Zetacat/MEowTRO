@@ -83,7 +83,7 @@ public class TimeLine{
         // return (((((((((((((((((Integer.parseInt(YMD[0])*12)+Integer.parseInt(YMD[1])*30)+Integer.parseInt(YMD[2])*24)+Integer.parseInt(HMS[0])*60)+Integer.parseInt(HMS[1])*60+Integer.parseInt(HMS[2]))))))))))))));
 
     }
-    boolean greaterOrEqualThanTime(String duration){
+    public boolean greaterOrEqualThanTime(String duration){
         // in YY-MM-DD HH:MM:SS format
         long currentTotalSeconds = TimeLine.convertCalenderToSeconds(duration);
         if(currentTotalSeconds>=this.totalSeconds){
@@ -91,7 +91,7 @@ public class TimeLine{
         }
         return false;
     }
-    boolean matchCalenderwoYear(String duration){
+    public boolean matchCalenderwoYear(String duration){
         String curCalender = getCalenderTime();
         if(duration.strip().equals(curCalender.split("-")[1])){
             return true;
