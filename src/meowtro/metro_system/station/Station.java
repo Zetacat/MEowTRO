@@ -11,6 +11,7 @@ import meowtro.metro_system.Direction;
 import meowtro.metro_system.railway.Line;
 import meowtro.metro_system.railway.LineColor;
 import meowtro.metro_system.railway.Railway;
+import meowtro.metro_system.train.Car;
 import meowtro.metro_system.train.Locomotive;
 
 // for testing
@@ -239,9 +240,9 @@ public class Station {
         // City city = new City(image);
         Region r = new Region(null, null); 
 
-        Station s1 = new Station(null , new Position(100, 0)); 
-        Station s2 = new Station(null , new Position(200, 0)); 
-        Station s3 = new Station(null , new Position(300, 0)); 
+        Station s1 = new Station(null , new Position(200, 0)); 
+        Station s2 = new Station(null , new Position(300, 0)); 
+        Station s3 = new Station(null , new Position(100, 0)); 
         Station s4 = new Station(null , new Position(400, 0)); 
         s1.name = "s1"; 
         s2.name = "s2"; 
@@ -257,13 +258,23 @@ public class Station {
         Railway r2 = new Railway(s3, s1, l); 
         Railway r3 = new Railway(s4, s2, l); 
 
-        // <s3> -r0- <s1> -r1- <s2> -r2- <s4>
-        Passenger p = new Passenger(r, new Position(4, 0), s3); 
-        Locomotive loco = new Locomotive(r1, new Position(4, 0), Direction.FORWARD); 
+        System.out.printf("%d %d %d\n", r1.railwayID, r2.railwayID, r3.railwayID); 
 
-        for (int i = 0; i < 100; i++){
+        // <s3> -r1- <s1> -r2- <s2> -r3- <s4>
+        Passenger p = new Passenger(r, new Position(4, 0), s4); 
+        Locomotive loco = new Locomotive(r3, new Position(4, 0), Direction.BACKWARD); 
+        loco.addCar(new Car(loco));
+
+        for (int i = 0; i < 200; i++){
             l.update(); 
             p.update(); 
+        }
+    }
+
+
+    public void removePassenger(Passenger p) {
+        if (queue.contains(p)){
+            queue.remove(p); 
         }
     }
 }

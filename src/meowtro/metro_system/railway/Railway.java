@@ -252,7 +252,8 @@ public class Railway {
         newAbstractPosition = Math.max(newAbstractPosition, 0); 
         positionsInAbstractLine.put(l, newAbstractPosition); 
         if (Game.DEBUG){
-            System.out.printf("Move Locomotive to %d/%d in railway %s\n", newAbstractPosition, length, this.toString());
+            System.out.printf("Move Locomotive to %d/%d in railway %s with %d passengers\n", 
+                                    newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
         }
 
         l.setSpeed(maxSpeed); 

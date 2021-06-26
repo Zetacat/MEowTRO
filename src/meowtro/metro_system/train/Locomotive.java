@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import meowtro.Position;
 import meowtro.game.*;
@@ -146,15 +148,15 @@ public class Locomotive {
     private boolean assignPassengerToCar(Passenger p){
         for (Car c: cars){
             if (!c.isFull()){
-                c.addPassenger(p);
                 p.enterCar(c);
+                return true; 
             }
         }
         return false; 
     }
 
 
-    private LinkedList<Passenger> getAllPassenger(){
+    public LinkedList<Passenger> getAllPassenger(){
         LinkedList<Passenger> result = new LinkedList<Passenger>(); 
         for (Car c: cars){
             result.addAll(c.getPassengers()); 
@@ -168,14 +170,17 @@ public class Locomotive {
     }
 
     public void depart(){
+        if (Game.DEBUG){
+            System.out.printf("Loco depart from station %s\n", currentStation.name);
+        }
         this.takePassengerCountdown = 0; 
         this.dropPassengerCountdown = 0; 
         currentStation.locomotiveDepart(this);
-        this.state = State.MOVING; 
         railway.removeLocomotive(this);
         this.railway = currentStation.getNextRailway(railway); 
         railway.addLocomotive(this);
         this.currentStation = null; 
+        this.state = State.MOVING; 
         // TODO: handle speed
     }
 
@@ -194,6 +199,7 @@ public class Locomotive {
     public void tryTakePassenger(List<Passenger> stationQueue){
         if (stationQueue.size() == 0){
             depart();
+            return; 
         }
         if (takePassengerCountdown == 0){
             for (Passenger p: stationQueue){
@@ -201,15 +207,24 @@ public class Locomotive {
                     boolean success = assignPassengerToCar(stationQueue.get(0)); 
                     if (success){
                         if (Game.DEBUG){
-                            System.out.printf("Passenger get on locomotive (%d, %d)\n", position.i, position.j);
+                            System.out.printf("...Passenger get on locomotive at station %s, (%d, %d)\n", currentStation.name, position.i, position.j);
                         }
-                        stationQueue.remove(0); 
+                        currentStation.removePassenger(p); 
                     }else{
                         // Cars are full
+                        if (Game.DEBUG)
+                            System.out.printf("...Cars are full or don't have any car\n");
                         depart();
                     }
                     break; 
+                }else{
+                    if (Game.DEBUG){
+                        System.out.printf("Passenger don't wan't to get on\n");
+                    }
                 }
+            }
+            if (currentStation.getPassengerQueue().size() == 0){
+
             }
             this.takePassengerCountdown = takePassengerInterval; 
         }else{
@@ -225,6 +240,7 @@ public class Locomotive {
                 p.enterStation(currentStation);
             }
         }
+
     }
 
 
@@ -236,8 +252,11 @@ public class Locomotive {
         if (takePassengerCountdown == 0){
             while (getDownQueue.size() > 0){
                 Passenger p = getDownQueue.removeFirst(); 
-                if (!(p.willingToGetOn(this))){
+                if (p.willingToGetOff(this)){
                     dropPassenger(p); 
+                    if (Game.DEBUG){
+                        System.out.printf("Passenger get off locomotive at station %s, (%d, %d)\n", currentStation.name, position.i, position.j);
+                    }
                     this.takePassengerCountdown = takePassengerInterval; 
                     break; 
                 }
@@ -264,9 +283,6 @@ public class Locomotive {
 
             // update current station
             if (railway.isArrived(this, railway.getNextStation(direction))){
-                if (Game.DEBUG){
-                    System.out.printf("arrived %s\n", railway.getNextStation(direction).name); 
-                }
                 railway.getNextStation(direction).locomotiveArrive(this);
                 this.currentStation = railway.getNextStation(direction); 
                 
@@ -275,13 +291,26 @@ public class Locomotive {
                 }
                 this.currentSpeed = 0; 
                 this.state = State.ARRIVE_DROP; 
-                this.getDownQueue = getAllPassenger(); 
+                this.takePassengerCountdown = 0;
+                this.dropPassengerCountdown = 0;
+                this.getDownQueue = new LinkedList<Passenger>(
+                                                getAllPassenger()
+                                                .stream()
+                                                .filter(p -> p.willingToGetOff(this))
+                                                .collect(Collectors.toList())); 
+                if (Game.DEBUG){
+                    System.out.printf("arrived %s, %d waiting\n", currentStation.name, currentStation.getPassengerQueue().size()); 
+                }
             }
         }
         else if (state == State.ARRIVE_DROP){
+            if (Game.DEBUG)
+                System.out.printf("Trying Dropping passenger...\n");
             tryDropPassenger(); 
         }
         else if (state == State.ARRIVE_GETON){
+            if (Game.DEBUG)
+                System.out.printf("Trying taking passenger...\n");
             tryTakePassenger(currentStation.getPassengerQueue()); 
         }
         else{

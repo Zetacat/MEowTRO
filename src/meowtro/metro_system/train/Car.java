@@ -37,6 +37,9 @@ public class Car {
     public void addPassenger(Passenger p){
         if (passengers.size() < capacity){
             passengers.add(p); 
+        }else{
+            if (Game.DEBUG)
+                System.out.printf("This car is full with capacity %d\n", capacity);
         }
     }
 

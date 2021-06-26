@@ -21,6 +21,7 @@ public class Passenger {
     protected Station currentStation = null;
     private Car currentCar = null;
     private int traveledStationCount = 0;
+    private boolean isDead = false;
 
     public Passenger(Region birthRegion, Position position, Station destinationStation) {
         this.birthRegion = birthRegion;
@@ -59,19 +60,25 @@ public class Passenger {
     public void arriveDestination() {
         if (Game.DEBUG)
             System.out.println("Passenger arrive destination.");
-
         int ticket = Integer.parseInt(Game.getConfig().get("passenger.ticket.per.station")) * this.traveledStationCount;
         Game.setBalance(Game.getBalance() + ticket);
         this.die(true);
     }
 
     private void die(boolean arrivedDestination) {
+        this.isDead = true; 
+        if (Game.DEBUG){
+            System.out.println("Passenger die (´×ω×`)");
+            return; 
+        }
         this.birthRegion.removePassenger(this, arrivedDestination);
     }
 
     public void enterStation(Station station) {
         this.position = station.getPosition();
         this.currentCar = null;
+        if (Game.DEBUG)
+            System.out.printf("Passenger entered station %s\n", station.name); 
         // arrive station
         if (station == this.destinationStation) {
             this.arriveDestination();
@@ -114,7 +121,7 @@ public class Passenger {
             double newPositionJ = this.position.j + (closestStationPosition.j - this.position.j) * ratio;
             this.position = new Position((int) Math.round(newPositionI), (int) Math.round(newPositionJ));
             if (Game.DEBUG)
-                System.out.printf("Passenger move to %s", position.toString()); 
+                System.out.printf("Passenger move to %s\n", position.toString()); 
         }
     }
 
@@ -133,7 +140,17 @@ public class Passenger {
         return (currentShortestPath <= shortestPath);
     }
 
+    public boolean willingToGetOff(Locomotive locomotive){
+        if (locomotive.getCurrentStation() == destinationStation){
+            return true; 
+        }
+        return !willingToGetOn(locomotive);  
+    }
+
     public void update() {
+        if (isDead){
+            return; 
+        }
         // self explode if exceed life time limit
         if (TimeLine.getInstance().getCurrentTotalTimeUnit() - spawnTime > this.lifeTimeLimit) {
             this.selfExplode();
