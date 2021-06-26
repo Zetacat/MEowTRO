@@ -8,29 +8,23 @@ import meowtro.timeSystem.TimeLine;
 
 public class Game {
     
-    private static Config config = new Config("./defaultConfig.properties", "./localConfig.properties");
+    private static Config config = null;
     private City city = null;
-    private Stack<OnClickEvent> onClickEventStack = new Stack<OnClickEvent>();
-    private EventTrigger eventTrigger = null;
-    private GameTerminateChecker gameTerminatChecker = null;
-    private History history = null;
-    private ReplayVideoPage replayVideoPage = null;
-    private ExitPage exitPage = null;
+    // private Stack<OnClickEvent> onClickEventStack = new Stack<OnClickEvent>();
+    // private EventTrigger eventTrigger = null;
+    // private GameTerminateChecker gameTerminatChecker = null;
+    // private History history = null;
+    // private ReplayVideoPage replayVideoPage = null;
+    // private ExitPage exitPage = null;
     private int globalSatisfaction = 0;
-    private List<UIElement> uiElements = new ArrayList<UIElement>();
+    // private List<UIElement> uiElements = new ArrayList<UIElement>();
     private static int balance = Integer.parseInt(Game.config.get("balance.default"));
     public static Random randomGenerator = new Random();
     public static boolean DEBUG = true;
 
-    public Game(Config config, City city,  EventTrigger eventTrigger, GameTerminateChecker gameTerminateChecker, 
-                History history, ReplayVideoPage replayVideoPage, ExitPage exitPage) {
+    public Game(Config config, City city) {
         Game.config = config;
         this.city = city;
-        this.eventTrigger = eventTrigger;
-        this.gameTerminatChecker = gameTerminateChecker;
-        this.history = history;
-        this.replayVideoPage = replayVideoPage;
-        this.exitPage = exitPage;
     }
 
     public static Config getConfig() {
@@ -60,9 +54,9 @@ public class Game {
     public void update() {
 
         // on click events
-        while (!this.onClickEventStack.empty()) {
-            // TODO: onclick event
-        }
+        // while (!this.onClickEventStack.empty()) {
+        //     // TODO: onclick event
+        // }
 
         // TODO: check event
 
