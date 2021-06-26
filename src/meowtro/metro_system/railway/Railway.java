@@ -1,7 +1,9 @@
 package meowtro.metro_system.railway;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import meowtro.Position;
@@ -172,8 +174,10 @@ public class Railway {
     }
 
     public void removeLocomotive(Locomotive l){
-        locomotives.remove(l); 
-        positionsInAbstractLine.remove(l); 
+        if (locomotives.contains(l))
+            locomotives.remove(l); 
+        if (positionsInAbstractLine.containsKey(l))
+            positionsInAbstractLine.remove(l); 
     }
 
     public void setRemainTimeToLive(int remainTime){
@@ -224,8 +228,7 @@ public class Railway {
     }
 
     private int computeLenght(){
-        // TODO
-        return 800; 
+        return (int) start.getPosition().l2distance(end.getPosition()); 
     }
 
     public Position moveLocomotive(Locomotive l){
@@ -266,7 +269,9 @@ public class Railway {
             destroy();
         }
 
-        for (Locomotive l: locomotives){
+        LinkedList<Locomotive> updateQueue = new LinkedList<Locomotive>(locomotives); 
+        while (!updateQueue.isEmpty()){
+            Locomotive l = updateQueue.removeFirst(); 
             l.update();
         }
     }

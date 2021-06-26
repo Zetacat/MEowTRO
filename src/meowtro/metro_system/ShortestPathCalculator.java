@@ -63,6 +63,6 @@ public class ShortestPathCalculator{
         // s3 - s1 - s2 - s4
 
         System.out.println(l); 
-        System.out.println(ShortestPathCalculator.findShortestPath(s3, s4)); 
+        System.out.println(ShortestPathCalculator.findShortestPath(s3, s4));  // 3
     }
 }

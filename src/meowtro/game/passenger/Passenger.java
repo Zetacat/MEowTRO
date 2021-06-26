@@ -15,7 +15,7 @@ public class Passenger {
     private Region birthRegion = null;
     protected Position position = null;
     private long spawnTime = 0;
-    private long lifeTimeLimit = Long.parseLong(Game.getConfig().get("passenger.life.time.limit"));
+    private long lifeTimeLimit = Long.parseLong(Game.getConfig().get("passenger.life.time.limit").strip());
     protected Station destinationStation = null;
     private double walkingSpeed = Double.parseDouble(Game.getConfig().get("passenger.walking.speed"));
     protected Station currentStation = null;
