@@ -6,6 +6,7 @@ import java.util.List;
 
 import meowtro.Position;
 import meowtro.game.*;
+import meowtro.game.entityManager.EntityManager;
 import meowtro.game.passenger.Passenger;
 import meowtro.metro_system.Direction;
 import meowtro.metro_system.railway.Line;
@@ -17,10 +18,18 @@ import meowtro.metro_system.train.Locomotive;
 // for testing
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.awt.Color;
 import javax.imageio.ImageIO;
+
+import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 
 
 public class Station {
@@ -48,10 +57,50 @@ public class Station {
         this.maxLineNum = Integer.valueOf(Game.getConfig().get("metro_system.station.max_line_num")); 
     }
 
+    private String iconPath;
+    public String getIconPath() {
+        return this.iconPath;
+    }
+    private ImageView image;
+    private void setImage() {
+        try {
+            Image img = new Image(new FileInputStream(this.iconPath));
+            this.image = new ImageView(img);
+            this.image.setPickOnBounds(true);
+            this.image.setLayoutX(this.position.i);
+            this.image.setLayoutY(this.position.j);
+            this.image.setOnMouseClicked(
+                new EventHandler<MouseEvent>() {    
+                    @Override
+                    public void handle(MouseEvent event) {
+                        onClick();
+                    }
+                }
+            );
 
-    public Station(City city, Position p){
-        init(); 
-        this.position = p; 
+        } catch (Exception e) {
+            System.out.println("Image doesn't exist!");
+        }
+    }
+    private void onClick() {
+        // stationOnClick in Game
+        this.city.getGame().stationOnClick(this);
+    }
+    public ImageView getImage() {
+        return this.image;
+    }
+
+    private EntityManager manager;
+    public EntityManager getManager() {
+        return this.manager;
+    }
+    public void setManager(EntityManager manager) {
+        this.manager = manager;
+    }
+
+    public Station(City city, Position p, String iconPath){
+        init();
+        this.position = p;
         this.level = 0; 
         this.city = city;
         this.index = Station.getNextIndex();
@@ -59,6 +108,10 @@ public class Station {
         if (Game.DEBUG) {
             System.out.println(this.toString() + " built at " + p.toString());
         }
+
+        this.region = this.city.getRegionByPosition(this.position);
+        this.iconPath = iconPath;
+        setImage();
     }
 
 
@@ -80,6 +133,9 @@ public class Station {
 
     public void setRegion(Region r){
         this.region = r; 
+    }
+    public Region getRegion() {
+        return this.region;
     }
 
 
@@ -225,7 +281,7 @@ public class Station {
         for (Line l: lines){
             l.destroyAll();
         }
-        city.removeStation(this); 
+        city.removeStation(this);
     }
 
 
@@ -234,52 +290,52 @@ public class Station {
     }
 
 
-    public static void main(String[] args) {
-        Game.setToyConfig();
-        Line l = new Line(null, LineColor.RED); 
+    // public static void main(String[] args) {
+    //     Game.setToyConfig();
+    //     Line l = new Line(null, LineColor.RED); 
 
-        // read image
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(new File("../image/map_1.png"));
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+    //     // read image
+    //     BufferedImage image = null;
+    //     try {
+    //         image = ImageIO.read(new File("../image/map_1.png"));
+    //     } catch (IOException e) {
+    //         System.err.println(e.getMessage());
+    //     }
 
-        // test City
-        // City city = new City(image);
-        Region r = new Region(null, null); 
+    //     // test City
+    //     // City city = new City(image);
+    //     Region r = new Region(null, null); 
 
-        Station s1 = new Station(null , new Position(200, 0)); 
-        Station s2 = new Station(null , new Position(300, 0)); 
-        Station s3 = new Station(null , new Position(100, 0)); 
-        Station s4 = new Station(null , new Position(400, 0)); 
-        s1.name = "s1"; 
-        s2.name = "s2"; 
-        s3.name = "s3"; 
-        s4.name = "s4"; 
+    //     Station s1 = new Station(null , new Position(200, 0)); 
+    //     Station s2 = new Station(null , new Position(300, 0)); 
+    //     Station s3 = new Station(null , new Position(100, 0)); 
+    //     Station s4 = new Station(null , new Position(400, 0)); 
+    //     s1.name = "s1"; 
+    //     s2.name = "s2"; 
+    //     s3.name = "s3"; 
+    //     s4.name = "s4"; 
 
-        r.addStation(s1);
-        r.addStation(s2);
-        r.addStation(s3);
-        r.addStation(s4);
+    //     r.addStation(s1);
+    //     r.addStation(s2);
+    //     r.addStation(s3);
+    //     r.addStation(s4);
 
-        Railway r1 = new Railway(s1, s2, l); 
-        Railway r2 = new Railway(s3, s1, l); 
-        Railway r3 = new Railway(s4, s2, l); 
+    //     Railway r1 = new Railway(s1, s2, l); 
+    //     Railway r2 = new Railway(s3, s1, l); 
+    //     Railway r3 = new Railway(s4, s2, l); 
 
-        System.out.printf("%d %d %d\n", r1.railwayID, r2.railwayID, r3.railwayID); 
+    //     System.out.printf("%d %d %d\n", r1.railwayID, r2.railwayID, r3.railwayID); 
 
-        // <s3> -r1- <s1> -r2- <s2> -r3- <s4>
-        Passenger p = new Passenger(r, new Position(4, 0), s4); 
-        Locomotive loco = new Locomotive(r3, new Position(4, 0), Direction.BACKWARD); 
-        loco.addCar(new Car(loco));
+    //     // <s3> -r1- <s1> -r2- <s2> -r3- <s4>
+    //     Passenger p = new Passenger(r, new Position(4, 0), s4); 
+    //     Locomotive loco = new Locomotive(r3, new Position(4, 0), Direction.BACKWARD); 
+    //     loco.addCar(new Car(loco));
 
-        for (int i = 0; i < 200; i++){
-            l.update(); 
-            p.update(); 
-        }
-    }
+    //     for (int i = 0; i < 200; i++){
+    //         l.update(); 
+    //         p.update(); 
+    //     }
+    // }
 
 
     public void removePassenger(Passenger p) {

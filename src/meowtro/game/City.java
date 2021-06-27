@@ -21,6 +21,14 @@ import meowtro.metro_system.station.Station;
 
 public class City {
     
+    private Game game;
+    public Game getGame() {
+        return this.game;
+    }
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
     private List<Region> regions = new ArrayList<Region>();
     private List<Obstacle> obstacles = new ArrayList<Obstacle>();
     private List<Line> lines = new ArrayList<Line>();
@@ -172,6 +180,7 @@ public class City {
     public void removeStation(Station station) {
         Region stationRegion = this.getRegionByPosition(station.getPosition());
         stationRegion.removeStation(station);
+        this.game.deleteObject(station.getImage());
     }
 
     public List<Obstacle> blockedBy(Station station1, Station station2) {
