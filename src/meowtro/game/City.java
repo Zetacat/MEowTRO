@@ -2,6 +2,7 @@ package meowtro.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -107,7 +108,7 @@ public class City {
         }
 
         if (Game.DEBUG)
-            System.out.println(String.format("City constructed. (%d obstacles, %d regions)", this.obstacles.size(), this.regions.size()));
+            System.out.println(String.format("City constructed (%d obstacles, %d regions)", this.obstacles.size(), this.regions.size()));
     }
 
     private List<List<Boolean>> positionList2Boolean2DList(List<Position> positionsList, int width, int height) {
@@ -125,6 +126,10 @@ public class City {
             positions.get(position.i).set(position.j, true);
         
         return positions;
+    }
+
+    public List<Region> getRegions() {
+        return this.regions;
     }
 
     public Region getRegionByPosition(Position position) {
@@ -145,12 +150,21 @@ public class City {
         return this.regions.get(regionIndex).getStations().get(stationIndex);
     }
 
+    public List<Region> getNRandomRegions(int n) {
+        assert this.regions.size() >= n;
+        List<Region> toShuffle = new ArrayList<Region>(this.regions);
+        Collections.shuffle(toShuffle);
+        return toShuffle.subList(0, n);
+    }
+
     public void addTotalTransportedPassengerCount() {
         this.totalTransportedPassengerCount += 1;
     }
+
     public List<Line> getAllLines(){
         return this.lines;
     }
+
     public void removeLine(Line line) {
         this.lines.remove(line);
     }
@@ -159,7 +173,6 @@ public class City {
         Region stationRegion = this.getRegionByPosition(station.getPosition());
         stationRegion.removeStation(station);
     }
-
 
     public List<Obstacle> blockedBy(Station station1, Station station2) {
         // TODO: blocked by

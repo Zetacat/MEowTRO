@@ -22,14 +22,14 @@ public class River extends Obstacle {
     public River(BufferedImage background, Color color) {
         super(background, color);
         if (Game.DEBUG) {
-            System.out.println("River constructed.");
+            System.out.println("River constructed");
         }
     }
 
     public River(List<List<Boolean>> positions) {
         super(positions);
         if (Game.DEBUG) {
-            System.out.println("River constructed.");
+            System.out.println("River constructed");
         }
     }
 

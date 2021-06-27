@@ -20,12 +20,19 @@ public class Region {
     private List<Passenger> passengers = new ArrayList<Passenger>();
     private List<Station> stations = new ArrayList<Station>();
     private int tranportedPassengerCount = 0;
+    private int index = 0;
+    private static int nextIndex = 0;
+
+    private static int getNextIndex() {
+        return (Region.nextIndex++);
+    }
 
     public Region(List<List<Boolean>> positions, City city) {
         this.positions = positions;
         this.city = city;
+        this.index = Region.getNextIndex();
         if (Game.DEBUG)
-            System.out.println("Region constructed.");
+            System.out.println(this.toString() + " constructed");
     }
 
     public int getRegionSatisfaction() {
@@ -41,7 +48,7 @@ public class Region {
         int regionSatisfaction = (int)Math.round(avgPassengerSatisfactions.getAsDouble());
 
         if (Game.DEBUG)
-            System.out.println("Region satisfaction = " + regionSatisfaction);
+            System.out.println(this.toString() + " satisfaction = " + regionSatisfaction);
         return regionSatisfaction;
     }
 
@@ -53,13 +60,12 @@ public class Region {
         return this.positions.get(position.i).get(position.j);
     }
 
-    public Passenger spawnPassenger() {
-        // get the position of the new passenger
-        Position newPassengerPosition = null;
-        while (newPassengerPosition != null) {
+    public Position getRandomPositionInRegion() {
+        Position newPosition = null;
+        while (newPosition == null) {
             int i = Game.randomGenerator.nextInt(this.positions.size());
             int j = Game.randomGenerator.nextInt(this.positions.get(0).size());
-            // the passenger should be in the region
+            // should be in the region
             if (!this.positions.get(i).get(j))
                 continue;
             // the passenger should not be at a station
@@ -71,11 +77,15 @@ public class Region {
                     break;
                 }
             }
-            // valid new passenger position
-            if (!atStation) {
-                newPassengerPosition = new Position(i, j);
-            }
+            if (!atStation)
+                newPosition = new Position(i, j);
         }
+        return newPosition;
+    }
+
+    public Passenger spawnPassenger() {
+        // get the position of the new passenger
+        Position newPassengerPosition = this.getRandomPositionInRegion();
 
         // get random destination station, random passenger type, spawn passenger
         Station destinationStation = this.city.getRandomStationFromDifferentRegion(this);
@@ -117,6 +127,11 @@ public class Region {
         // spawn passenger on the probability of spawnRate
         if (Game.randomGenerator.nextDouble() < this.spawnRate)
             this.spawnPassenger();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("region R%d", this.index);
     }
 
     /****** MAIN ******/

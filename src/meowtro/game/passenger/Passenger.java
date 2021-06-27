@@ -22,14 +22,21 @@ public class Passenger {
     private Car currentCar = null;
     private int traveledStationCount = 0;
     private boolean isDead = false;
+    private int index = 0;
+    private static int nextIndex = 0;
+
+    private static int getNextIndex() {
+        return (Passenger.nextIndex++);
+    }
 
     public Passenger(Region birthRegion, Position position, Station destinationStation) {
         this.birthRegion = birthRegion;
         this.position = position;
         this.spawnTime = TimeLine.getInstance().getCurrentTotalTimeUnit();
         this.destinationStation = destinationStation;
+        this.index = Passenger.getNextIndex();
         if (Game.DEBUG) {
-            System.out.println("Passenger constructed.");
+            System.out.println(this.toString() + " constructed at " + position.toString() + ", dest: " + destinationStation.toString());
         }
     }
     
@@ -52,14 +59,14 @@ public class Passenger {
 
     public void selfExplode() {
         if (Game.DEBUG)
-            System.out.println("Passenger selfExplode");
+            System.out.println(this.toString() + " selfExplode");
 
         this.die(false);
     }
     
     public void arriveDestination() {
         if (Game.DEBUG)
-            System.out.println("Passenger arrive destination.");
+            System.out.println(this.toString() + " arrive destination.");
         int ticket = Integer.parseInt(Game.getConfig().get("passenger.ticket.per.station")) * this.traveledStationCount;
         Game.setBalance(Game.getBalance() + ticket);
         this.die(true);
@@ -68,7 +75,7 @@ public class Passenger {
     private void die(boolean arrivedDestination) {
         this.isDead = true; 
         if (Game.DEBUG){
-            System.out.println("Passenger die ('x_x`)");
+            System.out.println(this.toString() + " die ('x_x')");
             return; 
         }
         this.birthRegion.removePassenger(this, arrivedDestination);
@@ -78,7 +85,7 @@ public class Passenger {
         this.position = station.getPosition();
         this.currentCar = null;
         if (Game.DEBUG)
-            System.out.printf("Passenger entered station %s\n", station.name); 
+            System.out.printf(this.toString() + " entered station %s\n", station.name); 
         // arrive station
         if (station == this.destinationStation) {
             this.arriveDestination();
@@ -148,9 +155,10 @@ public class Passenger {
     }
 
     public void update() {
-        if (isDead){
+        if (this.isDead){
             return; 
         }
+
         // self explode if exceed life time limit
         if (TimeLine.getInstance().getCurrentTotalTimeUnit() - spawnTime > this.lifeTimeLimit) {
             this.selfExplode();
@@ -162,9 +170,12 @@ public class Passenger {
             this.walkTowardClosestStation();
         }
 
-        // traveling passenger
-        else if (this.currentCar != null) {
-            // TODO: update position for passengers traveling
-        }
+        if (Game.DEBUG)
+            System.out.println(this.toString() + "move to " + this.position.toString());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("passenger P%d", this.index);
     }
 }

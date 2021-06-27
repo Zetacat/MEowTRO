@@ -34,7 +34,12 @@ public class Station {
     private Position position; 
     private Region region; 
     private int maxLineNum = 6; 
+    private int index = 0;
+    private static int nextIndex = 0;
 
+    private static int getNextIndex() {
+        return (Station.nextIndex++);
+    }
 
     /**
     * Parse game config and set proper value. 
@@ -48,7 +53,12 @@ public class Station {
         init(); 
         this.position = p; 
         this.level = 0; 
-        this.city = city; 
+        this.city = city;
+        this.index = Station.getNextIndex();
+        
+        if (Game.DEBUG) {
+            System.out.println(this.toString() + " built at " + p.toString());
+        }
     }
 
 
@@ -276,5 +286,10 @@ public class Station {
         if (queue.contains(p)){
             queue.remove(p); 
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("station S%d", this.index);
     }
 }
