@@ -26,7 +26,16 @@ public class City {
     private int totalTransportedPassengerCount = 0;
     
 
-    public City(BufferedImage background) {
+    public City() {
+
+        // read image
+        BufferedImage background = null;
+        try {
+            background = ImageIO.read(new File(Game.getConfig().get("image.path")));
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
         // iterate the whole image to extract pixels of the same color
         Hashtable<Color, List<Position>> color2pixels = new Hashtable<Color, List<Position>>();
         for (int i = 0; i < background.getHeight(); i++) {
@@ -39,8 +48,7 @@ public class City {
             }
         }
 
-        // calculate area threshold, obstacle colors
-        double areaThreshold = Double.parseDouble(Game.getConfig().get("region.background.ratio.threshold")) * background.getWidth() * background.getHeight();
+        // obstacle colors
         Hashtable<Color, Class<? extends Obstacle>> color2obstacle = new Hashtable<Color, Class<? extends Obstacle>>();
         for (String key: Game.getConfig().getAllKeys()) {
             if (key.startsWith("obstacle.") && key.endsWith(".rgb")) {
@@ -49,7 +57,7 @@ public class City {
                 Color color = new Color(Integer.parseInt(rgbStr[0]), Integer.parseInt(rgbStr[1]), Integer.parseInt(rgbStr[2]));
                 // get obstacle name
                 String obstacleName = key.split("\\.", 0)[1];
-                obstacleName = this.getClass().getPackage().getName() + "." + obstacleName.substring(0, 1).toUpperCase() + obstacleName.substring(1);
+                obstacleName = this.getClass().getPackage().getName() + ".obstacle." + obstacleName.substring(0, 1).toUpperCase() + obstacleName.substring(1);
                 // add <color, obstacle class> to color2obstacle
                 try {
                     @SuppressWarnings("unchecked")
@@ -60,9 +68,10 @@ public class City {
                 }
             }
         }
-
+        
         // iterate every color
         Iterator<Entry<Color, List<Position>>> iter = color2pixels.entrySet().iterator();
+        double areaThreshold = Double.parseDouble(Game.getConfig().get("region.background.ratio.threshold")) * background.getWidth() * background.getHeight();
         while (iter.hasNext()) {
             Entry<Color, List<Position>> colorPixelsPair = iter.next();
             // skip colors with too less pixels (edges)
@@ -173,22 +182,12 @@ public class City {
         for (Region region: this.regions)
             region.update();
             
-        // TODO? line.update()?
+        for (Line line: this.lines)
+            line.update();
     }
 
     /****** MAIN ******/
     public static void main(String[] args) {
-
-        // read image
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(new File("image/map_1.png"));
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-
-        // test City
-        City city = new City(image);
 
     }
 

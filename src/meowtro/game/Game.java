@@ -10,20 +10,25 @@ public class Game {
     
     private static Config config = null;
     private City city = null;
-    // private Stack<OnClickEvent> onClickEventStack = new Stack<OnClickEvent>();
-    // private EventTrigger eventTrigger = null;
-    // private GameTerminateChecker gameTerminatChecker = null;
-    // private History history = null;
-    // private ReplayVideoPage replayVideoPage = null;
-    // private ExitPage exitPage = null;
     private int globalSatisfaction = 0;
-    // private List<UIElement> uiElements = new ArrayList<UIElement>();
-    private static int balance = 10; //Integer.parseInt(Game.config.get("balance.default"));
+    private static int balance = 0;
     public static Random randomGenerator = new Random();
     public static boolean DEBUG = true;
 
-    public Game(Config config, City city) {
+    public Game(Config config) {
         Game.config = config;
+        Game.setBalance(Integer.parseInt(config.get("balance.default")));
+    }
+
+    public static int getBalance() {
+        return Game.balance;
+    }
+
+    public static void setBalance(int newBalance) {
+        Game.balance = newBalance;
+    }
+
+    public void setCity(City city) {
         this.city = city;
     }
 
@@ -65,13 +70,6 @@ public class Game {
         this.globalSatisfaction = this.city.getGlobalStatisfaction();
     }
 
-    public static int getBalance() {
-        return Game.balance;
-    }
-
-    public static void setBalance(int newBalance) {
-        Game.balance = newBalance;
-    }
 
     public static void setToyConfig(){
         config = new Config("../resources/defaultConfig.properties", "../resources/defaultConfig.properties"); 
