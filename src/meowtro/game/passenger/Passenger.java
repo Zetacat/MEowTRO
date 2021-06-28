@@ -1,6 +1,10 @@
 package meowtro.game.passenger;
 
+import java.io.FileInputStream;
 import java.util.List;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import meowtro.Position;
 import meowtro.game.Game;
 import meowtro.game.Region;
@@ -35,6 +39,28 @@ public class Passenger {
         return (Passenger.nextIndex++);
     }
 
+    private ImageView image;
+    private void setImage() {
+        try {
+            Image img = new Image(new FileInputStream(this.destinationStation.getIconPath()));
+            this.image = new ImageView(img);
+            this.image.setPickOnBounds(true);
+            this.image.setFitHeight(10);
+            this.image.setFitWidth(10);
+            setImagePosition();
+        } catch (Exception e) {
+            System.out.println("Image doesn't exist!");
+        }
+    }
+    public ImageView getImage() {
+        return this.image;
+    }
+    private void setImagePosition() {
+        this.image.setLayoutX(this.position.i);
+        this.image.setLayoutY(this.position.j);
+    }
+
+
     public Passenger(Region birthRegion, Position position, Station destinationStation) {
         this.birthRegion = birthRegion;
         this.position = position;
@@ -45,6 +71,7 @@ public class Passenger {
         if (Game.DEBUG) {
             System.out.println(this.toString() + " constructed at " + position.toString() + ", dest: " + destinationStation.toString());
         }
+        setImage();
     }
     
     public Station findClosestStationInRegion(Region region) {
@@ -135,6 +162,7 @@ public class Passenger {
             double newPositionI = this.position.i + (closestStationPosition.i - this.position.i) * ratio;
             double newPositionJ = this.position.j + (closestStationPosition.j - this.position.j) * ratio;
             this.position = new Position((int) Math.round(newPositionI), (int) Math.round(newPositionJ));
+            setImagePosition();
         }
 
         if (Game.DEBUG) {

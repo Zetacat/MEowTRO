@@ -83,6 +83,10 @@ public class Region {
         return newPosition;
     }
 
+    public List<Passenger> getPassengers() {
+        return this.passengers;
+    }
+
     public Passenger spawnPassenger() {
         // get the position of the new passenger
         Position newPassengerPosition = this.getRandomPositionInRegion();
@@ -128,11 +132,11 @@ public class Region {
         
         // update stations
         for (Station station: this.stations)
-        station.update();
+            station.update();
         
         // spawn passenger on the probability of spawnRate
         if (Game.randomGenerator.nextDouble() < this.spawnRate)
-        this.spawnPassenger();
+            this.spawnPassenger();
 
         if (Game.DEBUG)
             System.out.println("-");
