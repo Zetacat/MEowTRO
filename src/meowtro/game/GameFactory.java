@@ -3,7 +3,7 @@ import meowtro.eventSystem.*;
 import meowtro.eventSystem.disasterEvent.EarthQuakeEvent;
 import meowtro.eventSystem.disasterEvent.FireEvent;
 import meowtro.eventSystem.holidayEvent.RushHourEvent;
-
+import meowtro.eventSystem.holidayEvent.NewYearEvent;
 import java.util.List;
 import java.util.ArrayList;
 public class GameFactory {
@@ -24,6 +24,9 @@ public class GameFactory {
             }
             else if(eventInfo[0].equals("RushHourEvent")){
                 allEvents.add(new RushHourEvent(city, eventInfo[1], Double.parseDouble(eventInfo[2])));
+            }
+            else if(eventInfo[0].equals("NewYearEvent")){
+                allEvents.add(new NewYearEvent(city, eventInfo[1], Double.parseDouble(eventInfo[2])));
             }
             else{
                 System.out.println("Wrong event config:\n"+eventsStr[i]);
