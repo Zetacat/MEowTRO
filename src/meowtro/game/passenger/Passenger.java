@@ -188,6 +188,6 @@ public class Passenger {
 
     @Override
     public String toString() {
-        return String.format("P%d[%d]", this.index, this.spawnTime);
+        return String.format("P%d(%d)", this.index, this.spawnTime);
     }
 }

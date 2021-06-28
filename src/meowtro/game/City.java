@@ -169,6 +169,10 @@ public class City {
         this.totalTransportedPassengerCount += 1;
     }
 
+    public void addLine(Line newLine) {
+        this.lines.add(newLine);
+    }
+    
     public List<Line> getAllLines(){
         return this.lines;
     }

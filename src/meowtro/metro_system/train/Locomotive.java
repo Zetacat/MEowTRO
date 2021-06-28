@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import meowtro.Position;
@@ -39,10 +38,16 @@ public class Locomotive {
     private int takePassengerCountdown = 0; 
     private int dropPassengerCountdown = 0; 
     private LinkedList<Passenger> getDownQueue = null; 
-
+    private int index = 0;
+    private static int nextIndex = 0;
+    
     private State state; 
     private int distThres = 8; 
 
+    private static int getNextIndex() {
+        return (Locomotive.nextIndex++);
+    }
+    
     /**
     * Parse game config and set proper value. 
     */
@@ -77,6 +82,7 @@ public class Locomotive {
         this.position = position; 
         this.direction = direction;
         this.state = State.MOVING; 
+        this.index = Locomotive.getNextIndex();
         railway.addLocomotive(this);
         if (Game.DEBUG){
             System.out.printf("Locomotive created at (%d, %d), railway %s\n", position.i, position.j, railway.toString());
@@ -171,7 +177,7 @@ public class Locomotive {
 
     public void depart(){
         if (Game.DEBUG){
-            System.out.printf("Loco depart from station %s\n", currentStation.name);
+            System.out.printf("Loco depart from station %s\n", currentStation.toString());
         }
         this.takePassengerCountdown = 0; 
         this.dropPassengerCountdown = 0; 
@@ -255,7 +261,7 @@ public class Locomotive {
                 if (p.willingToGetOff(this)){
                     dropPassenger(p); 
                     if (Game.DEBUG){
-                        System.out.printf("Passenger get off locomotive at station %s, (%d, %d)\n", currentStation.name, position.i, position.j);
+                        System.out.printf("Passenger get off locomotive at station %s, (%d, %d)\n", currentStation.toString(), position.i, position.j);
                     }
                     this.takePassengerCountdown = takePassengerInterval; 
                     break; 
@@ -299,7 +305,7 @@ public class Locomotive {
                                                 .filter(p -> p.willingToGetOff(this))
                                                 .collect(Collectors.toList())); 
                 if (Game.DEBUG){
-                    System.out.printf("arrived %s, %d waiting\n", currentStation.name, currentStation.getPassengerQueue().size()); 
+                    System.out.printf("arrived %s, %d waiting\n", currentStation.toString(), currentStation.getPassengerQueue().size()); 
                 }
             }
         }
@@ -318,5 +324,9 @@ public class Locomotive {
             if (true)
                 System.out.println("Locomotive state error");
         }
+    }
+
+    public String toString() {
+        return String.format("L%d", this.index);
     }
 }
