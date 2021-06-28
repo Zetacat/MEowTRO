@@ -99,7 +99,7 @@ public class TimeLine{
         if(duration.strip().equals(curCalender.split("-")[1])){
             return true;
         }
-        long targetTotalSeconds = TimeLine.convertCalenderToSeconds(duration);
+        long targetTotalSeconds = TimeLine.convertCalenderToSeconds("00-"+duration);
         long secondsInAYear = 12*30*24*60*60L;
         if(targetTotalSeconds>this.totalSeconds){
             return false;
