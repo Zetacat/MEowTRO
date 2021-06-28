@@ -5,8 +5,8 @@ import meowtro.metro_system.railway.*;
 
 public class EarthQuakeEvent extends DisasterEvent{
     // private int remainTimeUnit;
-    public EarthQuakeEvent(City city, String happenedTimeString, int remainTimeUnit){
-        super(city, happenedTimeString, remainTimeUnit);
+    public EarthQuakeEvent(City city, String happenedTimeString, Double remainPortion){
+        super(city, happenedTimeString, remainPortion);
         this.name = "EarthQuakeEvent";
     }
     public void trigger(){
@@ -14,7 +14,8 @@ public class EarthQuakeEvent extends DisasterEvent{
         for(Line l : allLines){
             List<Railway> allRailways = l.getRailways();
             for(Railway r: allRailways){
-                r.setRemainTimeToLive(this.remainTimeUnit);
+                long curRemainTimeToLive = r.getRemainLive();
+                r.setRemainTimeToLive((long)(this.remainPortion*curRemainTimeToLive));
             }
         }
     }

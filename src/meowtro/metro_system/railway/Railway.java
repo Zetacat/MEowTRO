@@ -17,12 +17,12 @@ public class Railway {
     private Line line; 
     public Station start; 
     public Station end; 
-    private int remainTimeToLive = Integer.MAX_VALUE; 
+    private long remainTimeToLive; 
     private List<Locomotive> locomotives = new ArrayList<Locomotive>(); 
     private ArrayList<RailwayDecorator> railwayDecorators = new ArrayList<RailwayDecorator>(); 
 
     private int fragileThreshold = 240; 
-    private int maxLimitedRemainTimeToLive = Integer.MAX_VALUE; 
+    private long maxLimitedRemainTimeToLive; 
     private int originalPrice = 1000; 
 
     private int length; 
@@ -38,8 +38,10 @@ public class Railway {
     }
 
 
-    public Railway(Station s1, Station s2, Line line){
+    public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive){
         init();
+        this.maxLimitedRemainTimeToLive = maxLimitedRemainTimeToLive;
+        this.remainTimeToLive = maxLimitedRemainTimeToLive;
         boolean DEBUG = true; 
         this.line = line; 
 
@@ -131,7 +133,9 @@ public class Railway {
         this.length = computeLength(); 
         line.addRailway(this);
     }
-
+    public long getRemainLive(){
+        return this.remainTimeToLive;
+    }
     public Station getAdjacent(Station sourceStation){
         if (sourceStation != start && sourceStation != end){
             return null; 
@@ -180,9 +184,9 @@ public class Railway {
             positionsInAbstractLine.remove(l); 
     }
 
-    public void setRemainTimeToLive(int remainTime){
+    public void setRemainTimeToLive(long remainTime){
         this.remainTimeToLive = remainTime; 
-        this.maxLimitedRemainTimeToLive = remainTime; 
+        // this.maxLimitedRemainTimeToLive = remainTime; 
     }
 
     public boolean isFragile(){
@@ -194,10 +198,10 @@ public class Railway {
     }
 
     public int getRemainPrice(){
-        if (remainTimeToLive == Integer.MAX_VALUE){
-            return originalPrice; 
-        }
-        return (remainTimeToLive / maxLimitedRemainTimeToLive) * originalPrice; 
+        // if (remainTimeToLive == Integer.MAX_VALUE){
+        //     return originalPrice; 
+        // }
+        return (int)(remainTimeToLive / maxLimitedRemainTimeToLive) * originalPrice; 
     }
 
     public Station getNextStation(Direction directionToward){
