@@ -3,7 +3,7 @@ import meowtro.game.*;
 import java.util.*;
 
 public class RushHourEvent extends HolidayEvent {
-    public RushHourEvent(City city, String happenedTimeString, float growthRate){
+    public RushHourEvent(City city, String happenedTimeString, double growthRate){
         super(city, happenedTimeString, growthRate);
         this.name = "RushHourEvent";
     }
