@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import javafx.animation.Timeline;
 import meowtro.metro_system.station.Station;
 import meowtro.game.entityManager.StationManager;
 import meowtro.game.onClickEvent.OnClickEvent;
@@ -101,6 +102,13 @@ public class Game {
 
     public void update() {
 
+        TimeLine.getInstance().update();
+
+        if (Game.DEBUG) {
+            System.out.println("------------------------------------------------");
+            System.out.println(TimeLine.getInstance().toString());
+        }
+
         // on click events
         // while (!this.onClickEventStack.empty()) {
         //     // TODO: onclick event
@@ -108,7 +116,6 @@ public class Game {
 
         // TODO: check event
 
-        // update city
         this.city.update();
         this.globalSatisfaction = this.city.getGlobalStatisfaction();
     }
@@ -121,17 +128,10 @@ public class Game {
             stationManager.build(this.city, newStationPosition);
         }
 
-        // run game
-        for (int i = 0; i < 20; i++) {
-            TimeLine.getInstance().update();
-            
-            if (Game.DEBUG) {
-                System.out.println("------------------------------------------------");
-                System.out.println(TimeLine.getInstance().toString());
-            }
-            
-            this.update();
-        }
+        // // run game
+        // while (true) {
+        //     this.update();
+        // }
     }
 
     public static void setToyConfig(){

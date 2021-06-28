@@ -12,6 +12,11 @@ import meowtro.timeSystem.TimeLine;
 
 public class Passenger {
     
+    private enum State {
+        WALKING,
+        AT_STATION,
+        TRAVELING 
+    }
     private Region birthRegion = null;
     protected Position position = null;
     private long spawnTime = 0;
@@ -21,10 +26,11 @@ public class Passenger {
     protected Station currentStation = null;
     private Car currentCar = null;
     private int traveledStationCount = 0;
+    private State state;
     private boolean isDead = false;
     protected int index = 0;
     protected static int nextIndex = 0;
-
+    
     protected static int getNextIndex() {
         return (Passenger.nextIndex++);
     }
@@ -35,6 +41,7 @@ public class Passenger {
         this.spawnTime = TimeLine.getInstance().getCurrentTotalTimeUnit();
         this.destinationStation = destinationStation;
         this.index = Passenger.getNextIndex();
+        this.state = State.WALKING;
         if (Game.DEBUG) {
             System.out.println(this.toString() + " constructed at " + position.toString() + ", dest: " + destinationStation.toString());
         }
@@ -84,6 +91,8 @@ public class Passenger {
     public void enterStation(Station station) {
         this.position = station.getPosition();
         this.currentCar = null;
+        this.state = State.AT_STATION;
+
         // arrive station
         if (station == this.destinationStation) {
             this.arriveDestination();
@@ -99,6 +108,7 @@ public class Passenger {
         car.addPassenger(this);
         this.currentCar = car;
         this.currentStation = null;
+        this.state = State.TRAVELING;
     }
 
     public int evaluateSatisfaction() {
@@ -125,6 +135,11 @@ public class Passenger {
             double newPositionI = this.position.i + (closestStationPosition.i - this.position.i) * ratio;
             double newPositionJ = this.position.j + (closestStationPosition.j - this.position.j) * ratio;
             this.position = new Position((int) Math.round(newPositionI), (int) Math.round(newPositionJ));
+        }
+
+        if (Game.DEBUG) {
+            if (this.state == state.WALKING)
+                System.out.println(this.toString() + " moving toward " + closestStation.toString() + " now at " + this.position.toString());
         }
     }
 
@@ -162,12 +177,9 @@ public class Passenger {
         }
 
         // walking passenger
-        if (this.currentStation == null && this.currentCar == null) {
+        if (this.state == State.WALKING) {
             this.walkTowardClosestStation();
         }
-
-        if (Game.DEBUG)
-            System.out.println(this.toString() + " at " + this.position.toString());
     }
 
     @Override
