@@ -66,16 +66,18 @@ public class Region {
     public Position getRandomPositionInRegion() {
         Position newPosition = null;
         while (newPosition == null) {
-            int i = Game.randomGenerator.nextInt(this.positions.size());
-            int j = Game.randomGenerator.nextInt(this.positions.get(0).size());
+            double i = Game.randomGenerator.nextDouble() * (this.positions.size() - 1);
+            double j = Game.randomGenerator.nextDouble() * (this.positions.get(0).size() - 1);
+            
             // should be in the region
-            if (!this.positions.get(i).get(j))
+            if (!this.positions.get((int) Math.round(i)).get((int) Math.round(j)))
                 continue;
+
             // the passenger should not be at a station
             boolean atStation = false;
             for (Station station:this.stations) {
                 Position stationPosition = station.getPosition();
-                if (i == stationPosition.i && j == stationPosition.j) {
+                if (Math.abs(i - stationPosition.i) < 1 && Math.abs(j - stationPosition.j) < 1) {
                     atStation = true;
                     break;
                 }

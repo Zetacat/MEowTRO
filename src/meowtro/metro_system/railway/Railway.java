@@ -160,7 +160,7 @@ public class Railway {
 
     private int parsePositionToAbstractPosition(Position p){
         // TODO
-        return Math.max(Math.min((p.i - start.getPosition().i) / Math.abs(end.getPosition().i - start.getPosition().i) * length, length), 0); 
+        return (int) Math.max(Math.min((p.i - start.getPosition().i) / Math.abs(end.getPosition().i - start.getPosition().i) * length, length), 0); 
     }
 
     private Position parseAbstractPositionToPosition(int ap){

@@ -29,7 +29,9 @@ public abstract class Obstacle {
     }
 
     public Boolean isBlocked(Position position) {
-        return this.positions.get(position.i).get(position.j);
+        int roundedI = (int) Math.round(position.i);
+        int roundedJ = (int) Math.round(position.j);
+        return this.positions.get(roundedI).get(roundedJ);
     }
     
 }
