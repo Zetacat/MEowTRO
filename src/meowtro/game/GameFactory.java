@@ -12,10 +12,11 @@ public class GameFactory {
         String[] eventsStr = eventsSetting.split("\\r?\\n");
         List<Event> allEvents = new ArrayList<>();
         for(int i=0; i<eventsStr.length; i++){
-            if(eventsStr[i].length()==0){
+            if(eventsStr[i].strip().length()==0){
                 continue;
             }
-            String[] eventInfo = eventsStr[i].split("$");
+            String[] eventInfo = eventsStr[i].strip().split("\\$");
+            System.out.println(eventInfo[0]);
             if(eventInfo[0].equals("FireEvent")){
                 allEvents.add(new FireEvent(city, eventInfo[1], Double.parseDouble(eventInfo[2])));
             }
@@ -29,7 +30,7 @@ public class GameFactory {
                 allEvents.add(new NewYearEvent(city, eventInfo[1], Double.parseDouble(eventInfo[2])));
             }
             else{
-                System.out.println("Wrong event config:\n"+eventsStr[i]);
+                System.out.println(eventInfo[0]+"Wrong event config:\n"+eventsStr[i]);
             }
         }
         return allEvents;
