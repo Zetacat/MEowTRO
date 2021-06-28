@@ -32,12 +32,16 @@ public class StationManager extends EntityManager {
             station.setManager(this);
             Region region = city.getRegionByPosition(position);
             region.addStation(station);
+            this.stationNum ++;
         }
     }
 
     public void destroy(Position position) {}
     public void destroy(Station station) {
-        this.iconPaths.add(station.getIconPath());
-        station.destroy();
+        if (this.stationNum > 1) {
+            this.iconPaths.add(station.getIconPath());
+            station.destroy();
+            this.stationNum --;
+        }
     }
 }
