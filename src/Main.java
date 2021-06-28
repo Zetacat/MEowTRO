@@ -80,14 +80,12 @@ public class Main extends Application {
 
         this.timer = new AnimationTimer() {
             @Override public void handle(long currentNanoTime) {
-                // System.out.printf("Command Loop Time: %d %n", currentNanoTime);
                 // implement timer
                 if (currentNanoTime-formerTimeStamp_cmd > duration_cmd) {
                     // conduct command
                     for (Region region : game.getCity().getRegions()) {
                         for (Station station : region.getStations()) {
                             if (!root.getChildren().contains(station.getImage())) {
-                                System.out.printf("station name: %s%n", station.getIconPath());
                                 root.getChildren().add(station.getImage());
                             }
                         }
@@ -98,7 +96,6 @@ public class Main extends Application {
                         }
                     }
                     game.resetObjectToBeRemoved();
-                    System.out.printf("object in pane: %d%n", root.getChildren().size());
                     // static refresh
                     formerTimeStamp_cmd = currentNanoTime;
                 }
@@ -108,7 +105,6 @@ public class Main extends Application {
         
         this.innerTimer = new AnimationTimer() {
             @Override public void handle(long currentNanoTime) {
-                // System.out.printf("Animation Loop Time: %d %n", currentNanoTime);
                 // implement timer
                 if (currentNanoTime-formerTimeStamp_animate > duration_animate) {
                     // conduct command

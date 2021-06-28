@@ -2,6 +2,7 @@ package meowtro.metro_system.station;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import meowtro.Position;
@@ -220,7 +221,8 @@ public class Station {
     public void insertPassenger(Passenger p, int index){
         // index = 0 or -1
 
-        System.out.printf("queue size: %d, max queue size: %d%n", queue.size(), getMaxQueueSize());
+        if (Game.DEBUG)
+            System.out.printf("queue size: %d, max queue size: %d%n", queue.size(), getMaxQueueSize());
         if (queue.size() >= getMaxQueueSize()){
             p.selfExplode();
             return;
@@ -260,18 +262,20 @@ public class Station {
     }
 
     public void destroy(){
-        for (Passenger p: queue){
-            p.selfExplode();
-        }
-        for (Line l: lines){
-            l.destroyAll();
-        }
+        for (int i = queue.size() - 1; i >= 0; i--)
+            queue.get(i).selfExplode();
+        
+        List<Line> linesCopy = new ArrayList<Line>(lines);
+        for (int i = linesCopy.size() - 1; i >= 0; i--)
+            linesCopy.get(i).destroyAll();
+
         city.removeStation(this);
     }
 
     private int maxColumnOfQueue = 5;
     public void updateQueuedPassengerPosition() {
-        System.out.printf("station_%d queue size: %d%n", this.index, this.queue.size());
+        if (Game.DEBUG)
+            System.out.printf("station_%d queue size: %d%n", this.index, this.queue.size());
         Position startPosition = new Position(this.position.j, this.position.i);
         double translationX = this.stationSize;
         double translationY = 0;

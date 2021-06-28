@@ -98,7 +98,6 @@ public class Passenger {
     }
 
     public void selfExplode() {
-        System.out.printf("passenger_%d is exploding%n", this.index);
         if (this.state == State.AT_STATION)
             this.currentStation.removePassenger(this);
         else if (this.state == State.TRAVELING)
@@ -216,7 +215,8 @@ public class Passenger {
 
         // walking passenger
         if (this.state == State.WALKING) {
-            System.out.printf("passenger_%d update walking%n", this.index);
+            if (Game.DEBUG)
+                System.out.printf("passenger_%d update walking%n", this.index);
             this.walkTowardClosestStation();
         }
     }
