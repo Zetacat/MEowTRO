@@ -68,15 +68,19 @@ public class Station {
     public String getIconPath() {
         return this.iconPath;
     }
+    private double imageSize = 30;
+    public double getImageSize() {
+        return this.imageSize;
+    }
     private void setImage() {
         try {
             Image img = new Image(new FileInputStream(this.iconPath));
             this.image = new ImageView(img);
             this.image.setPickOnBounds(true);
-            this.image.setLayoutX(this.position.j);
-            this.image.setLayoutY(this.position.i);
-            this.image.setFitHeight(30);
-            this.image.setFitWidth(30);
+            this.image.setLayoutX(this.position.j-this.imageSize/2);
+            this.image.setLayoutY(this.position.i-this.imageSize/2);
+            this.image.setFitHeight(this.imageSize);
+            this.image.setFitWidth(this.imageSize);
             this.image.setOnMouseClicked(
                 new EventHandler<MouseEvent>() {    
                     @Override
@@ -272,19 +276,19 @@ public class Station {
         city.removeStation(this);
     }
 
-    private int maxColumnOfQueue = 5;
+    private int maxColumnOfQueue = 4;
     public void updateQueuedPassengerPosition() {
         if (Game.DEBUG)
             System.out.printf("station_%d queue size: %d%n", this.index, this.queue.size());
-        Position startPosition = new Position(this.position.j, this.position.i);
-        double translationX = this.stationSize;
+        Position startPosition = new Position(this.position.j-this.imageSize/2, this.position.i-this.imageSize/2);
+        double translationX = this.stationSize+3;
         double translationY = 0;
         for (int i = 0; i < this.queue.size(); i++) {
             Passenger passenger = this.queue.get(i);
-            passenger.setImagePosition(new Position(startPosition.j + translationY, startPosition.i + translationX));
+            passenger.setImagePosition(new Position(startPosition.j + translationY, startPosition.i + translationX), passenger.getImageSize()/2);
             translationX += passenger.getImageSize();
             if (i%maxColumnOfQueue == maxColumnOfQueue-1) {
-                translationX = this.stationSize;
+                translationX = this.stationSize+3;
                 translationY += passenger.getImageSize();
             }
         }

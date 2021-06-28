@@ -27,6 +27,10 @@ public class Region {
         return (Region.nextIndex++);
     }
 
+    public City getCity() {
+        return this.city;
+    }
+
     public Region(List<List<Boolean>> positions, City city) {
         this.positions = positions;
         this.city = city;

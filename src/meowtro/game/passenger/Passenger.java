@@ -46,14 +46,14 @@ public class Passenger {
         return this.imageSize;
     }
     private ImageView image;
-    private void setImage() {
+    private void setImage(String iconPath) {
         try {
-            Image img = new Image(new FileInputStream(this.destinationStation.getIconPath()));
+            Image img = new Image(new FileInputStream(iconPath));
             this.image = new ImageView(img);
             this.image.setPickOnBounds(true);
             this.image.setFitHeight(this.imageSize);
             this.image.setFitWidth(this.imageSize);
-            setImagePosition(this.position);
+            setImagePosition(this.position, this.imageSize/2);
         } catch (Exception e) {
             System.out.println("Image doesn't exist!");
         }
@@ -61,11 +61,14 @@ public class Passenger {
     public ImageView getImage() {
         return this.image;
     }
-    public void setImagePosition(Position position) {
-        this.image.setLayoutX(position.j);
-        this.image.setLayoutY(position.i);
+    public void setImagePosition(Position position, double shiftSize) {
+        this.image.setLayoutX(position.j-shiftSize);
+        this.image.setLayoutY(position.i-shiftSize);
     }
-
+    public void tuneImageSize(double size) {
+        this.image.setFitHeight(size);
+        this.image.setFitWidth(size);
+    }
 
     public Passenger(Region birthRegion, Position position, Station destinationStation) {
         this.birthRegion = birthRegion;
@@ -77,7 +80,7 @@ public class Passenger {
         if (Game.DEBUG) {
             System.out.println(this.toString() + " constructed at " + position.toString() + ", dest: " + destinationStation.toString());
         }
-        setImage();
+        setImage(this.destinationStation.getIconPath());
     }
     
     public Station findClosestStationInRegion(Region region) {
@@ -164,7 +167,7 @@ public class Passenger {
         // move
         Position closestStationPosition = closestStation.getPosition();
         double distance = this.position.l2distance(closestStationPosition);
-        if ((distance-this.destinationStation.getStationSize()) < this.walkingSpeed) {
+        if ((distance-(this.destinationStation.getStationSize()*0.7)) < this.walkingSpeed) {
             // enter station if able to reach
             this.enterStation(closestStation);
         }
@@ -174,7 +177,7 @@ public class Passenger {
             double newPositionI = this.position.i + (closestStationPosition.i - this.position.i) * ratio;
             double newPositionJ = this.position.j + (closestStationPosition.j - this.position.j) * ratio;
             this.position = new Position(newPositionI, newPositionJ);
-            setImagePosition(this.position);
+            setImagePosition(this.position, this.imageSize/2);
         }
 
         if (Game.DEBUG) {
@@ -205,12 +208,35 @@ public class Passenger {
         return !willingToGetOn(locomotive);  
     }
 
-    public void update() {
+    private long dyingAnimationTimeUnit = 100;
+    public void dying(long timeUnitToDie) {
+        if (timeUnitToDie >= 30) {
+            this.image.setOpacity((0.1*timeUnitToDie)%1);
+        } else if (timeUnitToDie >= 22) {
+            this.birthRegion.getCity().getGame().deleteObject(this.image);
+            setImage("./image/explosion/tank_explosion2.png");
+            setImagePosition(this.position, this.imageSize*0.5/2);
+            tuneImageSize(this.imageSize*0.5);
+        } else if (timeUnitToDie >= 12) {
+            this.birthRegion.getCity().getGame().deleteObject(this.image);
+            setImage("./image/explosion/tank_explosion3.png");
+            setImagePosition(this.position, this.imageSize*0.7/2);
+            tuneImageSize(this.imageSize*0.7);
+        } else {
+            this.birthRegion.getCity().getGame().deleteObject(this.image);
+            setImage("./image/explosion/tank_explosion4.png");
+            setImagePosition(this.position, this.imageSize*1.0/2);
+            tuneImageSize(this.imageSize*1.0);
+        }
+    }
 
+    public void update() {
         // self explode if exceed life time limit
-        if (TimeLine.getInstance().getCurrentTotalTimeUnit() - spawnTime > Passenger.lifeTimeLimit) {
+        if (TimeLine.getInstance().getCurrentTotalTimeUnit() - this.spawnTime > Passenger.lifeTimeLimit) {
             this.selfExplode();
             return;
+        } else if (TimeLine.getInstance().getCurrentTotalTimeUnit() - this.spawnTime > Passenger.lifeTimeLimit - this.dyingAnimationTimeUnit) {
+            this.dying(Passenger.lifeTimeLimit - TimeLine.getInstance().getCurrentTotalTimeUnit() + this.spawnTime);
         }
 
         // walking passenger
