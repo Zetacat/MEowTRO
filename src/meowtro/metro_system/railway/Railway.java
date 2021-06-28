@@ -128,7 +128,7 @@ public class Railway {
             return; 
         }
 
-        this.length = computeLenght(); 
+        this.length = computeLength(); 
         line.addRailway(this);
     }
 
@@ -160,7 +160,7 @@ public class Railway {
 
     private int parsePositionToAbstractPosition(Position p){
         // TODO
-        return Math.max(Math.min((p.i - start.getPosition().i) / Math.abs(end.getPosition().i - start.getPosition().i) * length, length), 0); 
+        return (int) Math.max(Math.min((p.i - start.getPosition().i) / Math.abs(end.getPosition().i - start.getPosition().i) * length, length), 0); 
     }
 
     private Position parseAbstractPositionToPosition(int ap){
@@ -227,7 +227,7 @@ public class Railway {
         line.removeRailways(this);
     }
 
-    private int computeLenght(){
+    private int computeLength(){
         return (int) start.getPosition().l2distance(end.getPosition()); 
     }
 
@@ -252,8 +252,8 @@ public class Railway {
         newAbstractPosition = Math.max(newAbstractPosition, 0); 
         positionsInAbstractLine.put(l, newAbstractPosition); 
         if (Game.DEBUG){
-            System.out.printf("Move Locomotive to %d/%d in railway %s with %d passengers\n", 
-                                    newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
+            System.out.printf("Move %s to %d/%d in railway %s with %d passengers\n", 
+                                    l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
         }
 
         l.setSpeed(maxSpeed); 

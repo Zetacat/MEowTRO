@@ -60,6 +60,10 @@ public class Station {
         this.maxLineNum = Integer.valueOf(Game.getConfig().get("metro_system.station.max_line_num")); 
     }
 
+    private double stationSize = 30;
+    public double getStationSize() {
+        return this.stationSize;
+    }
     public String getIconPath() {
         return this.iconPath;
     }
@@ -266,8 +270,26 @@ public class Station {
         city.removeStation(this);
     }
 
+    private int maxColumnOfQueue = 5;
+    public void updateQueuedPassengerPosition() {
+        System.out.printf("station_%d queue size: %d%n", this.index, this.queue.size());
+        Position startPosition = new Position(this.position.i, this.position.j);
+        double translationX = this.stationSize;
+        double translationY = 0;
+        for (int i = 0; i < this.queue.size(); i++) {
+            Passenger passenger = this.queue.get(i);
+            passenger.setImagePosition(new Position(startPosition.i + translationX, startPosition.j + translationY));
+            translationX += passenger.getImageSize();
+            if (i%maxColumnOfQueue == maxColumnOfQueue-1) {
+                translationX = this.stationSize;
+                translationY += passenger.getImageSize();
+            }
+        }
+    }
+
     public void update(){
         // for each arrived
+        updateQueuedPassengerPosition();
 
         if (Game.DEBUG) {
             System.out.println(this.toString() + " [" + this.queueStr() + "]");

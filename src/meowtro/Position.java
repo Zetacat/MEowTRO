@@ -19,7 +19,7 @@ public class Position {
     }
 
     public String toString(){
-        return String.format("(%f, %f)", i, j); 
+        return String.format("(%.1f, %.1f)", i, j); 
     }
 
 }
