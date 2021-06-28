@@ -53,8 +53,7 @@ public class Game {
         return files;
     }
 
-    public Game(Config config, EventTrigger eventTrigger) {
-        this.eventTrigger = eventTrigger;
+    public Game(Config config) {
         Game.config = config;
         Game.setBalance(Integer.parseInt(config.get("balance.default")));
         Game.randomGenerator.setSeed(Long.parseLong(config.get("game.random.seed")));
@@ -68,7 +67,9 @@ public class Game {
     public static void setBalance(int newBalance) {
         Game.balance = newBalance;
     }
-
+    public void setEventTrigger(EventTrigger eventTrigger){
+        this.eventTrigger = eventTrigger;
+    }
     public void setCity(City city) {
         this.city = city;
         this.iconPaths = listFiles("./image/icon/");

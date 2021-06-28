@@ -36,11 +36,12 @@ public class GameFactory {
 
     }
     public Game createGame(Config config) {
-        City city = new City();
-        EventTrigger eventTrigger = new EventTrigger(creatEvents(config, city));
-        Game game = new Game(config, eventTrigger);
         
+        Game game = new Game(config);
+        City city = new City();
         game.setCity(city);
+        EventTrigger eventTrigger = new EventTrigger(creatEvents(config, city));
+        game.setEventTrigger(eventTrigger);
 
         return game;
     }
