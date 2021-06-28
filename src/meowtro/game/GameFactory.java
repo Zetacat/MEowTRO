@@ -17,10 +17,10 @@ public class GameFactory {
             }
             String[] eventInfo = eventsStr[i].split("$");
             if(eventInfo[0].equals("FireEvent")){
-                allEvents.add(new FireEvent(city, eventInfo[1], Integer.parseInt(eventInfo[2])));
+                allEvents.add(new FireEvent(city, eventInfo[1], Double.parseDouble(eventInfo[2])));
             }
             else if(eventInfo[0].equals("EarthQuakeEvent")){
-                allEvents.add(new EarthQuakeEvent(city, eventInfo[1], Integer.parseInt(eventInfo[2])));
+                allEvents.add(new EarthQuakeEvent(city, eventInfo[1], Double.parseDouble(eventInfo[2])));
             }
             else if(eventInfo[0].equals("RushHourEvent")){
                 allEvents.add(new RushHourEvent(city, eventInfo[1], Double.parseDouble(eventInfo[2])));
