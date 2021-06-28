@@ -22,7 +22,6 @@ public class CutInLineElder extends Passenger {
         }
         // enter station and wait
         else {
-            System.out.printf("elder_%d arrived at closest station%n", this.index);
             this.currentStation = station;
             station.insertPassenger(this, 0);
         }

@@ -220,7 +220,8 @@ public class Station {
     public void insertPassenger(Passenger p, int index){
         // index = 0 or -1
 
-        System.out.printf("queue size: %d, max queue size: %d%n", queue.size(), getMaxQueueSize());
+        if (Game.DEBUG)
+            System.out.printf("queue size: %d, max queue size: %d%n", queue.size(), getMaxQueueSize());
         if (queue.size() >= getMaxQueueSize()){
             p.selfExplode();
             return;
@@ -271,7 +272,8 @@ public class Station {
 
     private int maxColumnOfQueue = 5;
     public void updateQueuedPassengerPosition() {
-        System.out.printf("station_%d queue size: %d%n", this.index, this.queue.size());
+        if (Game.DEBUG)
+            System.out.printf("station_%d queue size: %d%n", this.index, this.queue.size());
         Position startPosition = new Position(this.position.j, this.position.i);
         double translationX = this.stationSize;
         double translationY = 0;
