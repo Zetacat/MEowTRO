@@ -16,24 +16,24 @@ import meowtro.timeSystem.TimeLine;
 
 public class Passenger {
     
-    private enum State {
+    protected enum State {
         WALKING,
         AT_STATION,
         TRAVELING,
         ARRIVED
     }
 
-    private Region birthRegion = null;
+    protected Region birthRegion = null;
     protected Position position = null;
-    private long spawnTime = 0;
-    private static long lifeTimeLimit = Long.parseLong(Game.getConfig().get("passenger.life.time.limit").strip());
+    protected long spawnTime = 0;
+    protected static long lifeTimeLimit = Long.parseLong(Game.getConfig().get("passenger.life.time.limit").strip());
     protected Station destinationStation = null;
-    private double walkingSpeed = Double.parseDouble(Game.getConfig().get("passenger.walking.speed"));
-    private static int expectedTimePerStation = Integer.parseInt(Game.getConfig().get("passenger.expected.time.per.station"));
+    protected double walkingSpeed = Double.parseDouble(Game.getConfig().get("passenger.walking.speed"));
+    protected static int expectedTimePerStation = Integer.parseInt(Game.getConfig().get("passenger.expected.time.per.station"));
     protected Station currentStation = null;
-    private Car currentCar = null;
-    private int traveledStationCount = 0;
-    private State state;
+    protected Car currentCar = null;
+    protected int traveledStationCount = 0;
+    protected State state;
     protected int index = 0;
     protected static int nextIndex = 0;
     
@@ -131,7 +131,6 @@ public class Passenger {
         }
         // enter station and wait
         else {
-            System.out.printf("passenger_%d arrived at closest station%n", this.index);
             this.currentStation = station;
             station.insertPassenger(this, -1);
         }
