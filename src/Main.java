@@ -31,6 +31,7 @@ import meowtro.game.Game;
 import meowtro.game.GameFactory;
 import meowtro.game.Region;
 import meowtro.game.entityManager.StationManager;
+import meowtro.game.passenger.Passenger;
 import meowtro.metro_system.station.Station;
 
 public class Main extends Application {
@@ -112,7 +113,15 @@ public class Main extends Application {
                 // implement timer
                 if (currentNanoTime-formerTimeStamp_animate > duration_animate) {
                     // conduct command
-                    // static refresh
+                    game.update();
+                    for (Region region : game.getCity().getRegions()) {
+                        for (Passenger passenger : region.getPassengers()) {
+                            if (!root.getChildren().contains(passenger.getImage())) {
+                                root.getChildren().add(passenger.getImage());
+                            }
+                        }
+                    }
+                    // animate refresh
                     formerTimeStamp_animate = currentNanoTime;
                 }
             }

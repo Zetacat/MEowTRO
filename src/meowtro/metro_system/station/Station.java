@@ -70,6 +70,8 @@ public class Station {
             this.image.setPickOnBounds(true);
             this.image.setLayoutX(this.position.i);
             this.image.setLayoutY(this.position.j);
+            this.image.setFitHeight(30);
+            this.image.setFitWidth(30);
             this.image.setOnMouseClicked(
                 new EventHandler<MouseEvent>() {    
                     @Override
@@ -214,9 +216,10 @@ public class Station {
     public void insertPassenger(Passenger p, int index){
         // index = 0 or -1
 
+        System.out.printf("queue size: %d, max queue size: %d%n", queue.size(), getMaxQueueSize());
         if (queue.size() >= getMaxQueueSize()){
             p.selfExplode();
-            return; 
+            return;
         }
 
         if (index < 0){
@@ -321,7 +324,7 @@ public class Station {
 
     public void removePassenger(Passenger p) {
         if (queue.contains(p)){
-            queue.remove(p); 
+            queue.remove(p);
         }
     }
 
