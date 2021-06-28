@@ -1,5 +1,7 @@
 package meowtro.game;
 
+import meowtro.game.entityManager.StationManager;
+
 public class GameFactory {
     
     public Game createGame(Config config) {
@@ -15,7 +17,7 @@ public class GameFactory {
         GameFactory gameFactory = new GameFactory();
         Config config = new Config("./resources/defaultConfig.properties", "./resources/localconfig/localConfig1.properties");
         Game game = gameFactory.createGame(config);
-        game.start();
+        game.start(new StationManager(game));
     }
 
 }

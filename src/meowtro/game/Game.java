@@ -120,6 +120,8 @@ public class Game {
             Position newStationPosition = region.getRandomPositionInRegion();
             stationManager.build(this.city, newStationPosition);
         }
+
+        // run game
         for (int i = 0; i < 5; i++) {
             this.update();
         }
