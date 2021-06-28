@@ -131,7 +131,7 @@ public class City {
         
         // set positions in positionsList to true
         for (Position position: positionsList)
-            positions.get(position.i).set(position.j, true);
+            positions.get((int) Math.round(position.i)).set((int) Math.round(position.j), true);
         
         return positions;
     }

@@ -2,10 +2,14 @@ package meowtro;
 
 public class Position {
     
-    public int i = 0;
-    public int j = 0;
+    public double i = 0;
+    public double j = 0;
     
     public Position(int i, int j) {
+        this.i = i;
+        this.j = j;
+    }
+    public Position(double i, double j) {
         this.i = i;
         this.j = j;
     }
@@ -15,7 +19,7 @@ public class Position {
     }
 
     public String toString(){
-        return String.format("(%d, %d)", i, j); 
+        return String.format("(%f, %f)", i, j); 
     }
 
 }

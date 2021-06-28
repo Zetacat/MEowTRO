@@ -134,7 +134,6 @@ public class Passenger {
             System.out.printf("passenger_%d arrived at closest station%n", this.index);
             this.currentStation = station;
             station.insertPassenger(this, -1);
-            
         }
     }
 
@@ -171,7 +170,8 @@ public class Passenger {
             double ratio = this.walkingSpeed / distance;
             double newPositionI = this.position.i + (closestStationPosition.i - this.position.i) * ratio;
             double newPositionJ = this.position.j + (closestStationPosition.j - this.position.j) * ratio;
-            this.position = new Position((int) Math.round(newPositionI), (int) Math.round(newPositionJ));
+            this.position = new Position(newPositionI, newPositionJ);
+            // this.position = new Position((int) Math.round(newPositionI), (int) Math.round(newPositionJ));
             setImagePosition();
         }
 

@@ -60,7 +60,7 @@ public class Region {
     }
 
     public boolean containPosition(Position position) {
-        return this.positions.get(position.i).get(position.j);
+        return this.positions.get((int) Math.round(position.i)).get((int) Math.round(position.j));
     }
 
     public Position getRandomPositionInRegion() {
