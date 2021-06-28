@@ -122,7 +122,14 @@ public class Game {
         }
 
         // run game
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 20; i++) {
+            TimeLine.getInstance().update();
+            
+            if (Game.DEBUG) {
+                System.out.println("------------------------------------------------");
+                System.out.println(TimeLine.getInstance().toString());
+            }
+            
             this.update();
         }
     }

@@ -106,7 +106,7 @@ public class Station {
         this.index = Station.getNextIndex();
         
         if (Game.DEBUG) {
-            System.out.println(this.toString() + " built at " + p.toString());
+            System.out.println(this.toString() + " built at " + city.getRegionByPosition(p).toString());
         }
 
         this.region = this.city.getRegionByPosition(this.position);
@@ -287,6 +287,10 @@ public class Station {
 
     public void update(){
         // for each arrived
+
+        if (Game.DEBUG) {
+            System.out.println(this.toString() + " [" + this.queueStr() + "]");
+        }
     }
 
 
@@ -346,6 +350,13 @@ public class Station {
 
     @Override
     public String toString() {
-        return String.format("station S%d", this.index);
+        return String.format("S%d %s", this.index, this.position.toString());
+    }
+
+    private String queueStr() {
+        String str = "";
+        for (Passenger p: this.queue)
+            str += (p.toString() + " ");
+        return str;
     }
 }

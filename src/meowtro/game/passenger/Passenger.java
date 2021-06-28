@@ -22,10 +22,10 @@ public class Passenger {
     private Car currentCar = null;
     private int traveledStationCount = 0;
     private boolean isDead = false;
-    private int index = 0;
-    private static int nextIndex = 0;
+    protected int index = 0;
+    protected static int nextIndex = 0;
 
-    private static int getNextIndex() {
+    protected static int getNextIndex() {
         return (Passenger.nextIndex++);
     }
 
@@ -84,8 +84,6 @@ public class Passenger {
     public void enterStation(Station station) {
         this.position = station.getPosition();
         this.currentCar = null;
-        if (Game.DEBUG)
-            System.out.printf(this.toString() + " entered station %s\n", station.name); 
         // arrive station
         if (station == this.destinationStation) {
             this.arriveDestination();
@@ -127,8 +125,6 @@ public class Passenger {
             double newPositionI = this.position.i + (closestStationPosition.i - this.position.i) * ratio;
             double newPositionJ = this.position.j + (closestStationPosition.j - this.position.j) * ratio;
             this.position = new Position((int) Math.round(newPositionI), (int) Math.round(newPositionJ));
-            if (Game.DEBUG)
-                System.out.printf("Passenger move to %s\n", position.toString()); 
         }
     }
 
@@ -171,11 +167,11 @@ public class Passenger {
         }
 
         if (Game.DEBUG)
-            System.out.println(this.toString() + "move to " + this.position.toString());
+            System.out.println(this.toString() + " at " + this.position.toString());
     }
 
     @Override
     public String toString() {
-        return String.format("passenger P%d", this.index);
+        return String.format("P%d", this.index);
     }
 }

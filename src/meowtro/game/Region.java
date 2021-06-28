@@ -126,6 +126,10 @@ public class Region {
         for (Passenger passenger: this.passengers)
             passenger.update();
         
+        // update stations
+        for (Station station: this.stations)
+            station.update();
+        
         // spawn passenger on the probability of spawnRate
         if (Game.randomGenerator.nextDouble() < this.spawnRate)
             this.spawnPassenger();
@@ -133,7 +137,7 @@ public class Region {
 
     @Override
     public String toString() {
-        return String.format("region R%d", this.index);
+        return String.format("R%d", this.index);
     }
 
     /****** MAIN ******/
