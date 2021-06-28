@@ -2,6 +2,7 @@ package meowtro.metro_system.station;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import meowtro.Position;
@@ -261,12 +262,13 @@ public class Station {
     }
 
     public void destroy(){
-        for (Passenger p: queue){
-            p.selfExplode();
-        }
-        for (Line l: lines){
-            l.destroyAll();
-        }
+        for (int i = queue.size() - 1; i >= 0; i--)
+            queue.get(i).selfExplode();
+        
+        List<Line> linesCopy = new ArrayList<Line>(lines);
+        for (int i = linesCopy.size() - 1; i >= 0; i--)
+            linesCopy.get(i).destroyAll();
+
         city.removeStation(this);
     }
 
