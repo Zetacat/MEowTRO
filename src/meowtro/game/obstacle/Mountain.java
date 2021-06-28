@@ -22,14 +22,14 @@ public class Mountain extends Obstacle {
     public Mountain(BufferedImage background, Color color) {
         super(background, color);
         if (Game.DEBUG) {
-            System.out.println("Mountain constructed.");
+            System.out.println("Mountain constructed");
         }
     }
 
     public Mountain(List<List<Boolean>> positions) {
         super(positions);
         if (Game.DEBUG) {
-            System.out.println("Mountain constructed.");
+            System.out.println("Mountain constructed");
         }
     }
     

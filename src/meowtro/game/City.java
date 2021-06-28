@@ -2,6 +2,7 @@ package meowtro.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -20,13 +21,30 @@ import meowtro.metro_system.station.Station;
 
 public class City {
     
+    private Game game;
+    public Game getGame() {
+        return this.game;
+    }
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
     private List<Region> regions = new ArrayList<Region>();
     private List<Obstacle> obstacles = new ArrayList<Obstacle>();
     private List<Line> lines = new ArrayList<Line>();
     private int totalTransportedPassengerCount = 0;
     
 
-    public City(BufferedImage background) {
+    public City() {
+
+        // read image
+        BufferedImage background = null;
+        try {
+            background = ImageIO.read(new File(Game.getConfig().get("image.path")));
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
         // iterate the whole image to extract pixels of the same color
         Hashtable<Color, List<Position>> color2pixels = new Hashtable<Color, List<Position>>();
         for (int i = 0; i < background.getHeight(); i++) {
@@ -39,8 +57,7 @@ public class City {
             }
         }
 
-        // calculate area threshold, obstacle colors
-        double areaThreshold = Double.parseDouble(Game.getConfig().get("region.background.ratio.threshold")) * background.getWidth() * background.getHeight();
+        // obstacle colors
         Hashtable<Color, Class<? extends Obstacle>> color2obstacle = new Hashtable<Color, Class<? extends Obstacle>>();
         for (String key: Game.getConfig().getAllKeys()) {
             if (key.startsWith("obstacle.") && key.endsWith(".rgb")) {
@@ -49,7 +66,7 @@ public class City {
                 Color color = new Color(Integer.parseInt(rgbStr[0]), Integer.parseInt(rgbStr[1]), Integer.parseInt(rgbStr[2]));
                 // get obstacle name
                 String obstacleName = key.split("\\.", 0)[1];
-                obstacleName = this.getClass().getPackage().getName() + "." + obstacleName.substring(0, 1).toUpperCase() + obstacleName.substring(1);
+                obstacleName = this.getClass().getPackage().getName() + ".obstacle." + obstacleName.substring(0, 1).toUpperCase() + obstacleName.substring(1);
                 // add <color, obstacle class> to color2obstacle
                 try {
                     @SuppressWarnings("unchecked")
@@ -60,9 +77,10 @@ public class City {
                 }
             }
         }
-
+        
         // iterate every color
         Iterator<Entry<Color, List<Position>>> iter = color2pixels.entrySet().iterator();
+        double areaThreshold = Double.parseDouble(Game.getConfig().get("region.background.ratio.threshold")) * background.getWidth() * background.getHeight();
         while (iter.hasNext()) {
             Entry<Color, List<Position>> colorPixelsPair = iter.next();
             // skip colors with too less pixels (edges)
@@ -98,7 +116,7 @@ public class City {
         }
 
         if (Game.DEBUG)
-            System.out.println(String.format("City constructed. (%d obstacles, %d regions)", this.obstacles.size(), this.regions.size()));
+            System.out.println(String.format("City constructed (%d obstacles, %d regions)", this.obstacles.size(), this.regions.size()));
     }
 
     private List<List<Boolean>> positionList2Boolean2DList(List<Position> positionsList, int width, int height) {
@@ -113,9 +131,13 @@ public class City {
         
         // set positions in positionsList to true
         for (Position position: positionsList)
-            positions.get(position.i).set(position.j, true);
+            positions.get((int) Math.round(position.i)).set((int) Math.round(position.j), true);
         
         return positions;
+    }
+
+    public List<Region> getRegions() {
+        return this.regions;
     }
 
     public Region getRegionByPosition(Position position) {
@@ -136,12 +158,21 @@ public class City {
         return this.regions.get(regionIndex).getStations().get(stationIndex);
     }
 
+    public List<Region> getNRandomRegions(int n) {
+        assert this.regions.size() >= n;
+        List<Region> toShuffle = new ArrayList<Region>(this.regions);
+        Collections.shuffle(toShuffle);
+        return toShuffle.subList(0, n);
+    }
+
     public void addTotalTransportedPassengerCount() {
         this.totalTransportedPassengerCount += 1;
     }
+
     public List<Line> getAllLines(){
         return this.lines;
     }
+
     public void removeLine(Line line) {
         this.lines.remove(line);
     }
@@ -149,8 +180,8 @@ public class City {
     public void removeStation(Station station) {
         Region stationRegion = this.getRegionByPosition(station.getPosition());
         stationRegion.removeStation(station);
+        this.game.deleteObject(station.getImage());
     }
-
 
     public List<Obstacle> blockedBy(Station station1, Station station2) {
         // TODO: blocked by
@@ -173,22 +204,12 @@ public class City {
         for (Region region: this.regions)
             region.update();
             
-        // TODO? line.update()?
+        for (Line line: this.lines)
+            line.update();
     }
 
     /****** MAIN ******/
     public static void main(String[] args) {
-
-        // read image
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(new File("image/map_1.png"));
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-
-        // test City
-        City city = new City(image);
 
     }
 

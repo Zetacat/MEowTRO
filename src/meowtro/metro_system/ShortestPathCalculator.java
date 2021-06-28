@@ -47,22 +47,22 @@ public class ShortestPathCalculator{
     }
 
 
-    public static void main(String[] args){
-        Game.setToyConfig();
-        Line l = new Line(null, LineColor.RED); 
+    // public static void main(String[] args){
+    //     Game.setToyConfig();
+    //     Line l = new Line(null, LineColor.RED); 
 
-        Station s1 = new Station(null , new Position(1, 0)); 
-        Station s2 = new Station(null , new Position(2, 0)); 
-        Station s3 = new Station(null , new Position(3, 0)); 
-        Station s4 = new Station(null , new Position(4, 0)); 
+    //     Station s1 = new Station(null , new Position(1, 0)); 
+    //     Station s2 = new Station(null , new Position(2, 0)); 
+    //     Station s3 = new Station(null , new Position(3, 0)); 
+    //     Station s4 = new Station(null , new Position(4, 0)); 
 
-        Railway r1 = new Railway(s1, s2, l); 
-        Railway r2 = new Railway(s3, s1, l); 
-        Railway r3 = new Railway(s4, s2, l); 
+    //     Railway r1 = new Railway(s1, s2, l); 
+    //     Railway r2 = new Railway(s3, s1, l); 
+    //     Railway r3 = new Railway(s4, s2, l); 
 
-        // s3 - s1 - s2 - s4
+    //     // s3 - s1 - s2 - s4
 
-        System.out.println(l); 
-        System.out.println(ShortestPathCalculator.findShortestPath(s3, s4));  // 3
-    }
+    //     System.out.println(l); 
+    //     System.out.println(ShortestPathCalculator.findShortestPath(s3, s4));  // 3
+    // }
 }

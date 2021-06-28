@@ -23,4 +23,9 @@ public class CutInLineElder extends Passenger {
             this.currentStation = station;
         }
     }
+
+    @Override
+    public String toString() {
+        return String.format("C%d", this.index);
+    }
 }

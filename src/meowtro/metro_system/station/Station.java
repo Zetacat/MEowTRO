@@ -6,20 +6,30 @@ import java.util.List;
 
 import meowtro.Position;
 import meowtro.game.*;
+import meowtro.game.entityManager.EntityManager;
 import meowtro.game.passenger.Passenger;
 import meowtro.metro_system.Direction;
 import meowtro.metro_system.railway.Line;
 import meowtro.metro_system.railway.LineColor;
 import meowtro.metro_system.railway.Railway;
+import meowtro.metro_system.train.Car;
 import meowtro.metro_system.train.Locomotive;
 
 // for testing
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.awt.Color;
 import javax.imageio.ImageIO;
+
+import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 
 
 public class Station {
@@ -33,7 +43,15 @@ public class Station {
     private Position position; 
     private Region region; 
     private int maxLineNum = 6; 
+    private int index = 0;
+    private static int nextIndex = 0;
+    private String iconPath;
+    private ImageView image;
+    private EntityManager manager;
 
+    private static int getNextIndex() {
+        return (Station.nextIndex++);
+    }
 
     /**
     * Parse game config and set proper value. 
@@ -42,35 +60,81 @@ public class Station {
         this.maxLineNum = Integer.valueOf(Game.getConfig().get("metro_system.station.max_line_num")); 
     }
 
+    public String getIconPath() {
+        return this.iconPath;
+    }
+    private void setImage() {
+        try {
+            Image img = new Image(new FileInputStream(this.iconPath));
+            this.image = new ImageView(img);
+            this.image.setPickOnBounds(true);
+            this.image.setLayoutX(this.position.i);
+            this.image.setLayoutY(this.position.j);
+            this.image.setFitHeight(30);
+            this.image.setFitWidth(30);
+            this.image.setOnMouseClicked(
+                new EventHandler<MouseEvent>() {    
+                    @Override
+                    public void handle(MouseEvent event) {
+                        onClick();
+                    }
+                }
+            );
 
-    public Station(City city, Position p){
-        init(); 
-        this.position = p; 
-        this.level = 0; 
-        this.city = city; 
+        } catch (Exception e) {
+            System.out.println("Image doesn't exist!");
+        }
+    }
+    private void onClick() {
+        // stationOnClick in Game
+        this.city.getGame().stationOnClick(this);
+    }
+    public ImageView getImage() {
+        return this.image;
     }
 
+    public EntityManager getManager() {
+        return this.manager;
+    }
+    public void setManager(EntityManager manager) {
+        this.manager = manager;
+    }
+
+    public Station(City city, Position p, String iconPath){
+        init();
+        this.position = p;
+        this.level = 0; 
+        this.city = city;
+        this.index = Station.getNextIndex();
+        
+        if (Game.DEBUG) {
+            System.out.println(this.toString() + " built at " + city.getRegionByPosition(p).toString());
+        }
+
+        this.region = this.city.getRegionByPosition(this.position);
+        this.iconPath = iconPath;
+        setImage();
+    }
 
     private int getMaxLineNum(){
         return maxLineNum; 
     }
 
-
     private int getMaxQueueSize(){
         return level + 8; 
     }
-
 
     public Station(Position p){
         this.position = p; 
         this.level = 0; 
     }
 
-
     public void setRegion(Region r){
         this.region = r; 
     }
-
+    public Region getRegion() {
+        return this.region;
+    }
 
     public void addRailway(Railway r){
         this.railways.add(r); 
@@ -78,16 +142,13 @@ public class Station {
         assert lines.size() <= getMaxLineNum(); 
     }
 
-
     public void removeRailway(Railway r){
         railways.remove(r); 
     }
 
-
     public List<Railway> getRailways(){
         return railways; 
     }
-
 
     public List<Railway> getRailwaysWithLine(Line l){
         ArrayList<Railway> result = new ArrayList<Railway>(); 
@@ -98,7 +159,6 @@ public class Station {
         }
         return result; 
     }
-
 
     public void removeLine(Line l){
         if (lines.contains(l)){
@@ -111,21 +171,17 @@ public class Station {
         lines.remove(l); 
     }
 
-
     public List<Line> getLines(){
         return new ArrayList<Line>(lines); 
     }
-
 
     public List<Passenger> getPassengerQueue(){
         return queue; 
     }
 
-
     public boolean isAdjTo(Station s){
         return getAdjacents().contains(s); 
     }
-
 
     public List<Station> getAdjacents(){
         ArrayList<Station> adjList = new ArrayList<Station>(); 
@@ -138,7 +194,6 @@ public class Station {
         return adjList; 
     }
 
-
     public Railway getNextRailway(Railway srcRailway){
         Line currentLine = srcRailway.getLine(); 
         for (Railway r: railways){
@@ -150,23 +205,21 @@ public class Station {
         return srcRailway; 
     }
 
-
     public void setPosition(Position p){
         this.position = p; 
     }
-
 
     public Position getPosition(){
         return position; 
     }
 
-
     public void insertPassenger(Passenger p, int index){
         // index = 0 or -1
 
+        System.out.printf("queue size: %d, max queue size: %d%n", queue.size(), getMaxQueueSize());
         if (queue.size() >= getMaxQueueSize()){
             p.selfExplode();
-            return; 
+            return;
         }
 
         if (index < 0){
@@ -180,7 +233,6 @@ public class Station {
     public List<Locomotive> getArrivedLocomotives(){
         return arrivedLocomotives; 
     }
-
 
     public boolean isEndStationInLine(Line l){
         int lineCnt = 0; 
@@ -196,16 +248,13 @@ public class Station {
         return false; 
     }
 
-
     public void locomotiveArrive(Locomotive l){
         this.arrivedLocomotives.add(l); 
     }
 
-
     public void locomotiveDepart(Locomotive l){
         this.arrivedLocomotives.remove(l); 
     }
-
 
     public void destroy(){
         for (Passenger p: queue){
@@ -214,56 +263,80 @@ public class Station {
         for (Line l: lines){
             l.destroyAll();
         }
-        city.removeStation(this); 
+        city.removeStation(this);
     }
-
 
     public void update(){
         // for each arrived
+
+        if (Game.DEBUG) {
+            System.out.println(this.toString() + " [" + this.queueStr() + "]");
+        }
     }
 
+    // public static void main(String[] args) {
+    //     Game.setToyConfig();
+    //     Line l = new Line(null, LineColor.RED); 
 
-    public static void main(String[] args) {
-        Game.setToyConfig();
-        Line l = new Line(null, LineColor.RED); 
+    //     // read image
+    //     BufferedImage image = null;
+    //     try {
+    //         image = ImageIO.read(new File("../image/map_1.png"));
+    //     } catch (IOException e) {
+    //         System.err.println(e.getMessage());
+    //     }
 
-        // read image
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(new File("../image/map_1.png"));
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+    //     // test City
+    //     // City city = new City(image);
+    //     Region r = new Region(null, null); 
+
+    //     Station s1 = new Station(null , new Position(200, 0)); 
+    //     Station s2 = new Station(null , new Position(300, 0)); 
+    //     Station s3 = new Station(null , new Position(100, 0)); 
+    //     Station s4 = new Station(null , new Position(400, 0)); 
+    //     s1.name = "s1"; 
+    //     s2.name = "s2"; 
+    //     s3.name = "s3"; 
+    //     s4.name = "s4"; 
+
+    //     r.addStation(s1);
+    //     r.addStation(s2);
+    //     r.addStation(s3);
+    //     r.addStation(s4);
+
+    //     Railway r1 = new Railway(s1, s2, l); 
+    //     Railway r2 = new Railway(s3, s1, l); 
+    //     Railway r3 = new Railway(s4, s2, l); 
+
+    //     System.out.printf("%d %d %d\n", r1.railwayID, r2.railwayID, r3.railwayID); 
+
+    //     // <s3> -r1- <s1> -r2- <s2> -r3- <s4>
+    //     Passenger p = new Passenger(r, new Position(4, 0), s4); 
+    //     Locomotive loco = new Locomotive(r3, new Position(4, 0), Direction.BACKWARD); 
+    //     loco.addCar(new Car(loco));
+
+    //     for (int i = 0; i < 200; i++){
+    //         l.update(); 
+    //         p.update(); 
+    //     }
+    // }
+
+
+    public void removePassenger(Passenger p) {
+        if (queue.contains(p)){
+            queue.remove(p);
         }
+    }
 
-        // test City
-        // City city = new City(image);
-        Region r = new Region(null, null); 
+    @Override
+    public String toString() {
+        return String.format("S%d %s", this.index, this.position.toString());
+    }
 
-        Station s1 = new Station(null , new Position(100, 0)); 
-        Station s2 = new Station(null , new Position(200, 0)); 
-        Station s3 = new Station(null , new Position(300, 0)); 
-        Station s4 = new Station(null , new Position(400, 0)); 
-        s1.name = "s1"; 
-        s2.name = "s2"; 
-        s3.name = "s3"; 
-        s4.name = "s4"; 
-
-        r.addStation(s1);
-        r.addStation(s2);
-        r.addStation(s3);
-        r.addStation(s4);
-
-        Railway r1 = new Railway(s1, s2, l); 
-        Railway r2 = new Railway(s3, s1, l); 
-        Railway r3 = new Railway(s4, s2, l); 
-
-        // <s3> -r0- <s1> -r1- <s2> -r2- <s4>
-        Passenger p = new Passenger(r, new Position(4, 0), s3); 
-        Locomotive loco = new Locomotive(r1, new Position(4, 0), Direction.FORWARD); 
-
-        for (int i = 0; i < 100; i++){
-            l.update(); 
-            p.update(); 
-        }
+    private String queueStr() {
+        String str = "";
+        for (Passenger p: this.queue)
+            str += (p.toString() + " ");
+        return str;
     }
 }

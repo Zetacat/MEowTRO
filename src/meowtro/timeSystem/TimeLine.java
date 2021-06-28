@@ -1,4 +1,7 @@
 package meowtro.timeSystem;
+
+import java.sql.Time;
+
 public class TimeLine{
     private static TimeLine timeLine = new TimeLine();
     private int year, month, day, hour, minute, second, timeUnit;
@@ -113,6 +116,11 @@ public class TimeLine{
     }
     public String getCalenderTime(){
         return String.format("%02d-%02d-%02d %02d:%02d:%02d", this.year, this.month, this.day, this.hour, this.minute, this.second);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[%s] time unit: %d", TimeLine.getInstance().getCalenderTime(), TimeLine.getInstance().getCurrentTotalTimeUnit());
     }
 
     public static void main(String[] args){
