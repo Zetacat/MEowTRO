@@ -12,7 +12,7 @@ import meowtro.game.entityManager.StationManager;
 import meowtro.game.onClickEvent.OnClickEvent;
 import meowtro.timeSystem.TimeLine;
 import meowtro.Position;
-
+import meowtro.eventSystem.*;
 public class Game {
     
     private static Config config = null;
@@ -21,7 +21,7 @@ public class Game {
         return this.city;
     }
     // private Stack<OnClickEvent> onClickEventStack = new Stack<OnClickEvent>();
-    // private EventTrigger eventTrigger = null;
+    private EventTrigger eventTrigger = null;
     // private GameTerminateChecker gameTerminatChecker = null;
     // private History history = null;
     // private ReplayVideoPage replayVideoPage = null;
@@ -39,7 +39,6 @@ public class Game {
     public ArrayList<String> getIconPaths() {
         return this.iconPaths;
     }
-
     public static ArrayList<String> listFiles(String dir) {
         File file = null;
         ArrayList<String> files = new ArrayList<>();
@@ -54,7 +53,8 @@ public class Game {
         return files;
     }
 
-    public Game(Config config) {
+    public Game(Config config, EventTrigger eventTrigger) {
+        this.eventTrigger = eventTrigger;
         Game.config = config;
         Game.setBalance(Integer.parseInt(config.get("balance.default")));
         Game.randomGenerator.setSeed(Long.parseLong(config.get("game.random.seed")));
@@ -115,6 +115,7 @@ public class Game {
         // }
 
         // TODO: check event
+        this.eventTrigger.trigger();
 
         this.city.update();
         this.globalSatisfaction = this.city.getGlobalStatisfaction();

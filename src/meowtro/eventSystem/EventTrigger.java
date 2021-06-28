@@ -9,7 +9,7 @@ public class EventTrigger {
     private List<Event> yearEvents = null;
     private int currentEventIndex;
     // private int totalEventNum;
-    EventTrigger(List<Event> yearEvents){
+    public EventTrigger(List<Event> yearEvents){
         // this.map = map;
         this.yearEvents = yearEvents;
         this.currentEventIndex = 0;

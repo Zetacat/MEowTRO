@@ -3,8 +3,9 @@ package meowtro.eventSystem;
 import meowtro.game.City;
 
 public class NormalEvent extends Event{
-    public NormalEvent(City city, String name, String happenedTimeString){
-        super(city, name, happenedTimeString);
+    public NormalEvent(City city, String happenedTimeString){
+        super(city, happenedTimeString);
+        this.name = "NormalEvent";
     }
     public void trigger(){
         // TimeLine curreTimeLine = TimeLine.getInstance();

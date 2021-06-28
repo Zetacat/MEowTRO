@@ -5,9 +5,8 @@ public abstract class Event {
     protected String name;
     protected String happenedTimeString;  //"MM-DD HH:MM:SS"
 
-    public Event(City city, String name, String happenedTimeString){
+    public Event(City city, String happenedTimeString){
         this.city = city;
-        this.name = name;
         this.happenedTimeString = happenedTimeString;
     }
     public abstract void trigger();

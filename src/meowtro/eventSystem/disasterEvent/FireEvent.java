@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import meowtro.metro_system.railway.*;
 import meowtro.game.*;
 public class FireEvent extends DisasterEvent {
-    public FireEvent(City city, String name, String happenedTimeString, int remainTimeUnit){
-        super(city, name, happenedTimeString, remainTimeUnit);
+    public FireEvent(City city, String happenedTimeString, int remainTimeUnit){
+        super(city, happenedTimeString, remainTimeUnit);
+        this.name = "FireEvent";
     }
     public void trigger(){
         List<Line> allLines = this.city.getAllLines();
