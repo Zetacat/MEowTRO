@@ -187,6 +187,14 @@ public class City {
         this.game.deleteObject(station.getImage());
     }
 
+    public List<Station> getAllStation() {
+        ArrayList<Station> result = new ArrayList<Station>(); 
+        for (Region r: regions){
+            result.addAll(r.getStations()); 
+        }
+        return result; 
+    }
+
     public List<Obstacle> blockedBy(Station station1, Station station2) {
         // TODO: blocked by
         return null;
