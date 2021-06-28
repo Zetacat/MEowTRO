@@ -125,6 +125,7 @@ public class Region {
             this.city.addTotalTransportedPassengerCount();
         }
         this.addSatisfactionScoreFromPassenger(passenger);
+        this.city.getGame().deleteObject(passenger.getImage());
         this.passengers.remove(passenger);
     }
 

@@ -13,14 +13,19 @@ public class CutInLineElder extends Passenger {
     @Override
     public void enterStation(Station station) {
         this.position = station.getPosition();
+        this.currentCar = null;
+        this.traveledStationCount += 1;
+        this.state = State.AT_STATION;
+        
         // arrive station
         if (station == this.destinationStation) {
             this.arriveDestination();
         }
         // enter station and wait
         else {
-            station.insertPassenger(this, 0);
+            System.out.printf("elder_%d arrived at closest station%n", this.index);
             this.currentStation = station;
+            station.insertPassenger(this, 0);
         }
     }
 

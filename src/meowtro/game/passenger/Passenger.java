@@ -16,7 +16,7 @@ import meowtro.timeSystem.TimeLine;
 
 public class Passenger {
     
-    private enum State {
+    protected enum State {
         WALKING,
         AT_STATION,
         TRAVELING,
@@ -31,9 +31,9 @@ public class Passenger {
     private double walkingSpeed = Double.parseDouble(Game.getConfig().get("passenger.walking.speed"));
     private static int expectedTimePerStation = Integer.parseInt(Game.getConfig().get("passenger.expected.time.per.station"));
     protected Station currentStation = null;
-    private Car currentCar = null;
-    private int traveledStationCount = 0;
-    private State state;
+    protected Car currentCar = null;
+    protected int traveledStationCount = 0;
+    protected State state;
     protected int index = 0;
     protected static int nextIndex = 0;
     
@@ -41,15 +41,19 @@ public class Passenger {
         return (Passenger.nextIndex++);
     }
 
+    private double imageSize = 10;
+    public double getImageSize() {
+        return this.imageSize;
+    }
     private ImageView image;
     private void setImage() {
         try {
             Image img = new Image(new FileInputStream(this.destinationStation.getIconPath()));
             this.image = new ImageView(img);
             this.image.setPickOnBounds(true);
-            this.image.setFitHeight(10);
-            this.image.setFitWidth(10);
-            setImagePosition();
+            this.image.setFitHeight(this.imageSize);
+            this.image.setFitWidth(this.imageSize);
+            setImagePosition(this.position);
         } catch (Exception e) {
             System.out.println("Image doesn't exist!");
         }
@@ -57,9 +61,9 @@ public class Passenger {
     public ImageView getImage() {
         return this.image;
     }
-    private void setImagePosition() {
-        this.image.setLayoutX(this.position.i);
-        this.image.setLayoutY(this.position.j);
+    public void setImagePosition(Position position) {
+        this.image.setLayoutX(position.i);
+        this.image.setLayoutY(position.j);
     }
 
 
@@ -116,6 +120,7 @@ public class Passenger {
     }
 
     private void die(boolean arrivedDestination) {
+        // explosion animate here
         this.birthRegion.removePassenger(this, arrivedDestination);
     }
 
@@ -171,8 +176,7 @@ public class Passenger {
             double newPositionI = this.position.i + (closestStationPosition.i - this.position.i) * ratio;
             double newPositionJ = this.position.j + (closestStationPosition.j - this.position.j) * ratio;
             this.position = new Position(newPositionI, newPositionJ);
-            // this.position = new Position((int) Math.round(newPositionI), (int) Math.round(newPositionJ));
-            setImagePosition();
+            setImagePosition(this.position);
         }
 
         if (Game.DEBUG) {
@@ -213,6 +217,7 @@ public class Passenger {
 
         // walking passenger
         if (this.state == State.WALKING) {
+            System.out.printf("passenger_%d update walking%n", this.index);
             this.walkTowardClosestStation();
         }
     }
