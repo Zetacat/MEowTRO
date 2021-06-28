@@ -119,32 +119,36 @@ public class Region {
         this.passengers.remove(passenger);
     }
 
+    public double getSpawnRate() {
+        return this.spawnRate;
+    }
 
+    public void setSpawnRate(double newSpawnRate) {
+        this.spawnRate = newSpawnRate;
+    }
 
     public void update() {
-        // update passengers
-        for (Passenger passenger: this.passengers)
-            passenger.update();
+        // update passengers (may remove passenger when iterating)
+        for (int i = this.passengers.size() - 1; i >= 0; i--) {
+            this.passengers.get(i).update();
+        }
         
         // update stations
-        for (Station station: this.stations)
-        station.update();
+        for (int i = this.stations.size() - 1; i >= 0; i--) {
+            this.stations.get(i).update();
+        }
         
         // spawn passenger on the probability of spawnRate
         if (Game.randomGenerator.nextDouble() < this.spawnRate)
-        this.spawnPassenger();
+            this.spawnPassenger();
 
         if (Game.DEBUG)
             System.out.println("-");
-        }
+    }
 
     @Override
     public String toString() {
         return String.format("R%d", this.index);
     }
 
-    /****** MAIN ******/
-    // public static void main(String[] args) {
-    //     config = new Config("./defaultConfig.properties", "./localConfig.properties")
-    // }
 }

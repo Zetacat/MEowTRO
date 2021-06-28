@@ -27,7 +27,6 @@ public class Passenger {
     private Car currentCar = null;
     private int traveledStationCount = 0;
     private State state;
-    private boolean isDead = false;
     protected int index = 0;
     protected static int nextIndex = 0;
     
@@ -65,26 +64,26 @@ public class Passenger {
     }
 
     public void selfExplode() {
-        if (Game.DEBUG)
-            System.out.println(this.toString() + " selfExplode");
-
+        if (this.state == State.AT_STATION)
+            this.currentStation.removePassenger(this);
+        else if (this.state == State.TRAVELING)
+            this.currentCar.removePassenger(this);
         this.die(false);
+
+        if (Game.DEBUG)
+            System.out.println(this.toString() + " self exploded");
     }
     
     public void arriveDestination() {
         if (Game.DEBUG)
-            System.out.println(this.toString() + " arrive destination.");
+            System.out.println(this.toString() + " arrive destination");
+        
         int ticket = Integer.parseInt(Game.getConfig().get("passenger.ticket.per.station")) * this.traveledStationCount;
         Game.setBalance(Game.getBalance() + ticket);
         this.die(true);
     }
 
     private void die(boolean arrivedDestination) {
-        this.isDead = true; 
-        if (Game.DEBUG){
-            System.out.println(this.toString() + " die ('x_x')");
-            return; 
-        }
         this.birthRegion.removePassenger(this, arrivedDestination);
     }
 
@@ -92,7 +91,7 @@ public class Passenger {
         this.position = station.getPosition();
         this.currentCar = null;
         this.state = State.AT_STATION;
-
+        
         // arrive station
         if (station == this.destinationStation) {
             this.arriveDestination();
@@ -138,7 +137,7 @@ public class Passenger {
         }
 
         if (Game.DEBUG) {
-            if (this.state == state.WALKING)
+            if (this.state == State.WALKING)
                 System.out.println(this.toString() + " moving toward " + closestStation.toString() + " now at " + this.position.toString());
         }
     }
@@ -166,9 +165,6 @@ public class Passenger {
     }
 
     public void update() {
-        if (this.isDead){
-            return; 
-        }
 
         // self explode if exceed life time limit
         if (TimeLine.getInstance().getCurrentTotalTimeUnit() - spawnTime > this.lifeTimeLimit) {
@@ -184,6 +180,6 @@ public class Passenger {
 
     @Override
     public String toString() {
-        return String.format("P%d", this.index);
+        return String.format("P%d[%d]", this.index, this.spawnTime);
     }
 }
