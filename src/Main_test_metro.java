@@ -11,7 +11,7 @@ public class Main_test_metro {
         StationManager stationManager = new StationManager(game);
         game.start(new StationManager(game));
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 5; i++) {
 
             // if (i == 5) {
             //     Position newStationPosition = game.getCity().getNRandomRegions(1).get(0).getRandomPositionInRegion();

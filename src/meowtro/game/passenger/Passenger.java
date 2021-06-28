@@ -15,14 +15,17 @@ public class Passenger {
     private enum State {
         WALKING,
         AT_STATION,
-        TRAVELING 
+        TRAVELING,
+        ARRIVED
     }
+
     private Region birthRegion = null;
     protected Position position = null;
     private long spawnTime = 0;
-    private long lifeTimeLimit = Long.parseLong(Game.getConfig().get("passenger.life.time.limit").strip());
+    private static long lifeTimeLimit = Long.parseLong(Game.getConfig().get("passenger.life.time.limit").strip());
     protected Station destinationStation = null;
     private double walkingSpeed = Double.parseDouble(Game.getConfig().get("passenger.walking.speed"));
+    private static int expectedTimePerStation = Integer.parseInt(Game.getConfig().get("passenger.expected.time.per.station"));
     protected Station currentStation = null;
     private Car currentCar = null;
     private int traveledStationCount = 0;
@@ -78,6 +81,7 @@ public class Passenger {
         if (Game.DEBUG)
             System.out.println(this.toString() + " arrive destination");
         
+        this.state = State.ARRIVED;
         int ticket = Integer.parseInt(Game.getConfig().get("passenger.ticket.per.station")) * this.traveledStationCount;
         Game.setBalance(Game.getBalance() + ticket);
         this.die(true);
@@ -90,6 +94,7 @@ public class Passenger {
     public void enterStation(Station station) {
         this.position = station.getPosition();
         this.currentCar = null;
+        this.traveledStationCount += 1;
         this.state = State.AT_STATION;
         
         // arrive station
@@ -111,8 +116,11 @@ public class Passenger {
     }
 
     public int evaluateSatisfaction() {
-        // TODO: evaluate satisfaction
-        return 0;
+        if (this.state != State.ARRIVED)
+            return 0;
+        double timeSpent = (double)(TimeLine.getInstance().getCurrentTotalTimeUnit() - this.spawnTime);
+        double expectedTravelTime = (double)(Passenger.expectedTimePerStation * this.traveledStationCount);
+        return (int) Math.round(expectedTravelTime / timeSpent);
     }
 
     private void walkTowardClosestStation() {
@@ -167,7 +175,7 @@ public class Passenger {
     public void update() {
 
         // self explode if exceed life time limit
-        if (TimeLine.getInstance().getCurrentTotalTimeUnit() - spawnTime > this.lifeTimeLimit) {
+        if (TimeLine.getInstance().getCurrentTotalTimeUnit() - spawnTime > Passenger.lifeTimeLimit) {
             this.selfExplode();
             return;
         }

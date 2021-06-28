@@ -37,15 +37,18 @@ public class Region {
 
     public int getRegionSatisfaction() {
         // compute the average satisfaction of the last "region.satisfaction.window" passengers
+        int regionSatisfaction = 0;
         int satisfactionsSize = this.satisfications.size();
         if (satisfactionsSize == 0)
-            return 0;
-        
-        // compute average
-        int count = Math.min(satisfactionsSize, Integer.parseInt(Game.getConfig().get("region.satisfaction.window")));
-        List<Integer> recentPassengerSatisfactions = this.satisfications.subList(satisfactionsSize - count, satisfactionsSize);
-        OptionalDouble avgPassengerSatisfactions = recentPassengerSatisfactions.stream().mapToInt(Integer::intValue).average();
-        int regionSatisfaction = (int)Math.round(avgPassengerSatisfactions.getAsDouble());
+            // no arrived passenger
+            regionSatisfaction =  0;
+        else {
+            // compute average
+            int count = Math.min(satisfactionsSize, Integer.parseInt(Game.getConfig().get("region.satisfaction.window")));
+            List<Integer> recentPassengerSatisfactions = this.satisfications.subList(satisfactionsSize - count, satisfactionsSize);
+            OptionalDouble avgPassengerSatisfactions = recentPassengerSatisfactions.stream().mapToInt(Integer::intValue).average();
+            regionSatisfaction = (int)Math.round(avgPassengerSatisfactions.getAsDouble());
+        }
 
         if (Game.DEBUG)
             System.out.println(this.toString() + " satisfaction = " + regionSatisfaction);
