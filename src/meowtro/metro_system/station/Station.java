@@ -233,7 +233,6 @@ public class Station {
         queue.add(index, p);
     }
 
-
     public List<Locomotive> getArrivedLocomotives(){
         return arrivedLocomotives; 
     }

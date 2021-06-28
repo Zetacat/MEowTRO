@@ -165,7 +165,7 @@ public class Passenger {
         // move
         Position closestStationPosition = closestStation.getPosition();
         double distance = this.position.l2distance(closestStationPosition);
-        if (distance < this.walkingSpeed) {
+        if ((distance-this.destinationStation.getStationSize()) < this.walkingSpeed) {
             // enter station if able to reach
             this.enterStation(closestStation);
         }

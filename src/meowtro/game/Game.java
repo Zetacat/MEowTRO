@@ -89,10 +89,6 @@ public class Game {
         TimeLine.getInstance().reset();
     }
 
-    public void onClick() {
-        // TODO: on click
-    }
-
     public void saveRecord() {
         // TODO: save record
     }
