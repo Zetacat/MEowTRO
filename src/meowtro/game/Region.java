@@ -92,12 +92,23 @@ public class Region {
         return this.passengers;
     }
 
+    private Station getRandomStation() {
+        int stationCount = this.stations.size();
+        if (stationCount == 0)
+            return null;
+        return this.stations.get(Game.randomGenerator.nextInt(stationCount));
+    }
+
     public Passenger spawnPassenger() {
         // get the position of the new passenger
         Position newPassengerPosition = this.getRandomPositionInRegion();
 
         // get random destination station, random passenger type, spawn passenger
         Station destinationStation = this.city.getRandomStationFromDifferentRegion(this);
+        if (destinationStation == null) {
+            destinationStation = this.getRandomStation();
+        }
+
         Passenger newPassenger = (
             Game.randomGenerator.nextDouble() < this.CutInLineElderProb?
             new CutInLineElder(this, newPassengerPosition, destinationStation): 

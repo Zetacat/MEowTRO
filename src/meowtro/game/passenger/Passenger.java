@@ -113,7 +113,7 @@ public class Passenger {
             System.out.println(this.toString() + " arrive destination");
         
         this.state = State.ARRIVED;
-        int ticket = Integer.parseInt(Game.getConfig().get("passenger.ticket.per.station")) * this.traveledStationCount;
+        int ticket = Integer.parseInt(Game.getConfig().get("passenger.ticket.per.station")) * (this.traveledStationCount - 1);
         Game.setBalance(Game.getBalance() + ticket);
         this.die(true);
     }
