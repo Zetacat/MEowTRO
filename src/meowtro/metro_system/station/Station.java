@@ -266,8 +266,10 @@ public class Station {
     }
 
     public void destroy(){
-        for (int i = queue.size() - 1; i >= 0; i--)
-            queue.get(i).selfExplode();
+        for (int i = queue.size() - 1; i >= 0; i--) {
+            queue.get(i).setTimeToLive((long) 30);
+        }
+        // queue.get(i).selfExplode();
         
         List<Line> linesCopy = new ArrayList<Line>(lines);
         for (int i = linesCopy.size() - 1; i >= 0; i--)
@@ -285,7 +287,8 @@ public class Station {
         double translationY = 0;
         for (int i = 0; i < this.queue.size(); i++) {
             Passenger passenger = this.queue.get(i);
-            passenger.setImagePosition(new Position(startPosition.j + translationY, startPosition.i + translationX), passenger.getImageSize()/2);
+            passenger.setPosition(new Position(startPosition.j + translationY, startPosition.i + translationX));
+            // passenger.setImagePosition(new Position(startPosition.j + translationY, startPosition.i + translationX), passenger.getImageSize()/2);
             translationX += passenger.getImageSize();
             if (i%maxColumnOfQueue == maxColumnOfQueue-1) {
                 translationX = this.stationSize+3;

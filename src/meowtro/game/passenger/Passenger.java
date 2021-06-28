@@ -41,6 +41,14 @@ public class Passenger {
         return (Passenger.nextIndex++);
     }
 
+    public Position getPosition() {
+        return this.position;
+    }
+    public void setPosition(Position position) {
+        this.position = position;
+        this.setImagePosition(this.position, this.imageSize/2);
+    }
+
     private double imageSize = 10;
     public double getImageSize() {
         return this.imageSize;
@@ -230,13 +238,17 @@ public class Passenger {
         }
     }
 
+    private long timeToLive = Passenger.lifeTimeLimit;
+    public void setTimeToLive(Long ttl) {
+        this.timeToLive = ttl + TimeLine.getInstance().getCurrentTotalTimeUnit() - this.spawnTime;
+    }
     public void update() {
         // self explode if exceed life time limit
-        if (TimeLine.getInstance().getCurrentTotalTimeUnit() - this.spawnTime > Passenger.lifeTimeLimit) {
+        if (TimeLine.getInstance().getCurrentTotalTimeUnit() - this.spawnTime > this.timeToLive) {
             this.selfExplode();
             return;
-        } else if (TimeLine.getInstance().getCurrentTotalTimeUnit() - this.spawnTime > Passenger.lifeTimeLimit - this.dyingAnimationTimeUnit) {
-            this.dying(Passenger.lifeTimeLimit - TimeLine.getInstance().getCurrentTotalTimeUnit() + this.spawnTime);
+        } else if (TimeLine.getInstance().getCurrentTotalTimeUnit() - this.spawnTime > this.timeToLive - this.dyingAnimationTimeUnit) {
+            this.dying(this.timeToLive - TimeLine.getInstance().getCurrentTotalTimeUnit() + this.spawnTime);
         }
 
         // walking passenger
