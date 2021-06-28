@@ -66,7 +66,7 @@ public class Main extends Application {
             }
         );
 
-        root.getChildren().add(new ImageView(new Image(new FileInputStream("./image/map_2.png"))));
+        root.getChildren().add(new ImageView(new Image(new FileInputStream("./image/map_3.png"))));
 
         StationButton stationButton = new StationButton(10, game, sm);
         root.getChildren().add(stationButton.getButton());
@@ -74,7 +74,7 @@ public class Main extends Application {
         DestroyButton destroyButton = new DestroyButton(0, game);
         root.getChildren().add(destroyButton.getButton());
         
-        Scene scene = new Scene(root, 980, 540);
+        Scene scene = new Scene(root, 640, 480);
         primaryStage.setTitle("MEwoTRO");
         primaryStage.setScene(scene);
         primaryStage.show();
