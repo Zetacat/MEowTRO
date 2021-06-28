@@ -85,7 +85,7 @@ public class Locomotive {
         this.index = Locomotive.getNextIndex();
         railway.addLocomotive(this);
         if (Game.DEBUG){
-            System.out.printf("Locomotive created at (%d, %d), railway %s\n", position.i, position.j, railway.toString());
+            System.out.printf("Locomotive created at %s, railway %s\n", position.toString(), railway.toString());
         }
     }
 
@@ -213,27 +213,24 @@ public class Locomotive {
                     boolean success = assignPassengerToCar(stationQueue.get(0)); 
                     if (success){
                         if (Game.DEBUG){
-                            System.out.printf("...Passenger get on locomotive at station %s, (%d, %d)\n", currentStation.name, position.i, position.j);
+                            System.out.printf("...Passenger get on locomotive at station %s, %s\n", currentStation.name, position.toString());
                         }
                         currentStation.removePassenger(p); 
-                    }else{
+                    } else{
                         // Cars are full
                         if (Game.DEBUG)
                             System.out.printf("...Cars are full or don't have any car\n");
                         depart();
                     }
                     break; 
-                }else{
+                } else{
                     if (Game.DEBUG){
-                        System.out.printf("Passenger don't wan't to get on\n");
+                        System.out.printf("Passenger don't want to get on\n");
                     }
                 }
             }
-            if (currentStation.getPassengerQueue().size() == 0){
-
-            }
             this.takePassengerCountdown = takePassengerInterval; 
-        }else{
+        } else{
             this.takePassengerCountdown -= 1; 
         }
     }
@@ -261,7 +258,7 @@ public class Locomotive {
                 if (p.willingToGetOff(this)){
                     dropPassenger(p); 
                     if (Game.DEBUG){
-                        System.out.printf("Passenger get off locomotive at station %s, (%d, %d)\n", currentStation.toString(), position.i, position.j);
+                        System.out.printf("Passenger get off locomotive at station %s, %s\n", currentStation.toString(), position.toString());
                     }
                     this.takePassengerCountdown = takePassengerInterval; 
                     break; 

@@ -16,7 +16,6 @@ public class CutInLineElder extends Passenger {
         this.currentCar = null;
         this.traveledStationCount += 1;
         this.state = State.AT_STATION;
-        
         // arrive station
         if (station == this.destinationStation) {
             this.arriveDestination();

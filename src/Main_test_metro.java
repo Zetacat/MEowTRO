@@ -23,9 +23,9 @@ public class Main_test_metro {
         Station s0 = game.getCity().getRegions().get(0).getStations().get(0);
         Station s1 = game.getCity().getRegions().get(1).getStations().get(0);
         Railway r0 = new Railway(s0, s1, line);
-        Locomotive loco = new Locomotive(r0, new Position(4, 0), Direction.BACKWARD);
+        Locomotive loco = new Locomotive(r0, new Position(4f, 0f), Direction.BACKWARD);
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 15; i++) {
             game.update();
         }
     }
