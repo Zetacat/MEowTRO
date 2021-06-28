@@ -42,7 +42,7 @@ public class Main extends Application {
     private long formerTimeStamp_cmd;
     private long duration_cmd = 999999;
     private long formerTimeStamp_animate;
-    private long duration_animate = 999999;
+    private long duration_animate = 99999999;
     
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {

@@ -37,15 +37,18 @@ public class Region {
 
     public int getRegionSatisfaction() {
         // compute the average satisfaction of the last "region.satisfaction.window" passengers
+        int regionSatisfaction = 0;
         int satisfactionsSize = this.satisfications.size();
         if (satisfactionsSize == 0)
-            return 0;
-        
-        // compute average
-        int count = Math.min(satisfactionsSize, Integer.parseInt(Game.getConfig().get("region.satisfaction.window")));
-        List<Integer> recentPassengerSatisfactions = this.satisfications.subList(satisfactionsSize - count, satisfactionsSize);
-        OptionalDouble avgPassengerSatisfactions = recentPassengerSatisfactions.stream().mapToInt(Integer::intValue).average();
-        int regionSatisfaction = (int)Math.round(avgPassengerSatisfactions.getAsDouble());
+            // no arrived passenger
+            regionSatisfaction =  0;
+        else {
+            // compute average
+            int count = Math.min(satisfactionsSize, Integer.parseInt(Game.getConfig().get("region.satisfaction.window")));
+            List<Integer> recentPassengerSatisfactions = this.satisfications.subList(satisfactionsSize - count, satisfactionsSize);
+            OptionalDouble avgPassengerSatisfactions = recentPassengerSatisfactions.stream().mapToInt(Integer::intValue).average();
+            regionSatisfaction = (int)Math.round(avgPassengerSatisfactions.getAsDouble());
+        }
 
         if (Game.DEBUG)
             System.out.println(this.toString() + " satisfaction = " + regionSatisfaction);
@@ -123,16 +126,24 @@ public class Region {
         this.passengers.remove(passenger);
     }
 
+    public double getSpawnRate() {
+        return this.spawnRate;
+    }
 
+    public void setSpawnRate(double newSpawnRate) {
+        this.spawnRate = newSpawnRate;
+    }
 
     public void update() {
-        // update passengers
-        for (Passenger passenger: this.passengers)
-            passenger.update();
+        // update passengers (may remove passenger when iterating)
+        for (int i = this.passengers.size() - 1; i >= 0; i--) {
+            this.passengers.get(i).update();
+        }
         
         // update stations
-        for (Station station: this.stations)
-            station.update();
+        for (int i = this.stations.size() - 1; i >= 0; i--) {
+            this.stations.get(i).update();
+        }
         
         // spawn passenger on the probability of spawnRate
         if (Game.randomGenerator.nextDouble() < this.spawnRate)
@@ -140,15 +151,11 @@ public class Region {
 
         if (Game.DEBUG)
             System.out.println("-");
-        }
+    }
 
     @Override
     public String toString() {
         return String.format("R%d", this.index);
     }
 
-    /****** MAIN ******/
-    // public static void main(String[] args) {
-    //     config = new Config("./defaultConfig.properties", "./localConfig.properties")
-    // }
 }
