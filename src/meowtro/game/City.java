@@ -123,15 +123,15 @@ public class City {
     private List<List<Boolean>> positionList2Boolean2DList(List<Position> positionsList, int width, int height) {
         // initialize boolean 2d list
         List<List<Boolean>> positions = new ArrayList<List<Boolean>>();
-        for (int i = 0; i < width; i++) {
+        for (int i = 0; i < height; i++) {
             positions.add(new ArrayList<Boolean>());
-            for (int j = 0; j < height; j++) {
+            for (int j = 0; j < width; j++) {
                 positions.get(i).add(false);
             }
         }
         // set positions in positionsList to true
         for (Position position: positionsList)
-            positions.get((int) Math.round(position.j)).set((int) Math.round(position.i), true);
+            positions.get((int) Math.round(position.i)).set((int) Math.round(position.j), true);
         
         return positions;
     }

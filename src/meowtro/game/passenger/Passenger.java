@@ -62,8 +62,8 @@ public class Passenger {
         return this.image;
     }
     public void setImagePosition(Position position) {
-        this.image.setLayoutX(position.i);
-        this.image.setLayoutY(position.j);
+        this.image.setLayoutX(position.j);
+        this.image.setLayoutY(position.i);
     }
 
 

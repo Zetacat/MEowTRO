@@ -72,8 +72,8 @@ public class Station {
             Image img = new Image(new FileInputStream(this.iconPath));
             this.image = new ImageView(img);
             this.image.setPickOnBounds(true);
-            this.image.setLayoutX(this.position.i);
-            this.image.setLayoutY(this.position.j);
+            this.image.setLayoutX(this.position.j);
+            this.image.setLayoutY(this.position.i);
             this.image.setFitHeight(30);
             this.image.setFitWidth(30);
             this.image.setOnMouseClicked(
@@ -273,12 +273,12 @@ public class Station {
     private int maxColumnOfQueue = 5;
     public void updateQueuedPassengerPosition() {
         System.out.printf("station_%d queue size: %d%n", this.index, this.queue.size());
-        Position startPosition = new Position(this.position.i, this.position.j);
+        Position startPosition = new Position(this.position.j, this.position.i);
         double translationX = this.stationSize;
         double translationY = 0;
         for (int i = 0; i < this.queue.size(); i++) {
             Passenger passenger = this.queue.get(i);
-            passenger.setImagePosition(new Position(startPosition.i + translationX, startPosition.j + translationY));
+            passenger.setImagePosition(new Position(startPosition.j + translationY, startPosition.i + translationX));
             translationX += passenger.getImageSize();
             if (i%maxColumnOfQueue == maxColumnOfQueue-1) {
                 translationX = this.stationSize;

@@ -60,8 +60,7 @@ public class Main extends Application {
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    System.out.printf("(%f,%f)%n", event.getSceneX(), event.getSceneY());
-                    game.onClick(new Position((int) Math.round(event.getSceneX()), (int) Math.round(event.getSceneY())));
+                    game.onClick(new Position((int) Math.round(event.getSceneY()), (int) Math.round(event.getSceneX())));
                 }
             }
         );
