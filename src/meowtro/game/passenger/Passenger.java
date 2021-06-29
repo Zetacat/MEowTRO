@@ -135,7 +135,7 @@ public class Passenger {
     }
 
     public void enterStation(Station station) {
-        this.position = station.getPosition();
+        // this.position = station.getPosition();
         this.currentCar = null;
         this.traveledStationCount += 1;
         this.state = State.AT_STATION;

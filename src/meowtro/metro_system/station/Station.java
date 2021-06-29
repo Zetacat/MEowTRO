@@ -228,7 +228,8 @@ public class Station {
         if (Game.DEBUG)
             System.out.printf("queue size: %d, max queue size: %d%n", queue.size(), getMaxQueueSize());
         if (queue.size() >= getMaxQueueSize()){
-            p.selfExplode();
+            // p.selfExplode();
+            p.setTimeToLive((long) 30);
             return;
         }
 
