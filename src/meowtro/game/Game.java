@@ -149,6 +149,9 @@ public class Game {
     }
 
     public void onClick(Position position) {
+        if (!this.nowEvent.getName().equals("railway builder")) {
+            tmpStation = null;
+        }
         this.nowEvent.conduct(position);
     }
 
@@ -174,11 +177,13 @@ public class Game {
             }
         } else {
             this.nowEvent.conduct(station);
+            tmpStation = null;
         }
     }
 
     public void railwayOnClick(Railway railway, Position position) {
         this.nowEvent.conduct(railway, position);
+        tmpStation = null;
     }
 
 }

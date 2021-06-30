@@ -97,6 +97,13 @@ public class Railway {
 
         assert s1AdjRailways.size() <= 2 && s2AdjRailways.size() <= 2; 
 
+        if ((s1AdjRailways.size()==1 && s2AdjRailways.size()>=2)||(s1AdjRailways.size()>=2 && s2AdjRailways.size()==1)) {
+            if (DEBUG){
+                System.out.println("Can't create loop!");
+            }
+            return;
+        }
+
         // if (s1AdjRailways.size() >= 1 && s2AdjRailways.size() >= 1){
         //     // add a shortcut railway and destroy old
         //     assert s1.isEndStationInLine(line) && s2.isEndStationInLine(line); 
@@ -219,7 +226,7 @@ public class Railway {
     }
 
     private Position parseAbstractPositionToPosition(double abstractPosition){
-        return realizer.parseAbstractPositionToPosition(abstractPosition); 
+        return realizer.parseAbstractPositionToPosition(abstractPosition);
     }
 
     public void addLocomotive(Locomotive l){
@@ -235,6 +242,7 @@ public class Railway {
             positionsInAbstractLine.put(l, length); 
         }
     }
+
 
     public void removeLocomotive(Locomotive l){
         if (locomotives.contains(l))
@@ -312,9 +320,9 @@ public class Railway {
         
         double newAbstractPosition = positionsInAbstractLine.get(l) + (speed * orientation); 
 
-        newAbstractPosition = Math.min(newAbstractPosition, length); 
-        newAbstractPosition = Math.max(newAbstractPosition, 0); 
-        positionsInAbstractLine.put(l, newAbstractPosition); 
+        newAbstractPosition = Math.min(newAbstractPosition, length);
+        newAbstractPosition = Math.max(newAbstractPosition, 0);
+        positionsInAbstractLine.put(l, newAbstractPosition);
         if (Game.DEBUG_hash.equals("loco")){
             System.out.printf("Move %s to %f/%f in railway %s with %d passengers\n", l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
         }
@@ -344,8 +352,8 @@ public class Railway {
     public boolean isArrived(Locomotive locomotive, Station nextStation) {
         double abstractPosition = positionsInAbstractLine.get(locomotive); 
         if (nextStation == end){
-            return abstractPosition == length;
+            return abstractPosition >= length;
         }
-        return abstractPosition == 0;
+        return abstractPosition <= 0;
     }
 }

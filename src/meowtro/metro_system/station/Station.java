@@ -262,7 +262,7 @@ public class Station {
     }
 
     public void locomotiveArrive(Locomotive l){
-        this.arrivedLocomotives.add(l); 
+        this.arrivedLocomotives.add(l);
     }
 
     public void locomotiveDepart(Locomotive l){
@@ -286,6 +286,7 @@ public class Station {
     public void updateQueuedPassengerPosition() {
         if (Game.DEBUG)
             System.out.printf("station_%d queue size: %d%n", this.index, this.queue.size());
+            
         Position startPosition = new Position(this.position.j-this.imageSize/2, this.position.i-this.imageSize/2);
         double translationX = this.stationSize+3;
         double translationY = 0;

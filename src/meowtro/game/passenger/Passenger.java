@@ -49,7 +49,7 @@ public class Passenger {
         this.setImagePosition(this.position, this.imageSize/2);
     }
 
-    private double imageSize = 10;
+    protected double imageSize = 10;
     public double getImageSize() {
         return this.imageSize;
     }

@@ -50,8 +50,15 @@ public class Line {
             r.railwayID = 0; 
         }
         else if (r.end == railways.getFirst().start){
-            railways.add(0, r); 
-            reIndexRailways(); 
+            if (stations.contains(r.start)) {
+                if (DEBUG){
+                    System.out.println("Can't create loop!"); 
+                }
+                return;
+            } else {
+                railways.add(0, r); 
+                reIndexRailways();
+            }
         }
         else{
             for (Railway ref_r: railways){
