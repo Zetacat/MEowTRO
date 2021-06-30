@@ -22,10 +22,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
+import meowtro.PlayTime;
 import meowtro.Position;
 import meowtro.button.DestroyButton;
+import meowtro.button.FastforwardButton;
 import meowtro.button.LocomotiveButton;
 import meowtro.button.MyButton;
+import meowtro.button.PauseButton;
+import meowtro.button.PlayButton;
 import meowtro.button.RailwayButton;
 import meowtro.button.StationButton;
 import meowtro.game.Config;
@@ -50,7 +54,7 @@ public class Main extends Application {
     private long formerTimeStamp_cmd;
     private long duration_cmd = 99;
     private long formerTimeStamp_animate;
-    private long duration_animate = 9999999;
+    private long duration_animate;
     
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
@@ -91,13 +95,11 @@ public class Main extends Application {
         LocomotiveButton locomotiveButton = new LocomotiveButton(2, game, lm);
         root.getChildren().add(locomotiveButton.getButton());
 
-        Scene scene = new Scene(root, 640, 480);
-        primaryStage.setTitle("MEwoTRO");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
         this.timer = new AnimationTimer() {
             @Override public void handle(long currentNanoTime) {
+                duration_animate = PlayTime.duration_animate;
+                System.out.printf("duration_animate: %d%n", duration_animate);
+
                 // implement timer
                 if (currentNanoTime-formerTimeStamp_cmd > duration_cmd) {
                     // conduct command
@@ -154,6 +156,20 @@ public class Main extends Application {
             }
         };
         this.innerTimer.start();
+
+        PauseButton pauseButton = new PauseButton(0, "./image/button/pause.png", this.innerTimer);
+        root.getChildren().add(pauseButton.getButton());
+
+        PlayButton playButton = new PlayButton(0, "./image/button/play.png", this.innerTimer);
+        root.getChildren().add(playButton.getButton());
+
+        FastforwardButton ffButton = new FastforwardButton(0, "./image/button/fast_forward.png");
+        root.getChildren().add(ffButton.getButton());
+
+        Scene scene = new Scene(root, 640, 480);
+        primaryStage.setTitle("MEwoTRO");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
     
     public static void main(String[] args) {        
