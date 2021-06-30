@@ -23,7 +23,7 @@ public class StationManager extends EntityManager {
 
     public void build(Position position) {}
     public void build(City city, Position position) {
-        if (this.stationNum >= game.getMaxStationNum()) {
+        if (this.stationNum >= game.getMaxStationNum() || this.iconPaths.size() == 0) {
             // throw exception
         } else {
             String iconPath = this.iconPaths.get(0);
