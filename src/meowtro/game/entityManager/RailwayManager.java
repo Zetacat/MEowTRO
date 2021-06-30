@@ -7,7 +7,6 @@ import meowtro.game.Game;
 import meowtro.game.obstacle.Obstacle;
 import meowtro.metro_system.railway.Line;
 import meowtro.metro_system.railway.Railway;
-import meowtro.metro_system.railway.RectangularRailwayRealizer;
 import meowtro.metro_system.station.Station;
 
 public class RailwayManager extends EntityManager{
@@ -27,12 +26,6 @@ public class RailwayManager extends EntityManager{
                 return; 
             }
         }
-        // RectangularRailwayRealizer realizer = new RectangularRailwayRealizer(s1, s2, allStations, obstacles);
-        if (true){//realizer.isValidRailway()) {
-            new Railway(s1, s2, line, this.maxTimeToLive, allStations, obstacles, this.game);
-        } else {
-            System.out.println("Invalid Railway");
-            return;
-        }
+        new Railway(s1, s2, line, this.maxTimeToLive, allStations, obstacles, this.game);
     }
 }

@@ -28,6 +28,7 @@ public class Railway {
     private long remainTimeToLive; 
     private List<Locomotive> locomotives = new ArrayList<Locomotive>(); 
     private ArrayList<RailwayDecorator> railwayDecorators = new ArrayList<RailwayDecorator>(); 
+    private RectangularRailwayRealizer realizer; 
 
     private int fragileThreshold = 240; 
     private long maxLimitedRemainTimeToLive; 
@@ -94,36 +95,39 @@ public class Railway {
 
         assert s1AdjRailways.size() <= 2 && s2AdjRailways.size() <= 2; 
 
-        if (s1AdjRailways.size() >= 1 && s2AdjRailways.size() >= 1){
-            // // add a shortcut railway and destroy old
-            // // assert s1.isEndStationInLine(line) && s2.isEndStationInLine(line); 
-            // for (Railway r: line.getRailwaysBetweenStations(s1, s2)){
-            //     r.destroy();
-            // }
-            // s1AdjRailways = s1.getRailwaysWithLine(line); 
-            // s2AdjRailways = s2.getRailwaysWithLine(line); 
+        // if (s1AdjRailways.size() >= 1 && s2AdjRailways.size() >= 1){
+        //     // add a shortcut railway and destroy old
+        //     assert s1.isEndStationInLine(line) && s2.isEndStationInLine(line); 
+        //     for (Railway r: line.getRailwaysBetweenStations(s1, s2)){
+        //         r.destroy();
+        //     }
+        //     s1AdjRailways = s1.getRailwaysWithLine(line); 
+        //     s2AdjRailways = s2.getRailwaysWithLine(line); 
             
-            // // --S1 --this- S2---
-            // assert s1AdjRailways.size() <= 1 && s2AdjRailways.size() <= 1; 
-            // if (s1AdjRailways.size() == 1 && s2AdjRailways.size() == 1){
-            //     Railway r1 = s1AdjRailways.get(0); 
-            //     Railway r2 = s2AdjRailways.get(0); 
-            //     if (r1.end == s1 && r2.start == s2){
-            //         this.end = s2; 
-            //         this.start = s1; 
-            //     }else if (r1.start == s1 && r2.end == s2){
-            //         this.end = s1; 
-            //         this.start = s2; 
-            //     }else{
-            //         // error
-            //         if (DEBUG){
-            //             System.out.println("Create shortcut railway error: mismatched directions");
-            //         }
-            //         return; 
-            //     }
-            // }
+        //     // --S1 --this- S2---
+        //     assert s1AdjRailways.size() <= 1 && s2AdjRailways.size() <= 1; 
+        //     if (s1AdjRailways.size() == 1 && s2AdjRailways.size() == 1){
+        //         Railway r1 = s1AdjRailways.get(0); 
+        //         Railway r2 = s2AdjRailways.get(0); 
+        //         if (r1.end == s1 && r2.start == s2){
+        //             this.end = s2; 
+        //             this.start = s1; 
+        //         }else if (r1.start == s1 && r2.end == s2){
+        //             this.end = s1; 
+        //             this.start = s2; 
+        //         }else{
+        //             // error
+        //             if (DEBUG){
+        //                 System.out.println("Create shortcut railway error: mismatched directions");
+        //             }
+        //             return; 
+        //         }
+        //     }
+        // }
+        if (s1.isEndStationInLine(line) && s2.isEndStationInLine(line)){
+            System.out.println("Circular line is illegal");
         }
-        if (s1AdjRailways.size() == 0 && s2AdjRailways.size() == 0){
+        else if (s1AdjRailways.size() == 0 && s2AdjRailways.size() == 0){
             // brand new line
             assert line.getRailways().size() == 0; 
             this.start = s1;
@@ -158,10 +162,12 @@ public class Railway {
             return; 
         }
 
-        RectangularRailwayRealizer realizer = new RectangularRailwayRealizer(s1, s2, allStations, obstacles);
+        this.realizer = new RectangularRailwayRealizer(s1, s2, allStations, obstacles);
         this.turningPositions = realizer.Nodes;
         
-        if (!realizer.isValidRailway()){
+        if (start == null && end == null || !realizer.isValidRailway()){
+            if (DEBUG)
+                System.out.println("construct Railway() error");
             return;
         }
 
@@ -170,12 +176,6 @@ public class Railway {
         }
         if (end != null){
             end.addRailway(this);
-        }
-
-        if (start == null && end == null){
-            if (DEBUG)
-                System.out.println("construct Railway() error");
-            return; 
         }
 
         setImage();
@@ -213,24 +213,11 @@ public class Railway {
     }
 
     private int parsePositionToAbstractPosition(Position p){
-        return (int) (Math.abs(p.i-start.getPosition().i) + Math.abs(p.j-start.getPosition().j));
+        return realizer.parsePositionToAbstractPosition(p); 
     }
 
     private Position parseAbstractPositionToPosition(double abstractPosition){
-        for (int i = 1; i < turningPositions.size(); i++) {
-            double l_i = Math.abs(turningPositions.get(i).i-turningPositions.get(i-1).i);
-            double l_j = Math.abs(turningPositions.get(i).j-turningPositions.get(i-1).j);
-            if (abstractPosition >= (l_i+l_j)) {
-                abstractPosition -= (l_i+l_j);
-            } else {
-                if (l_i == 0.0) {
-                    return new Position(turningPositions.get(i-1).i, turningPositions.get(i-1).j+(abstractPosition*(turningPositions.get(i).j-turningPositions.get(i-1).j)/l_j));
-                } else {
-                    return new Position(turningPositions.get(i-1).i+(abstractPosition*(turningPositions.get(i).i-turningPositions.get(i-1).i)/l_i), turningPositions.get(i-1).j);
-                }
-            }
-        }
-        return null;
+        return parseAbstractPositionToPosition(abstractPosition); 
     }
 
     public void addLocomotive(Locomotive l){

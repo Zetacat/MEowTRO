@@ -389,13 +389,24 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
 
     @Override
     public int parsePositionToAbstractPosition(Position p) {
-        // TODO Auto-generated method stub
-        return 0;
+        return (int) (Math.abs(p.i-start.i) + Math.abs(p.j-start.j));
     }
 
     @Override
     public Position parseAbstractPositionToPosition(int abstractPosition) {
-        // TODO Auto-generated method stub
+        for (int i = 1; i < Nodes.size(); i++) {
+            double l_i = Math.abs(Nodes.get(i).i-Nodes.get(i-1).i);
+            double l_j = Math.abs(Nodes.get(i).j-Nodes.get(i-1).j);
+            if (abstractPosition >= (l_i+l_j)) {
+                abstractPosition -= (l_i+l_j);
+            } else {
+                if (l_i == 0.0) {
+                    return new Position(Nodes.get(i-1).i, Nodes.get(i-1).j+(abstractPosition*(Nodes.get(i).j-Nodes.get(i-1).j)/l_j));
+                } else {
+                    return new Position(Nodes.get(i-1).i+(abstractPosition*(Nodes.get(i).i-Nodes.get(i-1).i)/l_i), Nodes.get(i-1).j);
+                }
+            }
+        }
         return null;
     }
     
