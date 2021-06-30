@@ -14,7 +14,7 @@ public class Main_test_metro {
         Game game = gameFactory.createGame(config);
 
         StationManager stationManager = new StationManager(game);
-        RailwayManager railwayManager = new RailwayManager();
+        RailwayManager railwayManager = new RailwayManager(game);
         game.start(stationManager);
 
         // add new line, railway, locomotive between two stations
@@ -22,12 +22,12 @@ public class Main_test_metro {
         game.getCity().addLine(line);
         Station s0 = game.getCity().getRegions().get(0).getStations().get(0);
         Station s1 = game.getCity().getRegions().get(1).getStations().get(0);
-        Railway r0 = new Railway(s0, s1, line, 10000000);
-        Locomotive loco = new Locomotive(r0, new Position(4f, 0f), Direction.BACKWARD);
+        // Railway r0 = new Railway(s0, s1, line, 10000000);
+        // Locomotive loco = new Locomotive(r0, new Position(4f, 0f), Direction.BACKWARD);
 
-        for (int i = 0; i < 15; i++) {
-            game.update();
-        }
+        // for (int i = 0; i < 15; i++) {
+        //     game.update();
+        // }
     }
 
 }
