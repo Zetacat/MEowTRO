@@ -4,10 +4,10 @@ import meowtro.game.City;
 
 public abstract class DisasterEvent extends Event{
     // protected int numOfDestroyRailway;
-    protected int remainTimeUnit;
-    public DisasterEvent(City city, String happenedTimeString, int remainTimeUnit){
+    protected double remainPortion;
+    public DisasterEvent(City city, String happenedTimeString, double remainPortion){
         super(city, happenedTimeString);
-        this.remainTimeUnit = remainTimeUnit;
+        this.remainPortion = remainPortion;
         // this.numOfDestroyRailway = numOfDestroyRailway;
     }
     

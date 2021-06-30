@@ -89,6 +89,7 @@ public class City {
             
             // construct obstacle or region
             List<List<Boolean>> positions = this.positionList2Boolean2DList(colorPixelsPair.getValue(), background.getWidth(), background.getHeight());
+
             if (color2obstacle.containsKey(colorPixelsPair.getKey())) {
                 // construct obstacle
                 Class<? extends Obstacle> obstacleClass = color2obstacle.get(colorPixelsPair.getKey());
@@ -128,7 +129,6 @@ public class City {
                 positions.get(i).add(false);
             }
         }
-        
         // set positions in positionsList to true
         for (Position position: positionsList)
             positions.get((int) Math.round(position.i)).set((int) Math.round(position.j), true);
@@ -149,13 +149,18 @@ public class City {
     }
 
     public Station getRandomStationFromDifferentRegion(Region region) {
-        // get the region index (should have >0 stations)
-        int regionIndex = Game.randomGenerator.nextInt(this.regions.size());
-        while (this.regions.get(regionIndex) == region || this.regions.get(regionIndex).getStations().size() == 0)
-            regionIndex = Game.randomGenerator.nextInt(this.regions.size());
-        // get station index
-        int stationIndex = Game.randomGenerator.nextInt(this.regions.get(regionIndex).getStations().size());
-        return this.regions.get(regionIndex).getStations().get(stationIndex);
+        List<Region> regionsCopy = new ArrayList<Region>(this.regions);
+        Collections.shuffle(regionsCopy);
+        for (Region r: regionsCopy) {
+            if (r == region)
+                continue;
+            if (r.getStations().size() != 0) {
+                List<Station> stations = r.getStations();
+                return stations.get(Game.randomGenerator.nextInt(stations.size()));
+            }
+        }
+        // return null if no other regions have station
+        return null;
     }
 
     public List<Region> getNRandomRegions(int n) {

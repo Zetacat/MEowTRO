@@ -29,7 +29,7 @@ public class Game {
     private int globalSatisfaction = 0;
     private static int balance = 0;
     public static Random randomGenerator = new Random();
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     private int maxStationNum;
     public int getMaxStationNum() {
@@ -87,10 +87,6 @@ public class Game {
 
     public void startTimeLine() {
         TimeLine.getInstance().reset();
-    }
-
-    public void onClick() {
-        // TODO: on click
     }
 
     public void saveRecord() {

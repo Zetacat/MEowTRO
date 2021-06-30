@@ -40,9 +40,9 @@ public class Main extends Application {
     private AnimationTimer timer;
     private AnimationTimer innerTimer;
     private long formerTimeStamp_cmd;
-    private long duration_cmd = 999999;
+    private long duration_cmd = 99;
     private long formerTimeStamp_animate;
-    private long duration_animate = 999999;
+    private long duration_animate = 9999999;
     
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
@@ -60,13 +60,12 @@ public class Main extends Application {
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    System.out.printf("(%f,%f)%n", event.getSceneX(), event.getSceneY());
-                    game.onClick(new Position((int) Math.round(event.getSceneX()), (int) Math.round(event.getSceneY())));
+                    game.onClick(new Position((int) Math.round(event.getSceneY()), (int) Math.round(event.getSceneX())));
                 }
             }
         );
 
-        root.getChildren().add(new ImageView(new Image(new FileInputStream("./image/map_2.png"))));
+        root.getChildren().add(new ImageView(new Image(new FileInputStream("./image/map_3.png"))));
 
         StationButton stationButton = new StationButton(10, game, sm);
         root.getChildren().add(stationButton.getButton());
@@ -74,21 +73,19 @@ public class Main extends Application {
         DestroyButton destroyButton = new DestroyButton(0, game);
         root.getChildren().add(destroyButton.getButton());
         
-        Scene scene = new Scene(root, 980, 540);
+        Scene scene = new Scene(root, 640, 480);
         primaryStage.setTitle("MEwoTRO");
         primaryStage.setScene(scene);
         primaryStage.show();
 
         this.timer = new AnimationTimer() {
             @Override public void handle(long currentNanoTime) {
-                // System.out.printf("Command Loop Time: %d %n", currentNanoTime);
                 // implement timer
                 if (currentNanoTime-formerTimeStamp_cmd > duration_cmd) {
                     // conduct command
                     for (Region region : game.getCity().getRegions()) {
                         for (Station station : region.getStations()) {
                             if (!root.getChildren().contains(station.getImage())) {
-                                System.out.printf("station name: %s%n", station.getIconPath());
                                 root.getChildren().add(station.getImage());
                             }
                         }
@@ -99,7 +96,6 @@ public class Main extends Application {
                         }
                     }
                     game.resetObjectToBeRemoved();
-                    System.out.printf("object in pane: %d%n", root.getChildren().size());
                     // static refresh
                     formerTimeStamp_cmd = currentNanoTime;
                 }
@@ -109,7 +105,6 @@ public class Main extends Application {
         
         this.innerTimer = new AnimationTimer() {
             @Override public void handle(long currentNanoTime) {
-                // System.out.printf("Animation Loop Time: %d %n", currentNanoTime);
                 // implement timer
                 if (currentNanoTime-formerTimeStamp_animate > duration_animate) {
                     // conduct command

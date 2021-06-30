@@ -2,6 +2,7 @@ package meowtro.metro_system.station;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import meowtro.Position;
@@ -67,15 +68,19 @@ public class Station {
     public String getIconPath() {
         return this.iconPath;
     }
+    private double imageSize = 30;
+    public double getImageSize() {
+        return this.imageSize;
+    }
     private void setImage() {
         try {
             Image img = new Image(new FileInputStream(this.iconPath));
             this.image = new ImageView(img);
             this.image.setPickOnBounds(true);
-            this.image.setLayoutX(this.position.i);
-            this.image.setLayoutY(this.position.j);
-            this.image.setFitHeight(30);
-            this.image.setFitWidth(30);
+            this.image.setLayoutX(this.position.j-this.imageSize/2);
+            this.image.setLayoutY(this.position.i-this.imageSize/2);
+            this.image.setFitHeight(this.imageSize);
+            this.image.setFitWidth(this.imageSize);
             this.image.setOnMouseClicked(
                 new EventHandler<MouseEvent>() {    
                     @Override
@@ -220,9 +225,11 @@ public class Station {
     public void insertPassenger(Passenger p, int index){
         // index = 0 or -1
 
-        System.out.printf("queue size: %d, max queue size: %d%n", queue.size(), getMaxQueueSize());
+        if (Game.DEBUG)
+            System.out.printf("queue size: %d, max queue size: %d%n", queue.size(), getMaxQueueSize());
         if (queue.size() >= getMaxQueueSize()){
-            p.selfExplode();
+            // p.selfExplode();
+            p.setTimeToLive((long) 30);
             return;
         }
 
@@ -232,7 +239,6 @@ public class Station {
         assert index >= 0 && index <= queue.size(); 
         queue.add(index, p);
     }
-
 
     public List<Locomotive> getArrivedLocomotives(){
         return arrivedLocomotives; 
@@ -261,27 +267,32 @@ public class Station {
     }
 
     public void destroy(){
-        for (Passenger p: queue){
-            p.selfExplode();
+        for (int i = queue.size() - 1; i >= 0; i--) {
+            queue.get(i).setTimeToLive((long) 30);
         }
-        for (Line l: lines){
-            l.destroyAll();
-        }
+        // queue.get(i).selfExplode();
+        
+        List<Line> linesCopy = new ArrayList<Line>(lines);
+        for (int i = linesCopy.size() - 1; i >= 0; i--)
+            linesCopy.get(i).destroyAll();
+
         city.removeStation(this);
     }
 
-    private int maxColumnOfQueue = 5;
+    private int maxColumnOfQueue = 4;
     public void updateQueuedPassengerPosition() {
-        System.out.printf("station_%d queue size: %d%n", this.index, this.queue.size());
-        Position startPosition = new Position(this.position.i, this.position.j);
-        double translationX = this.stationSize;
+        if (Game.DEBUG)
+            System.out.printf("station_%d queue size: %d%n", this.index, this.queue.size());
+        Position startPosition = new Position(this.position.j-this.imageSize/2, this.position.i-this.imageSize/2);
+        double translationX = this.stationSize+3;
         double translationY = 0;
         for (int i = 0; i < this.queue.size(); i++) {
             Passenger passenger = this.queue.get(i);
-            passenger.setImagePosition(new Position(startPosition.i + translationX, startPosition.j + translationY));
+            passenger.setPosition(new Position(startPosition.j + translationY, startPosition.i + translationX));
+            // passenger.setImagePosition(new Position(startPosition.j + translationY, startPosition.i + translationX), passenger.getImageSize()/2);
             translationX += passenger.getImageSize();
             if (i%maxColumnOfQueue == maxColumnOfQueue-1) {
-                translationX = this.stationSize;
+                translationX = this.stationSize+3;
                 translationY += passenger.getImageSize();
             }
         }
