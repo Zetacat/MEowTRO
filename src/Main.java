@@ -98,8 +98,6 @@ public class Main extends Application {
         this.timer = new AnimationTimer() {
             @Override public void handle(long currentNanoTime) {
                 duration_animate = PlayTime.duration_animate;
-                System.out.printf("duration_animate: %d%n", duration_animate);
-
                 // implement timer
                 if (currentNanoTime-formerTimeStamp_cmd > duration_cmd) {
                     // conduct command

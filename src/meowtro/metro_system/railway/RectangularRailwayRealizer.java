@@ -391,15 +391,17 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     }
 
     @Override
-    public int parsePositionToAbstractPosition(Position p) {
-        return (int) (Math.abs(p.i-start.i) + Math.abs(p.j-start.j));
+    public double parsePositionToAbstractPosition(Position p) {
+        return (Math.abs(p.i-start.i) + Math.abs(p.j-start.j));
     }
 
     @Override
     public Position parseAbstractPositionToPosition(double abstractPosition) {
+        double l_i = 0;
+        double l_j = 0;
         for (int i = 1; i < Nodes.size(); i++) {
-            double l_i = Math.abs(Nodes.get(i).i-Nodes.get(i-1).i);
-            double l_j = Math.abs(Nodes.get(i).j-Nodes.get(i-1).j);
+            l_i = Math.abs(Nodes.get(i).i-Nodes.get(i-1).i);
+            l_j = Math.abs(Nodes.get(i).j-Nodes.get(i-1).j);
             if (abstractPosition > (l_i+l_j)) {
                 abstractPosition -= (l_i+l_j);
             } else {
@@ -410,8 +412,13 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
                 }
             }
         }
-        System.out.println(abstractPosition);
-        return null;
+        if (l_i == 0.0) {
+            return new Position(Nodes.get(Nodes.size()-2).i, Nodes.get(Nodes.size()-2).j+(abstractPosition*(Nodes.get(Nodes.size()-1).j-Nodes.get(Nodes.size()-2).j)/l_j));
+        } else {
+            return new Position(Nodes.get(Nodes.size()-2).i+(abstractPosition*(Nodes.get(Nodes.size()-1).i-Nodes.get(Nodes.size()-2).i)/l_i), Nodes.get(Nodes.size()-2).j);
+        }
+        // System.out.println(abstractPosition);
+        // return null;
     }
     
 }

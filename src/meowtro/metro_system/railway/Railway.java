@@ -223,12 +223,23 @@ public class Railway {
         return line; 
     }
 
-    private int parsePositionToAbstractPosition(Position p){
+    private double parsePositionToAbstractPosition(Position p){
         return realizer.parsePositionToAbstractPosition(p); 
     }
 
     private Position parseAbstractPositionToPosition(double abstractPosition){
         return realizer.parseAbstractPositionToPosition(abstractPosition);
+    }
+
+    public Position getVector(Position p, Direction d, int length) {
+        p = parseAbstractPositionToPosition(parsePositionToAbstractPosition(p));
+        Position p_head;
+        if (d == Direction.BACKWARD) {
+            p_head = parseAbstractPositionToPosition(parsePositionToAbstractPosition(p) - (length/2));
+        } else {
+            p_head = parseAbstractPositionToPosition(parsePositionToAbstractPosition(p) + (length/2));
+        }
+        return new Position(p_head.i-p.i, p_head.j-p.j);
     }
 
     public void addLocomotive(Locomotive l){
@@ -320,7 +331,7 @@ public class Railway {
             orientation = -1; 
         }
         
-        double newAbstractPosition = positionsInAbstractLine.get(l) + (speed * orientation); 
+        double newAbstractPosition = positionsInAbstractLine.get(l) + (speed * orientation);
 
         newAbstractPosition = Math.min(newAbstractPosition, length);
         newAbstractPosition = Math.max(newAbstractPosition, 0);
@@ -329,7 +340,7 @@ public class Railway {
             System.out.printf("Move %s to %f/%f in railway %s with %d passengers\n", l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
         }
 
-        l.setSpeed(maxSpeed * Math.min(Math.min(newAbstractPosition + 1, length-newAbstractPosition + 1) / warmupDist, 1.0));
+        l.setSpeed(maxSpeed * Math.min(Math.min(newAbstractPosition + 1, length-newAbstractPosition + 1) / warmupDist, 1.0));   
         return parseAbstractPositionToPosition(newAbstractPosition); 
     }
 

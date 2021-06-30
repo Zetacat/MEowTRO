@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Pair;
 import meowtro.Position;
 import meowtro.game.*;
 import meowtro.game.passenger.Passenger;
@@ -58,10 +59,10 @@ public class Locomotive {
     * Parse game config and set proper value. 
     */
     public void init(){
-        this.maxLevel = Integer.valueOf(Game.getConfig().get("metro_system.locomotive.max_level")); 
+        this.maxLevel = Integer.valueOf(Game.getConfig().get("metro_system.locomotive.max_level"));
         this.takePassengerCountdown = Integer.valueOf(Game.getConfig().get("metro_system.locomotive.take_passenger_interval")); 
         this.dropPassengerCountdown = Integer.valueOf(Game.getConfig().get("metro_system.locomotive.drop_passenger_interval")); 
-        this.distThres = Integer.valueOf(Game.getConfig().get("metro_system.locomotive.dist_thres")); 
+        this.distThres = Integer.valueOf(Game.getConfig().get("metro_system.locomotive.dist_thres"));
 
         this.levelToMaxSpeed = new HashMap<Integer, Integer>(); 
         this.levelToMaxCar = new HashMap<Integer, Integer>(); 
@@ -82,13 +83,35 @@ public class Locomotive {
             System.out.println("ValueError: metro_system.locomotive.level_to_maxspeed < maxLevel"); 
     }
 
+    private Color color;
+    private int length = 20;
+    private int width = 10;
     private Rectangle image;
     private void setImage(Color color) {
         this.image = new Rectangle();
-        this.image.setHeight(20);
-        this.image.setWidth(10);
         this.image.setFill(color);
-        setImagePosition(this.position, this.image.getHeight()/2, this.image.getWidth()/2);
+        System.out.printf("vector: (%f,%f)%n", this.vector.i, this.vector.j);
+        if (this.vector.i != 0) {
+            this.image.setHeight(this.length);
+            this.image.setWidth(this.width);
+            setImagePosition(this.position, this.width/2, this.length/2);
+        } else if (this.vector.j != 0) {
+            this.image.setHeight(this.width);
+            this.image.setWidth(this.length);
+            setImagePosition(this.position, this.length/2, this.width/2);
+        }
+    }
+    private void resetImage() {
+        System.out.printf("vector: (%f,%f)%n", this.vector.i, this.vector.j);
+        if (this.vector.i != 0) {
+            this.image.setHeight(this.length);
+            this.image.setWidth(this.width);
+            setImagePosition(this.position, this.width/2, this.length/2);
+        } else if (this.vector.j != 0) {
+            this.image.setHeight(this.width);
+            this.image.setWidth(this.length);
+            setImagePosition(this.position, this.length/2, this.width/2);
+        }
     }
     public Rectangle getImage() {
         return this.image;
@@ -102,13 +125,18 @@ public class Locomotive {
         this.image.setWidth(size);
     }
 
+    private Position vector;
+    private Position newVector;
+
     public Locomotive(Railway railway, Position position, Direction direction, Color color){
         init();
         this.railway = railway; 
         this.position = position; 
         this.direction = direction;
+        this.color = color;
         this.state = State.MOVING; 
         this.index = Locomotive.getNextIndex();
+        this.vector = this.railway.getVector(this.position, this.direction, this.length);
         railway.addLocomotive(this);
         if (Game.DEBUG){
             System.out.printf("Locomotive created at %s, railway %s\n", position.toString(), railway.toString());
@@ -299,13 +327,29 @@ public class Locomotive {
         cars.clear(); 
     }
 
-
+    private boolean isTurning = false;
     public void update(){
         if (state == State.MOVING){
             // update current position
             this.position = railway.moveLocomotive(this);
-            assert this.position != null; 
-            setImagePosition(this.position, this.image.getHeight()/2, this.image.getWidth()/2);
+            
+            this.newVector = railway.getVector(this.position, this.direction, this.length);
+            if (isTurning) {
+                if (Math.round(this.vector.i*1000)==Math.round(this.newVector.i*1000) && Math.round(this.vector.j*1000)==Math.round(this.newVector.j*1000)) {
+                    resetImage();
+                    isTurning = false;
+                }
+            } else if (Math.round(this.vector.i)!=Math.round(this.newVector.i) || Math.round(this.vector.j)!=Math.round(this.newVector.j)) {
+                isTurning = true;
+            }
+            this.vector = this.newVector;
+
+            assert this.position != null;
+            if (this.vector.i != 0) {
+                setImagePosition(this.position, this.width/2, this.length/2);
+            } else {
+                setImagePosition(this.position, this.length/2, this.width/2);
+            }
 
             // update current station
             if (railway.isArrived(this, railway.getNextStation(direction))){
