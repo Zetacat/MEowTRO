@@ -103,7 +103,7 @@ public class Railway {
             
             // --S1 --this- S2---
             assert s1AdjRailways.size() <= 1 && s2AdjRailways.size() <= 1; 
-            if (s1AdjRailways.size() == 1 && s1AdjRailways.size() == 1){
+            if (s1AdjRailways.size() == 1 && s2AdjRailways.size() == 1){
                 Railway r1 = s1AdjRailways.get(0); 
                 Railway r2 = s2AdjRailways.get(0); 
                 if (r1.end == s1 && r2.start == s2){

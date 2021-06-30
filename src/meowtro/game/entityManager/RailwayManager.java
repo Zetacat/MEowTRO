@@ -31,6 +31,9 @@ public class RailwayManager extends EntityManager{
         if (realizer.isValidRailway()) {
             new Railway(s1, s2, line, this.maxTimeToLive, realizer.Nodes, realizer.obsticleEndPoints, this.game);
         } else {
+            if (Game.DEBUG){
+                System.out.println("Invalid Railway");
+            }
             return;
         }
     }
