@@ -329,7 +329,6 @@ public class Locomotive {
                                                 .filter(p -> p.willingToGetOn(this))
                                                 .collect(Collectors.toList())); 
                 this.state = State.ARRIVE_DROP; 
-                System.out.printf("GG\n"); 
             }
         }
         else if (state == State.ARRIVE_DROP){
