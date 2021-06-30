@@ -35,6 +35,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         }
         if (!isInitialized){
             initOccupancyMap(allStations);
+            printOccupancyMap(); 
         }
 
         for (Station s: allStations){
@@ -49,6 +50,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         this.start = startStation.getPosition();
         this.end = endStation.getPosition();
 
+        printOccupancyMap(); 
         this.isValid = false; 
         if (judgeLine()){
             this.isValid = true; 
@@ -76,6 +78,18 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         }
     }
 
+    private void printOccupancyMap(){
+        for (List<Boolean> row: OccupancyMap){
+            for (boolean b: row){
+                if (b)
+                    System.out.printf("X"); 
+                if (!b)
+                    System.out.printf(".");
+            }
+            System.out.printf("\n"); 
+        }
+    }
+
     private static void initOccupancyMap(List<Station> allStations){
         OccupancyMap = new ArrayList<List<Boolean>>(); 
         OccupancyMap.add(new ArrayList<Boolean>()); 
@@ -97,8 +111,8 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     }
 
     static void extendOccupancyMapHeight(int height){
-        int oldHeight = OccupancyMap.size(); 
-        int width = OccupancyMap.get(0).size(); 
+        int oldHeight = OccupancyMap.size()-1; 
+        int width = OccupancyMap.get(0).size()-1; 
         if (height <= oldHeight){
             return; 
         }
@@ -108,7 +122,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     }
 
     static void extendOccupancyMapWidth(int width){
-        int oldWidth = OccupancyMap.get(0).size(); 
+        int oldWidth = OccupancyMap.get(0).size()-1; 
         if (width <= oldWidth){
             return; 
         }
@@ -149,6 +163,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     private boolean isValidLine(Position a, Position b){
         double discriminant = (start.i - end.i) * (start.j - end.j); 
         boolean valid = false; 
+        assert discriminant == 0; 
         if (discriminant == 0){
             valid = true; 
             if (start.i == end.i){
@@ -192,6 +207,9 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
 
         Position turningPoint; 
         turningPoint = new Position(b.i, a.j); 
+        System.out.println(a);
+        System.out.println(turningPoint);
+        System.out.println(b);
         if (isValidLine(a, turningPoint) && isValidLine(turningPoint, b)){
             this.Nodes.add(a); 
             this.Nodes.add(turningPoint); 
