@@ -393,7 +393,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     }
 
     @Override
-    public Position parseAbstractPositionToPosition(int abstractPosition) {
+    public Position parseAbstractPositionToPosition(double abstractPosition) {
         for (int i = 1; i < Nodes.size(); i++) {
             double l_i = Math.abs(Nodes.get(i).i-Nodes.get(i-1).i);
             double l_j = Math.abs(Nodes.get(i).j-Nodes.get(i-1).j);

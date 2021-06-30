@@ -217,7 +217,7 @@ public class Railway {
     }
 
     private Position parseAbstractPositionToPosition(double abstractPosition){
-        return parseAbstractPositionToPosition(abstractPosition); 
+        return realizer.parseAbstractPositionToPosition(abstractPosition);
     }
 
     public void addLocomotive(Locomotive l){
