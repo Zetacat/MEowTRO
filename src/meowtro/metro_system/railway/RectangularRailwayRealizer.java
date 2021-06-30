@@ -195,10 +195,10 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     private boolean judgeLShape(){
         Position a = start; 
         Position b = end;
-        if (start.j > end.j){
-            a = end; 
-            b = start; 
-        } 
+        // if (start.j > end.j){
+        //     a = end; 
+        //     b = start; 
+        // } 
 
         Position turningPoint; 
         turningPoint = new Position(b.i, a.j); 

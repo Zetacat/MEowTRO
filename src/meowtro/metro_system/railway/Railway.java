@@ -36,6 +36,7 @@ public class Railway {
     private int originalPrice = 1000; 
 
     private double length; 
+    private double warmupDist = 32.0; 
     private HashMap<Locomotive, Double> positionsInAbstractLine = new HashMap<Locomotive, Double>(); 
 
     private Game game;
@@ -171,7 +172,7 @@ public class Railway {
             return; 
         }
 
-        this.realizer = new RectangularRailwayRealizer(s1, s2, allStations, obstacles);
+        this.realizer = new RectangularRailwayRealizer(start, end, allStations, obstacles);
         this.turningPositions = realizer.Nodes;
         
         if ((start == null && end == null) || !realizer.isValidRailway()){
@@ -189,6 +190,7 @@ public class Railway {
 
         setImage(color);
         this.length = computeLength(); 
+        this.warmupDist = Math.min(length / 2, 64.0); 
         line.addRailway(this);
     }
 
@@ -310,7 +312,7 @@ public class Railway {
             }
             return null; 
         }
-        int speed = l.getSpeed(); 
+        double speed = l.getSpeed(); 
         int maxSpeed = l.getMaxSpeed(); 
         
         int orientation = 1; 
@@ -327,7 +329,7 @@ public class Railway {
             System.out.printf("Move %s to %f/%f in railway %s with %d passengers\n", l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
         }
 
-        l.setSpeed(maxSpeed);
+        l.setSpeed(maxSpeed * Math.min(Math.min(newAbstractPosition + 1, length-newAbstractPosition + 1) / warmupDist, 1.0));
         return parseAbstractPositionToPosition(newAbstractPosition); 
     }
 

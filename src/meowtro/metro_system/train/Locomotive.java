@@ -30,7 +30,7 @@ public class Locomotive {
     private Station currentStation;  // Station | null
     private int level = 0; 
     private int maxLevel; 
-    private int currentSpeed; 
+    private double currentSpeed; 
     private Map<Integer, Integer> levelToMaxSpeed; 
     private Map<Integer, Integer> levelToMaxCar; 
     private Railway railway; 
@@ -146,7 +146,7 @@ public class Locomotive {
         return railway.getLine(); 
     }
 
-    public int getSpeed(){
+    public double getSpeed(){
         return currentSpeed; 
     }
 
@@ -169,7 +169,7 @@ public class Locomotive {
         }
     }
 
-    public void setSpeed(int speed){
+    public void setSpeed(double speed){
         this.currentSpeed = speed; 
     }
 
@@ -218,6 +218,7 @@ public class Locomotive {
         this.currentStation = null; 
         this.state = State.MOVING; 
         // TODO: handle speed
+        this.currentSpeed = 0.2; 
     }
 
     public Station getCurrentStation() {
