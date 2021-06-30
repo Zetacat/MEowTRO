@@ -213,7 +213,7 @@ public class Locomotive {
         currentStation.locomotiveDepart(this);
         railway.removeLocomotive(this);
         this.railway = currentStation.getNextRailway(railway); 
-        railway.addLocomotive(this);
+        railway.locomotiveDepart(this);
         this.currentStation = null; 
         this.state = State.MOVING; 
         // TODO: handle speed

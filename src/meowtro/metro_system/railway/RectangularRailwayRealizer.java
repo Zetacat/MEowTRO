@@ -17,7 +17,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     private static boolean isInitialized = false;
     private static List<List<Boolean>> OccupancyMap;
     private static HashSet<Station> recordedStations = new HashSet<Station>(); 
-    private static double nearbyThreshold = 8.0; 
+    private static double nearbyThreshold = 20.0; 
 
     public List<Position> Nodes = new ArrayList<Position>(); 
     public HashMap<List<Position>, Obstacle> obsticleEndPoints = new HashMap<List<Position>, Obstacle>(); 
@@ -41,7 +41,6 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         for (Station s: allStations){
             if (!recordedStations.contains(s)){
                 addStationToOccupancyMap(s);
-                recordedStations.add(s); 
             }
         }
         removeStationInOccupancyMap(startStation);
@@ -91,7 +90,6 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
 
     private static void initOccupancyMap(List<Station> allStations){
         OccupancyMap = new ArrayList<List<Boolean>>(); 
-        OccupancyMap.add(new ArrayList<Boolean>()); 
         
         int height = City.getHeight(); 
         int width = City.getWidth(); 
@@ -100,7 +98,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         for (int i = 0; i < height; i++){
             OccupancyMap.add(new ArrayList<Boolean>(Collections.nCopies(width, false))); 
         }
-
+        
         assert OccupancyMap.size() == height; 
         for (List<Boolean> row: OccupancyMap){
             assert row.size() == width; 
@@ -131,18 +129,17 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
 
     static void addStationToOccupancyMap(Station s){
         Position p = s.getPosition(); 
-        extendOccupancyMapHeight((int)p.i + (int)(nearbyThreshold * 1.5)); 
-        extendOccupancyMapWidth((int)p.j + (int)(nearbyThreshold * 1.5)); 
 
         for (int i = (int)(p.i - nearbyThreshold); i <= (int)(p.i + nearbyThreshold); i++){
             for (int j = (int)(p.j - nearbyThreshold); j <= (int)(p.j + nearbyThreshold); j++){
-                if (i > 0 && i < OccupancyMap.size()){
-                    if (j > 0 && j < OccupancyMap.get(0).size()){
+                if (i >= 0 && i < OccupancyMap.size()){
+                    if (j >= 0 && j < OccupancyMap.get(i).size()){
                         OccupancyMap.get(i).set(j, true); 
                     }
                 }
             }
         }
+        recordedStations.add(s); 
     }
 
     static void removeStationInOccupancyMap(Station s){
@@ -159,22 +156,22 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     }
 
     private boolean isValidLine(Position a, Position b){
-        double discriminant = (start.i - end.i) * (start.j - end.j); 
+        int discriminant = ((int)a.i - (int)b.i) * ((int)a.j - (int)b.j); 
         boolean valid = false; 
         assert discriminant == 0; 
         if (discriminant == 0){
             valid = true; 
-            if (start.i == end.i){
-                int i = (int) start.i; 
-                for (int j = (int)Math.min(start.j, end.j); j <= (int)Math.max(start.j, end.j); j++){
+            if (a.i == b.i){
+                int i = (int) a.i; 
+                for (int j = (int)Math.min(a.j, b.j); j <= (int)Math.max(a.j, b.j); j++){
                     if (OccupancyMap.get(i).get(j)){
                         valid = false; 
                         break; 
                     }
                 }
             }else{
-                int j = (int) start.j; 
-                for (int i = (int)Math.min(start.i, end.i); i <= (int)Math.max(start.i, end.i); i++){
+                int j = (int) a.j; 
+                for (int i = (int)Math.min(a.i, b.i); i <= (int)Math.max(a.i, b.i); i++){
                     if (OccupancyMap.get(i).get(j)){
                         valid = false; 
                         break; 
@@ -187,12 +184,12 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
 
     private boolean judgeLine(){
         double discriminant = (start.i - end.i) * (start.j - end.j);
-        boolean valid = isValidLine(start, end); 
-        if (discriminant == 0){
+        if (discriminant == 0 && isValidLine(start, end)){
             this.Nodes.add(this.start); 
             this.Nodes.add(this.end); 
+            return true; 
         }
-        return valid; 
+        return false; 
     }
 
     private boolean judgeLShape(){
@@ -205,9 +202,6 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
 
         Position turningPoint; 
         turningPoint = new Position(b.i, a.j); 
-        System.out.println(a);
-        System.out.println(turningPoint);
-        System.out.println(b);
         if (isValidLine(a, turningPoint) && isValidLine(turningPoint, b)){
             this.Nodes.add(a); 
             this.Nodes.add(turningPoint); 
@@ -221,7 +215,6 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
             this.Nodes.add(b); 
             return true; 
         }
-        System.out.println("L bad :(");
         return false; 
     }
 
@@ -239,9 +232,9 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
                 }
                 result.add(value); 
             }
-        }else{
-            int height = OccupancyMap.size(); 
-            int width = OccupancyMap.get(0).size(); 
+        }else if (axis == 0){
+            int height = oMap.size(); 
+            int width = oMap.get(0).size(); 
             for (int j = 0; j < width; j++){
                 boolean value = false; 
                 for (int i = 0; i < height; i++){
@@ -263,21 +256,27 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         int offset = 0; 
         List<Boolean> oMap = ORAlongAxis(OccupancyMap, 0); 
         int resultIdx = -1; 
+        Position mid1 = null; 
+        Position mid2 = null; 
         while (offset < maxOffset && resultIdx < 0){
             for (int sign = -1; sign <= 1; sign+=2){
-                int index = startIdx + offset * sign; 
+                int index = startIdx + offset * sign;
                 if (oMap.get(index) == false){
-                    // found it
-                    resultIdx = index; 
-                    break; 
+                    mid1 = new Position(start.i, index); 
+                    mid2 = new Position(end.i, index); 
+                    if (isValidLine(start, mid1) && isValidLine(mid1, mid2) && isValidLine(mid2, end)){
+                        // found it
+                        resultIdx = index; 
+                        break; 
+                    }
                 }
             }
             offset ++; 
         }
         if (resultIdx >= 0){
             Nodes.add(start); 
-            Nodes.add(new Position(start.i, resultIdx)); 
-            Nodes.add(new Position(end.i, resultIdx)); 
+            Nodes.add(mid1); 
+            Nodes.add(mid2); 
             Nodes.add(end); 
             return true; 
         }
@@ -291,17 +290,21 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
             for (int i = -1; i <= 1; i+=2){
                 int index = startIdx + offset * i; 
                 if (oMap.get(index) == false){
-                    // found it
-                    resultIdx = index; 
-                    break; 
+                    mid1 = new Position(index, start.j); 
+                    mid2 = new Position(index, end.j); 
+                    if (isValidLine(start, mid1) && isValidLine(mid1, mid2) && isValidLine(mid2, end)){
+                        // found it
+                        resultIdx = index; 
+                        break; 
+                    }
                 }
             }
             offset ++; 
         }
         if (resultIdx >= 0){
             Nodes.add(start); 
-            Nodes.add(new Position(resultIdx, start.j)); 
-            Nodes.add(new Position(resultIdx, end.j)); 
+            Nodes.add(mid1); 
+            Nodes.add(mid2); 
             Nodes.add(end); 
             return true; 
         }
@@ -393,7 +396,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     }
 
     @Override
-    public Position parseAbstractPositionToPosition(int abstractPosition) {
+    public Position parseAbstractPositionToPosition(double abstractPosition) {
         for (int i = 1; i < Nodes.size(); i++) {
             double l_i = Math.abs(Nodes.get(i).i-Nodes.get(i-1).i);
             double l_j = Math.abs(Nodes.get(i).j-Nodes.get(i-1).j);

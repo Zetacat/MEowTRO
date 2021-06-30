@@ -165,7 +165,7 @@ public class Railway {
         this.realizer = new RectangularRailwayRealizer(s1, s2, allStations, obstacles);
         this.turningPositions = realizer.Nodes;
         
-        if (start == null && end == null || !realizer.isValidRailway()){
+        if ((start == null && end == null) || !realizer.isValidRailway()){
             if (DEBUG)
                 System.out.println("construct Railway() error");
             return;
@@ -217,12 +217,21 @@ public class Railway {
     }
 
     private Position parseAbstractPositionToPosition(double abstractPosition){
-        return parseAbstractPositionToPosition(abstractPosition); 
+        return realizer.parseAbstractPositionToPosition(abstractPosition); 
     }
 
     public void addLocomotive(Locomotive l){
         locomotives.add(l); 
         positionsInAbstractLine.put(l, parsePositionToAbstractPosition(l.getPosition())); 
+    }
+
+    public void locomotiveDepart(Locomotive l){
+        locomotives.add(l); 
+        if (l.getDirection() == Direction.FORWARD){
+            positionsInAbstractLine.put(l, 0); 
+        }else{
+            positionsInAbstractLine.put(l, length); 
+        }
     }
 
     public void removeLocomotive(Locomotive l){
