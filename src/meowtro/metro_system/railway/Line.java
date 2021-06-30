@@ -165,8 +165,11 @@ public class Line {
     }
 
     public void update(){
-        for (Railway r: railways){
-            r.update();
+        // for (Railway r: railways){
+        //     r.update();
+        // }
+        for (Locomotive l : locomotives) {
+            l.update();
         }
     }
 
