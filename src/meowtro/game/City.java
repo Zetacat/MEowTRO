@@ -33,14 +33,17 @@ public class City {
     private List<Obstacle> obstacles = new ArrayList<Obstacle>();
     private List<Line> lines = new ArrayList<Line>();
     private int totalTransportedPassengerCount = 0;
+    private int width = 0;
+    private int height = 0;
     
-
     public City() {
 
         // read image
         BufferedImage background = null;
         try {
             background = ImageIO.read(new File(Game.getConfig().get("image.path")));
+            this.width = background.getWidth();
+            this.height = background.getHeight();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -118,6 +121,14 @@ public class City {
 
         if (Game.DEBUG)
             System.out.println(String.format("City constructed (%d obstacles, %d regions)", this.obstacles.size(), this.regions.size()));
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 
     private List<List<Boolean>> positionList2Boolean2DList(List<Position> positionsList, int width, int height) {
