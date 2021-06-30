@@ -163,9 +163,9 @@ public class Railway {
         return (int) Math.max(Math.min((p.i - start.getPosition().i) / Math.abs(end.getPosition().i - start.getPosition().i) * length, length), 0); 
     }
 
-    private Position parseAbstractPositionToPosition(int ap){
+    private Position parseAbstractPositionToPosition(int abstractPosition){
         // TODO
-        return new Position(start.getPosition().i + ap / length * Math.abs(end.getPosition().i - start.getPosition().i), 0); 
+        return new Position(start.getPosition().i + abstractPosition / length * Math.abs(end.getPosition().i - start.getPosition().i), 0); 
     }
 
     public void addLocomotive(Locomotive l){
