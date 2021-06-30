@@ -175,7 +175,9 @@ public class City {
     }
 
     public void addLine(Line newLine) {
-        this.lines.add(newLine);
+        if (!this.lines.contains(newLine)) {
+            this.lines.add(newLine);
+        }
     }
     
     public List<Line> getAllLines(){
@@ -198,6 +200,10 @@ public class City {
             result.addAll(r.getStations()); 
         }
         return result; 
+    }
+
+    public List<Obstacle> getObstacles() {
+        return this.obstacles;
     }
 
     public List<Obstacle> blockedBy(Station station1, Station station2) {

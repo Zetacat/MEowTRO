@@ -50,6 +50,9 @@ public class Station {
     private ImageView image;
     private EntityManager manager;
 
+    public int getIndex() {
+        return this.index;
+    }
     private static int getNextIndex() {
         return (Station.nextIndex++);
     }

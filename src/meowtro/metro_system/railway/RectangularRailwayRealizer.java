@@ -22,11 +22,11 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     private boolean isValid = false; 
     private boolean isIntersectedWithObstacle = false; 
 
-    private Position start; 
+    private Position start;
     private Position end; 
 
     
-    public RectangularRailwayRealizer(Station start, Station end, List<Station> allStations, List<Obstacle> obstacles){
+    public RectangularRailwayRealizer(Station startStation, Station endStation, List<Station> allStations, List<Obstacle> obstacles){
         if (!isInitialized){
             initOccupancyMap(allStations);
         }
@@ -37,8 +37,11 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
                 recordedStations.add(s); 
             }
         }
-        removeStationInOccupancyMap(start);
-        removeStationInOccupancyMap(end);
+        removeStationInOccupancyMap(startStation);
+        removeStationInOccupancyMap(endStation);
+
+        this.start = startStation.getPosition();
+        this.end = endStation.getPosition();
 
         this.isValid = false; 
         if (judgeLine()){
@@ -53,8 +56,8 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
             judgeObstacles(obstacles); 
         }
 
-        addStationToOccupancyMap(start);
-        addStationToOccupancyMap(end);
+        addStationToOccupancyMap(startStation);
+        addStationToOccupancyMap(endStation);
     }
 
     private static void initOccupancyMap(List<Station> allStations){
@@ -151,7 +154,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     }
 
     private boolean judgeLine(){
-        double discriminant = (start.i - end.i) * (start.j - end.j); 
+        double discriminant = (start.i - end.i) * (start.j - end.j);
         boolean valid = isValidLine(start, end); 
         if (discriminant == 0){
             this.Nodes.add(this.start); 
@@ -345,7 +348,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     }
 
     public boolean isIntersectedWithObstacle(){
-        return isIntersectedWithObstacle; 
+        return isIntersectedWithObstacle;
     }
 
     @Override

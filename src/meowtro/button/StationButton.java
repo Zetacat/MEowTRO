@@ -21,8 +21,8 @@ public class StationButton extends MyButton {
         this.game = game;
         this.stationManager = stationManager;
         btn.setText("Build Station");
-        btn.setLayoutX(500);
-        btn.setLayoutY(200);
+        btn.setLayoutX(100);
+        btn.setLayoutY(100);
         btn.setOnAction(
             new EventHandler<ActionEvent>() {    
                 @Override

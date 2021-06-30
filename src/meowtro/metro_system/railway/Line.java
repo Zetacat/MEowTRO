@@ -20,8 +20,9 @@ public class Line {
     private LineColor color; 
 
     public Line(City city, LineColor color){
-        this.city = city; 
-        this.color = color; 
+        this.city = city;
+        this.color = color;
+        this.city.addLine(this); 
     }
 
     public Line(LineColor color){
@@ -38,6 +39,12 @@ public class Line {
 
     public void addRailway(Railway r){
         boolean DEBUG = true; 
+        if (railways.contains(r)){
+            if (DEBUG){
+                System.out.println("Can't add railway to Line! "); 
+            }
+            return; 
+        }
         if (railways.size() == 0){
             railways.add(r); 
             r.railwayID = 0; 
@@ -49,26 +56,30 @@ public class Line {
         else{
             for (Railway ref_r: railways){
                 if (ref_r.end == r.start){
-                    railways.add(railways.indexOf(ref_r)+1, r); 
-                    reIndexRailways(); 
-                    return; 
+                    if (stations.contains(r.end)) {
+                        if (DEBUG){
+                            System.out.println("Can't create loop!"); 
+                        }
+                        return;
+                    } else {
+                        railways.add(railways.indexOf(ref_r)+1, r); 
+                        reIndexRailways();
+                        break;
+                    }
                 }
             }
         }
-        if (! railways.contains(r)){
-            if (DEBUG){
-                System.out.println("Can't add railway to Line! "); 
-            }
-            return; 
-        }
 
-        reIndexRailways(); 
         if (r.start != null){
-            stations.add(r.start); 
+            if (!stations.contains(r.start))
+                stations.add(r.start); 
         }
         if (r.end != null){
-            stations.add(r.end); 
+            if (!stations.contains(r.end))
+                stations.add(r.end); 
         }
+
+        System.out.printf("Line (%s) has been added a railway%n", this.color);
     }
 
     public Set<Station> getStations(){

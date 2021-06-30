@@ -6,8 +6,16 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Shape;
+import javafx.scene.shape.StrokeLineJoin;
 import meowtro.Position;
 import meowtro.game.Game;
+import meowtro.game.obstacle.Obstacle;
 import meowtro.metro_system.Direction;
 import meowtro.metro_system.station.Station;
 import meowtro.metro_system.train.Locomotive;
@@ -28,7 +36,8 @@ public class Railway {
     private int length; 
     private HashMap<Locomotive, Integer> positionsInAbstractLine = new HashMap<Locomotive, Integer>(); 
 
-
+    private Game game;
+    private List<Position> turningPositions;
     /**
     * Parse game config and set proper value. 
     */
@@ -37,13 +46,39 @@ public class Railway {
         this.originalPrice = Integer.valueOf(Game.getConfig().get("metro_system.railway.original_price")); 
     }
 
+    private Path image;
+    public void setImage() {
+        this.image = new Path();
+        this.image.getElements().add(new MoveTo(this.turningPositions.get(0).j, this.turningPositions.get(0).i));
+        for (int i = 1; i < this.turningPositions.size(); i++) {
+            this.image.getElements().add(new LineTo(this.turningPositions.get(i).j, this.turningPositions.get(i).i));
+        }
+        this.image.setStrokeWidth(5);
+        this.image.setStrokeLineJoin(StrokeLineJoin.ROUND);
+        this.image.setOnMouseClicked(
+            new EventHandler<MouseEvent>() {    
+                @Override
+                public void handle(MouseEvent event) {
+                    onClick();
+                }
+            }
+        );
+    }
+    public Path getImage() {
+        return this.image;
+    }
+    private void onClick() {
+        this.game.railwayOnClick(this);
+    }
 
-    public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive){
+    public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive, List<Position> turningPositions, HashMap<List<Position>, Obstacle> obstacleEndPositions, Game game){
         init();
         this.maxLimitedRemainTimeToLive = maxLimitedRemainTimeToLive;
         this.remainTimeToLive = maxLimitedRemainTimeToLive;
         boolean DEBUG = true; 
         this.line = line; 
+        this.game = game;
+        this.turningPositions = turningPositions;
 
         if (s1.getAdjacents().contains(s2) || s2.getAdjacents().contains(s1)){
             if (DEBUG){
@@ -89,7 +124,7 @@ public class Railway {
         if (s1AdjRailways.size() == 0 && s2AdjRailways.size() == 0){
             // brand new line
             assert line.getRailways().size() == 0; 
-            this.start = s1; 
+            this.start = s1;
             this.end = s2;
         }
         else{
@@ -100,11 +135,11 @@ public class Railway {
             if (s1AdjRailways.size() == 1){
                 endStationOfThisLine = s1; 
                 NewEndStation = s2; 
-                endRailway = s1AdjRailways.get(0); 
+                endRailway = s1AdjRailways.get(0);
             }else{
-                endStationOfThisLine = s2; 
+                endStationOfThisLine = s2;
                 NewEndStation = s1; 
-                endRailway = s2AdjRailways.get(0); 
+                endRailway = s2AdjRailways.get(0);
             }
 
             if (endRailway.start == endStationOfThisLine){
@@ -116,6 +151,8 @@ public class Railway {
                 this.start = endStationOfThisLine; 
             }
         }
+
+        setImage();
 
         if (start != null){
             start.addRailway(this);
@@ -133,6 +170,7 @@ public class Railway {
         this.length = computeLength(); 
         line.addRailway(this);
     }
+
     public long getRemainLive(){
         return this.remainTimeToLive;
     }
@@ -164,12 +202,21 @@ public class Railway {
 
     private int parsePositionToAbstractPosition(Position p){
         // TODO
-        return (int) Math.max(Math.min((p.i - start.getPosition().i) / Math.abs(end.getPosition().i - start.getPosition().i) * length, length), 0); 
+        return (int) (Math.abs(p.i-start.getPosition().i) + Math.abs(p.j-start.getPosition().j));
     }
 
-    private Position parseAbstractPositionToPosition(int abstractPosition){
+    private Position parseAbstractPositionToPosition(double abstractPosition){
         // TODO
-        return new Position(start.getPosition().i + abstractPosition / length * Math.abs(end.getPosition().i - start.getPosition().i), 0); 
+        for (int i = 1; i < turningPositions.size(); i++) {
+            double l_i = Math.abs(turningPositions.get(i).i-turningPositions.get(i-1).i);
+            double l_j = Math.abs(turningPositions.get(i).j-turningPositions.get(i-1).j);
+            if (abstractPosition >= (l_i+l_j)) {
+                abstractPosition -= (l_i+l_j);
+            } else {
+                return new Position(turningPositions.get(i-1).i+(abstractPosition*(turningPositions.get(i).i-turningPositions.get(i-1).i)/l_i),turningPositions.get(i-1).j+(abstractPosition*(turningPositions.get(i).j-turningPositions.get(i-1).j)/l_j));
+            }
+        }
+        return null;
     }
 
     public void addLocomotive(Locomotive l){
@@ -227,7 +274,7 @@ public class Railway {
         if (end != null){
             end.removeRailway(this);
         }
-
+        this.game.deleteObject(this.image);
         line.removeRailways(this);
     }
 
@@ -260,7 +307,7 @@ public class Railway {
                                     l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
         }
 
-        l.setSpeed(maxSpeed); 
+        l.setSpeed(maxSpeed);
         return parseAbstractPositionToPosition(newAbstractPosition); 
     }
 

@@ -25,13 +25,18 @@ import javafx.stage.Stage;
 import meowtro.Position;
 import meowtro.button.DestroyButton;
 import meowtro.button.MyButton;
+import meowtro.button.RailwayButton;
 import meowtro.button.StationButton;
 import meowtro.game.Config;
 import meowtro.game.Game;
 import meowtro.game.GameFactory;
 import meowtro.game.Region;
+import meowtro.game.entityManager.RailwayManager;
 import meowtro.game.entityManager.StationManager;
 import meowtro.game.passenger.Passenger;
+import meowtro.metro_system.railway.Line;
+import meowtro.metro_system.railway.LineColor;
+import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.station.Station;
 
 public class Main extends Application {
@@ -52,6 +57,7 @@ public class Main extends Application {
         Game game = gameFactory.createGame(config);
         
         StationManager sm = new StationManager(game);
+        RailwayManager rm = new RailwayManager(game);
         
         game.start(sm);
 
@@ -73,6 +79,10 @@ public class Main extends Application {
         DestroyButton destroyButton = new DestroyButton(0, game);
         root.getChildren().add(destroyButton.getButton());
         
+        Line line = new Line(game.getCity(), LineColor.BLUE);
+        RailwayButton railwayButton = new RailwayButton(2, game, rm, line);
+        root.getChildren().add(railwayButton.getButton());
+
         Scene scene = new Scene(root, 640, 480);
         primaryStage.setTitle("MEwoTRO");
         primaryStage.setScene(scene);
@@ -87,6 +97,13 @@ public class Main extends Application {
                         for (Station station : region.getStations()) {
                             if (!root.getChildren().contains(station.getImage())) {
                                 root.getChildren().add(station.getImage());
+                            }
+                        }
+                    }
+                    for (Line line : game.getCity().getAllLines()) {
+                        for (Railway railway : line.getRailways()) {
+                            if (!root.getChildren().contains(railway.getImage())) {
+                                root.getChildren().add(railway.getImage());
                             }
                         }
                     }

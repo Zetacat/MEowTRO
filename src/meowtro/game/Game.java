@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Random;
 
 import javafx.animation.Timeline;
+import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.station.Station;
 import meowtro.game.entityManager.StationManager;
 import meowtro.game.onClickEvent.OnClickEvent;
+import meowtro.game.onClickEvent.WaitForClick;
 import meowtro.timeSystem.TimeLine;
 import meowtro.Position;
 import meowtro.eventSystem.*;
@@ -58,6 +60,7 @@ public class Game {
         Game.setBalance(Integer.parseInt(config.get("balance.default")));
         Game.randomGenerator.setSeed(Long.parseLong(config.get("game.random.seed")));
         this.startTimeLine();
+        this.setNowEvent(new WaitForClick(this));
     }
 
     public static int getBalance() {
@@ -159,8 +162,22 @@ public class Game {
         this.objectToBeRemoved.clear();
     }
 
+    private Station tmpStation = null;
     public void stationOnClick(Station station) {
-        this.nowEvent.conduct(station);
+        if (this.nowEvent.getName().equals("railway builder")) {
+            if (tmpStation == null) {
+                tmpStation = station;
+            } else {
+                this.nowEvent.conduct(tmpStation, station);
+                tmpStation = null;
+            }
+        } else {
+            this.nowEvent.conduct(station);
+        }
+    }
+
+    public void railwayOnClick(Railway railway) {
+        
     }
 
 }
