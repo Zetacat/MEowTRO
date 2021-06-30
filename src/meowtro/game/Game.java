@@ -116,7 +116,8 @@ public class Game {
         // }
 
         // TODO: check event
-        this.eventTrigger.trigger();
+        if (eventTrigger != null)
+            this.eventTrigger.trigger();
 
         this.city.update();
         this.globalSatisfaction = this.city.getGlobalStatisfaction();

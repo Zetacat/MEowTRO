@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class GameFactory {
     private List<Event> creatEvents(Config config, City city){
         String eventsSetting = config.get("eventSystem.allEvents");
+        assert eventsSetting != null; 
         String[] eventsStr = eventsSetting.split("\\r?\\n");
         List<Event> allEvents = new ArrayList<>();
         for(int i=0; i<eventsStr.length; i++){
@@ -41,9 +42,10 @@ public class GameFactory {
         Game game = new Game(config);
         City city = new City();
         game.setCity(city);
-        EventTrigger eventTrigger = new EventTrigger(creatEvents(config, city));
-        game.setEventTrigger(eventTrigger);
-
+        if (config.get("eventSystem.allEvents") != null){
+            EventTrigger eventTrigger = new EventTrigger(creatEvents(config, city));
+            game.setEventTrigger(eventTrigger);
+        }
         return game;
     }
 
