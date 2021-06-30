@@ -8,6 +8,7 @@ import java.util.List;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -34,8 +35,8 @@ public class Railway {
     private long maxLimitedRemainTimeToLive; 
     private int originalPrice = 1000; 
 
-    private int length; 
-    private HashMap<Locomotive, Integer> positionsInAbstractLine = new HashMap<Locomotive, Integer>(); 
+    private double length; 
+    private HashMap<Locomotive, Double> positionsInAbstractLine = new HashMap<Locomotive, Double>(); 
 
     private Game game;
     private List<Position> turningPositions;
@@ -48,7 +49,7 @@ public class Railway {
     }
 
     private Path image;
-    public void setImage() {
+    public void setImage(Color color) {
         this.image = new Path();
         this.image.getElements().add(new MoveTo(this.turningPositions.get(0).j, this.turningPositions.get(0).i));
         for (int i = 1; i < this.turningPositions.size(); i++) {
@@ -56,6 +57,7 @@ public class Railway {
         }
         this.image.setStrokeWidth(5);
         this.image.setStrokeLineJoin(StrokeLineJoin.ROUND);
+        this.image.setStroke(color);
         this.image.setOnMouseClicked(
             new EventHandler<MouseEvent>() {    
                 @Override
@@ -72,7 +74,7 @@ public class Railway {
         this.game.railwayOnClick(this, new Position(event.getSceneY(), event.getSceneX()));
     }
 
-    public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive, List<Station> allStations, List<Obstacle> obstacles, Game game){
+    public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive, List<Station> allStations, List<Obstacle> obstacles, Game game, Color color){
         if (s1 == s2){
             return; 
         }
@@ -178,7 +180,7 @@ public class Railway {
             end.addRailway(this);
         }
 
-        setImage();
+        setImage(color);
         this.length = computeLength(); 
         line.addRailway(this);
     }
@@ -222,13 +224,13 @@ public class Railway {
 
     public void addLocomotive(Locomotive l){
         locomotives.add(l); 
-        positionsInAbstractLine.put(l, parsePositionToAbstractPosition(l.getPosition())); 
+        positionsInAbstractLine.put(l, (double) parsePositionToAbstractPosition(l.getPosition())); 
     }
 
     public void locomotiveDepart(Locomotive l){
         locomotives.add(l); 
         if (l.getDirection() == Direction.FORWARD){
-            positionsInAbstractLine.put(l, 0); 
+            positionsInAbstractLine.put(l, 0.0); 
         }else{
             positionsInAbstractLine.put(l, length); 
         }
@@ -288,8 +290,9 @@ public class Railway {
         line.removeRailways(this);
     }
 
-    private int computeLength(){
-        return (int) start.getPosition().l2distance(end.getPosition()); 
+    private double computeLength(){
+        return Math.abs(end.getPosition().i-start.getPosition().i) + Math.abs(end.getPosition().j-start.getPosition().j);
+        // return (int) start.getPosition().l2distance(end.getPosition());
     }
 
     public Position moveLocomotive(Locomotive l){
@@ -307,13 +310,13 @@ public class Railway {
             orientation = -1; 
         }
         
-        int newAbstractPosition = positionsInAbstractLine.get(l) + (speed * orientation); 
+        double newAbstractPosition = positionsInAbstractLine.get(l) + (speed * orientation); 
 
         newAbstractPosition = Math.min(newAbstractPosition, length); 
         newAbstractPosition = Math.max(newAbstractPosition, 0); 
         positionsInAbstractLine.put(l, newAbstractPosition); 
         if (Game.DEBUG_hash.equals("loco")){
-            System.out.printf("Move %s to %d/%d in railway %s with %d passengers\n", l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
+            System.out.printf("Move %s to %f/%f in railway %s with %d passengers\n", l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
         }
 
         l.setSpeed(maxSpeed);
@@ -339,7 +342,7 @@ public class Railway {
 
 
     public boolean isArrived(Locomotive locomotive, Station nextStation) {
-        int abstractPosition = positionsInAbstractLine.get(locomotive); 
+        double abstractPosition = positionsInAbstractLine.get(locomotive); 
         if (nextStation == end){
             return abstractPosition == length;
         }

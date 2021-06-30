@@ -87,6 +87,7 @@ public class Locomotive {
         this.image = new Rectangle();
         this.image.setHeight(20);
         this.image.setWidth(10);
+        this.image.setFill(color);
         setImagePosition(this.position, this.image.getHeight()/2, this.image.getWidth()/2);
     }
     public Rectangle getImage() {
@@ -339,7 +340,7 @@ public class Locomotive {
         else if (state == State.ARRIVE_GETON){
             if (Game.DEBUG)
                 System.out.printf("Trying taking passenger...\n");
-            tryTakePassenger(); 
+            tryTakePassenger();
         }
         else{
             // error
