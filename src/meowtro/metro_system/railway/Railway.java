@@ -34,8 +34,8 @@ public class Railway {
     private long maxLimitedRemainTimeToLive; 
     private int originalPrice = 1000; 
 
-    private int length; 
-    private HashMap<Locomotive, Integer> positionsInAbstractLine = new HashMap<Locomotive, Integer>(); 
+    private double length; 
+    private HashMap<Locomotive, Double> positionsInAbstractLine = new HashMap<Locomotive, Double>(); 
 
     private Game game;
     private List<Position> turningPositions;
@@ -222,7 +222,7 @@ public class Railway {
 
     public void addLocomotive(Locomotive l){
         locomotives.add(l); 
-        positionsInAbstractLine.put(l, parsePositionToAbstractPosition(l.getPosition())); 
+        positionsInAbstractLine.put(l, (double) parsePositionToAbstractPosition(l.getPosition())); 
     }
 
     public void removeLocomotive(Locomotive l){
@@ -279,8 +279,9 @@ public class Railway {
         line.removeRailways(this);
     }
 
-    private int computeLength(){
-        return (int) start.getPosition().l2distance(end.getPosition()); 
+    private double computeLength(){
+        return Math.abs(end.getPosition().i-start.getPosition().i) + Math.abs(end.getPosition().j-start.getPosition().j);
+        // return (int) start.getPosition().l2distance(end.getPosition());
     }
 
     public Position moveLocomotive(Locomotive l){
@@ -298,7 +299,7 @@ public class Railway {
             orientation = -1; 
         }
         
-        int newAbstractPosition = positionsInAbstractLine.get(l) + (speed * orientation); 
+        double newAbstractPosition = positionsInAbstractLine.get(l) + (speed * orientation); 
 
         newAbstractPosition = Math.min(newAbstractPosition, length); 
         newAbstractPosition = Math.max(newAbstractPosition, 0); 
@@ -330,7 +331,7 @@ public class Railway {
 
 
     public boolean isArrived(Locomotive locomotive, Station nextStation) {
-        int abstractPosition = positionsInAbstractLine.get(locomotive); 
+        double abstractPosition = positionsInAbstractLine.get(locomotive); 
         if (nextStation == end){
             return abstractPosition == length;
         }
