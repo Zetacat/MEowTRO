@@ -8,6 +8,7 @@ import java.util.List;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -48,7 +49,7 @@ public class Railway {
     }
 
     private Path image;
-    public void setImage() {
+    public void setImage(Color color) {
         this.image = new Path();
         this.image.getElements().add(new MoveTo(this.turningPositions.get(0).j, this.turningPositions.get(0).i));
         for (int i = 1; i < this.turningPositions.size(); i++) {
@@ -56,6 +57,7 @@ public class Railway {
         }
         this.image.setStrokeWidth(5);
         this.image.setStrokeLineJoin(StrokeLineJoin.ROUND);
+        this.image.setStroke(color);
         this.image.setOnMouseClicked(
             new EventHandler<MouseEvent>() {    
                 @Override
@@ -72,7 +74,7 @@ public class Railway {
         this.game.railwayOnClick(this, new Position(event.getSceneY(), event.getSceneX()));
     }
 
-    public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive, List<Station> allStations, List<Obstacle> obstacles, Game game){
+    public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive, List<Station> allStations, List<Obstacle> obstacles, Game game, Color color){
         if (s1 == s2){
             return; 
         }
@@ -178,7 +180,7 @@ public class Railway {
             end.addRailway(this);
         }
 
-        setImage();
+        setImage(color);
         this.length = computeLength(); 
         line.addRailway(this);
     }
@@ -305,7 +307,7 @@ public class Railway {
         newAbstractPosition = Math.max(newAbstractPosition, 0); 
         positionsInAbstractLine.put(l, newAbstractPosition); 
         if (Game.DEBUG_hash.equals("loco")){
-            System.out.printf("Move %s to %d/%d in railway %s with %d passengers\n", l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
+            System.out.printf("Move %s to %f/%f in railway %s with %d passengers\n", l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
         }
 
         l.setSpeed(maxSpeed);

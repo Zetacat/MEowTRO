@@ -26,6 +26,6 @@ public class RailwayManager extends EntityManager{
                 return; 
             }
         }
-        new Railway(s1, s2, line, this.maxTimeToLive, allStations, obstacles, this.game);
+        new Railway(s1, s2, line, this.maxTimeToLive, allStations, obstacles, this.game, this.colorMap.get(line.getColor()));
     }
 }
