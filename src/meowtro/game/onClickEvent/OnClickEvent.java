@@ -3,7 +3,7 @@ package meowtro.game.onClickEvent;
 import meowtro.Position;
 import meowtro.game.City;
 import meowtro.game.Game;
-import meowtro.metro_system.railway.Line;
+import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.station.Station;
 
 public abstract class OnClickEvent {
@@ -22,4 +22,5 @@ public abstract class OnClickEvent {
     public void conduct(Station station) {}
     public void conduct(Position position) {}
     public void conduct(Station s1, Station s2) {}
+    public void conduct(Railway railway, Position position) {}
 }

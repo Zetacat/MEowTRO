@@ -53,7 +53,7 @@ public class Passenger {
     public double getImageSize() {
         return this.imageSize;
     }
-    private ImageView image;
+    protected ImageView image;
     private void setImage(String iconPath) {
         try {
             Image img = new Image(new FileInputStream(iconPath));

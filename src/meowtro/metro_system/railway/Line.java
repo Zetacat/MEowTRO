@@ -94,6 +94,9 @@ public class Line {
         railways.remove(r); 
     }
 
+    public List<Locomotive> getLocomotives() {
+        return this.locomotives;
+    }
     public void addLocomotive(Locomotive l){
         locomotives.add(l); 
     }

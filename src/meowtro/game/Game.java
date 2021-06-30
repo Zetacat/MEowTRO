@@ -176,8 +176,8 @@ public class Game {
         }
     }
 
-    public void railwayOnClick(Railway railway) {
-        
+    public void railwayOnClick(Railway railway, Position position) {
+        this.nowEvent.conduct(railway, position);
     }
 
 }

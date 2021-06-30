@@ -1,5 +1,6 @@
 package meowtro.metro_system.train;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -7,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import meowtro.Position;
 import meowtro.game.*;
 import meowtro.game.passenger.Passenger;
@@ -76,7 +81,26 @@ public class Locomotive {
             System.out.println("ValueError: metro_system.locomotive.level_to_maxspeed < maxLevel"); 
     }
 
-    public Locomotive(Railway railway, Position position, Direction direction){
+    private Rectangle image;
+    private void setImage(Color color) {
+        this.image = new Rectangle();
+        this.image.setHeight(20);
+        this.image.setWidth(10);
+        setImagePosition(this.position, this.image.getHeight()/2, this.image.getWidth()/2);
+    }
+    public Rectangle getImage() {
+        return this.image;
+    }
+    public void setImagePosition(Position position, double shiftSizeX, double shiftSizeY) {
+        this.image.setLayoutX(position.j-shiftSizeX);
+        this.image.setLayoutY(position.i-shiftSizeY);
+    }
+    public void tuneImageSize(double size) {
+        this.image.setHeight(size);
+        this.image.setWidth(size);
+    }
+
+    public Locomotive(Railway railway, Position position, Direction direction, Color color){
         init();
         this.railway = railway; 
         this.position = position; 
@@ -87,6 +111,7 @@ public class Locomotive {
         if (Game.DEBUG){
             System.out.printf("Locomotive created at %s, railway %s\n", position.toString(), railway.toString());
         }
+        setImage(color);
     }
 
     public Position getPosition(){
@@ -176,9 +201,9 @@ public class Locomotive {
     }
 
     public void depart(){
-        if (Game.DEBUG){
-            System.out.printf("Loco depart from station %s\n", currentStation.toString());
-        }
+        // if (Game.DEBUG){
+        System.out.printf("Loco depart from station %s\n", currentStation.toString());
+        // }
         this.takePassengerCountdown = 0; 
         this.dropPassengerCountdown = 0; 
         currentStation.locomotiveDepart(this);
@@ -235,7 +260,6 @@ public class Locomotive {
         }
     }
 
-
     private void dropPassenger(Passenger p){
         for(Car c: cars){
             if (c.getPassengers().contains(p)){
@@ -245,7 +269,6 @@ public class Locomotive {
         }
 
     }
-
 
     public void tryDropPassenger(){
         if (getDownQueue.size() == 0){
@@ -282,12 +305,14 @@ public class Locomotive {
     public void update(){
         if (state == State.MOVING){
             // update current position
-            this.position = railway.moveLocomotive(this); 
+            this.position = railway.moveLocomotive(this);
+            setImagePosition(this.position, this.image.getHeight()/2, this.image.getWidth()/2);
 
             // update current station
             if (railway.isArrived(this, railway.getNextStation(direction))){
+
                 railway.getNextStation(direction).locomotiveArrive(this);
-                this.currentStation = railway.getNextStation(direction); 
+                this.currentStation = railway.getNextStation(direction);
                 
                 if (currentStation.getNextRailway(railway) == railway){
                     turnAround();
