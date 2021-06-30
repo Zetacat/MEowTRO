@@ -1,13 +1,12 @@
 package meowtro.metro_system.railway;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 import meowtro.Position;
-import meowtro.game.Game;
 import meowtro.game.obstacle.Obstacle;
 import meowtro.metro_system.station.Station;
 
@@ -18,7 +17,8 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     private static HashSet<Station> recordedStations = new HashSet<Station>(); 
     private static double nearbyThreshold = 8.0; 
 
-    private List<Position> Nodes = new ArrayList<Position>(); 
+    public List<Position> Nodes = new ArrayList<Position>(); 
+    public HashMap<List<Position>, Obstacle> obsticleEndPoints = new HashMap<List<Position>, Obstacle>(); 
     private boolean isValid = false; 
     private boolean isIntersectedWithObstacle = false; 
 
@@ -269,8 +269,75 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         return false; 
     }
 
+    private void judgeLineIntersectedWithObstacle(Position a, Position b, List<Obstacle> obstacles){
+        double discriminant = (start.i - end.i) * (start.j - end.j); 
+        assert discriminant == 0; 
+        
+        if (start.i == end.i){
+            int i = (int) start.i; 
+            boolean isRecordingIntersection = false; 
+            List<Position> ObstacleStartEndPair = null; 
+            Obstacle currentObstacle = null; 
+            for (int j = (int)Math.min(start.j, end.j); j <= (int)Math.max(start.j, end.j); j++){
+                for (Obstacle obs: obstacles){
+                    if (obs.getPositions().get(i).get(j)){
+                        if (!isRecordingIntersection){
+                            isRecordingIntersection = true; 
+                            currentObstacle = obs; 
+                            ObstacleStartEndPair = new ArrayList<Position>(); 
+                            ObstacleStartEndPair.add(new Position(i, j)); 
+                            break; 
+                        }
+                    }else{
+                        if (isRecordingIntersection){
+                            isRecordingIntersection = false; 
+                            ObstacleStartEndPair.add(new Position(i, j)); 
+                            assert (ObstacleStartEndPair.size() == 2); 
+                            obsticleEndPoints.put(ObstacleStartEndPair, currentObstacle); 
+                            ObstacleStartEndPair = null; 
+                            currentObstacle = null; 
+                        }
+                    }
+                }
+            }
+        }else{
+            int j = (int) start.j; 
+            boolean isRecordingIntersection = false; 
+            List<Position> ObstacleStartEndPair = null; 
+            Obstacle currentObstacle = null; 
+            for (int i = (int)Math.min(start.i, end.i); i <= (int)Math.max(start.i, end.i); i++){
+                for (Obstacle obs: obstacles){
+                    if (obs.getPositions().get(i).get(j)){
+                        if (!isRecordingIntersection){
+                            isRecordingIntersection = true; 
+                            currentObstacle = obs; 
+                            ObstacleStartEndPair = new ArrayList<Position>(); 
+                            ObstacleStartEndPair.add(new Position(i, j)); 
+                            break; 
+                        }
+                    }else{
+                        if (isRecordingIntersection){
+                            isRecordingIntersection = false; 
+                            ObstacleStartEndPair.add(new Position(i, j)); 
+                            assert (ObstacleStartEndPair.size() == 2); 
+                            obsticleEndPoints.put(ObstacleStartEndPair, currentObstacle); 
+                            ObstacleStartEndPair = null; 
+                            currentObstacle = null; 
+                        }
+                    }
+                }
+            }
+        } 
+    }
+
     private void judgeObstacles(List<Obstacle> obstacles){
-        //
+        if (obstacles.size() == 0){
+            this.isIntersectedWithObstacle = false; 
+            return;
+        }
+        for (int i = 0; i < Nodes.size()-1; i++){
+            judgeLineIntersectedWithObstacle(Nodes.get(i), Nodes.get(i+1), obstacles); 
+        }
     }
 
     public boolean isValidRailway(){
@@ -282,7 +349,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
     }
 
     @Override
-    public int parsePositionToAbstractPosition() {
+    public int parsePositionToAbstractPosition(Position p) {
         // TODO Auto-generated method stub
         return 0;
     }

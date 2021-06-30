@@ -33,5 +33,9 @@ public abstract class Obstacle {
         int roundedJ = (int) Math.round(position.j);
         return this.positions.get(roundedI).get(roundedJ);
     }
+
+    public List<List<Boolean>> getPositions(){
+        return positions; 
+    }
     
 }
