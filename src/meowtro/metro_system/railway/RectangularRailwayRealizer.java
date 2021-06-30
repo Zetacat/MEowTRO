@@ -400,7 +400,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         for (int i = 1; i < Nodes.size(); i++) {
             double l_i = Math.abs(Nodes.get(i).i-Nodes.get(i-1).i);
             double l_j = Math.abs(Nodes.get(i).j-Nodes.get(i-1).j);
-            if (abstractPosition >= (l_i+l_j)) {
+            if (abstractPosition > (l_i+l_j)) {
                 abstractPosition -= (l_i+l_j);
             } else {
                 if (l_i == 0.0) {
@@ -410,6 +410,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
                 }
             }
         }
+        System.out.println(abstractPosition);
         return null;
     }
     

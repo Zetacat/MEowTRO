@@ -303,6 +303,7 @@ public class Locomotive {
         if (state == State.MOVING){
             // update current position
             this.position = railway.moveLocomotive(this);
+            assert this.position != null; 
             setImagePosition(this.position, this.image.getHeight()/2, this.image.getWidth()/2);
 
             // update current station
