@@ -71,7 +71,7 @@ public class Railway {
         this.game.railwayOnClick(this, new Position(event.getSceneY(), event.getSceneX()));
     }
 
-    public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive, List<Position> turningPositions, HashMap<List<Position>, Obstacle> obstacleEndPositions, Game game){
+    public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive, List<Station> allStations, List<Obstacle> obstacles, Game game){
         if (s1 == s2){
             return; 
         }
@@ -81,7 +81,6 @@ public class Railway {
         boolean DEBUG = true; 
         this.line = line; 
         this.game = game;
-        this.turningPositions = turningPositions;
 
         if (s1.getAdjacents().contains(s2) || s2.getAdjacents().contains(s1)){
             if (DEBUG){
@@ -130,7 +129,7 @@ public class Railway {
             this.start = s1;
             this.end = s2;
         }
-        else{
+        else if (s1AdjRailways.size() == 1 || s2AdjRailways.size() == 1){
             // extend from one end
             Station endStationOfThisLine = null; 
             Station NewEndStation = null; 
@@ -153,9 +152,18 @@ public class Railway {
                 this.end = NewEndStation; 
                 this.start = endStationOfThisLine; 
             }
+        }else {
+            if (DEBUG)
+                System.out.println("construct Railway() error");
+            return; 
         }
 
-        setImage();
+        RectangularRailwayRealizer realizer = new RectangularRailwayRealizer(s1, s2, allStations, obstacles);
+        this.turningPositions = realizer.Nodes;
+        
+        if (!realizer.isValidRailway()){
+            return;
+        }
 
         if (start != null){
             start.addRailway(this);
@@ -170,6 +178,7 @@ public class Railway {
             return; 
         }
 
+        setImage();
         this.length = computeLength(); 
         line.addRailway(this);
     }
@@ -307,7 +316,7 @@ public class Railway {
         newAbstractPosition = Math.min(newAbstractPosition, length); 
         newAbstractPosition = Math.max(newAbstractPosition, 0); 
         positionsInAbstractLine.put(l, newAbstractPosition); 
-        if (Game.DEBUG){
+        if (Game.DEBUG_hash.equals("loco")){
             System.out.printf("Move %s to %d/%d in railway %s with %d passengers\n", l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
         }
 

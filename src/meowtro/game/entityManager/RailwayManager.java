@@ -27,9 +27,9 @@ public class RailwayManager extends EntityManager{
                 return; 
             }
         }
-        RectangularRailwayRealizer realizer = new RectangularRailwayRealizer(s1, s2, allStations, obstacles);
-        if (realizer.isValidRailway()) {
-            new Railway(s1, s2, line, this.maxTimeToLive, realizer.Nodes, realizer.obsticleEndPoints, this.game);
+        // RectangularRailwayRealizer realizer = new RectangularRailwayRealizer(s1, s2, allStations, obstacles);
+        if (true){//realizer.isValidRailway()) {
+            new Railway(s1, s2, line, this.maxTimeToLive, allStations, obstacles, this.game);
         } else {
             System.out.println("Invalid Railway");
             return;

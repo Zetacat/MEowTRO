@@ -32,6 +32,7 @@ public class Game {
     private static int balance = 0;
     public static Random randomGenerator = new Random();
     public static boolean DEBUG = false;
+    public static String DEBUG_hash = "loco";
 
     private int maxStationNum;
     public int getMaxStationNum() {

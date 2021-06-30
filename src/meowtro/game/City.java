@@ -33,8 +33,8 @@ public class City {
     private List<Obstacle> obstacles = new ArrayList<Obstacle>();
     private List<Line> lines = new ArrayList<Line>();
     private int totalTransportedPassengerCount = 0;
-    private int width = 0;
-    private int height = 0;
+    private static int width = 0;
+    private static int height = 0;
     
     public City() {
 
@@ -123,12 +123,12 @@ public class City {
             System.out.println(String.format("City constructed (%d obstacles, %d regions)", this.obstacles.size(), this.regions.size()));
     }
 
-    public int getWidth() {
-        return this.width;
+    public static int getWidth() {
+        return width;
     }
 
-    public int getHeight() {
-        return this.height;
+    public static int getHeight() {
+        return height;
     }
 
     private List<List<Boolean>> positionList2Boolean2DList(List<Position> positionsList, int width, int height) {

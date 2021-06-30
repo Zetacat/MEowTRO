@@ -1,5 +1,8 @@
 package meowtro.metro_system;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import meowtro.Position;
 import meowtro.game.Game;
@@ -15,6 +18,7 @@ public class ShortestPathCalculator{
         
         LinkedList<Station> stationsToExplore = new LinkedList<Station>(); 
         LinkedList<Station> stationsExploring = new LinkedList<Station>(); 
+        HashSet<Station> stationsExplored = new HashSet<Station>(); 
 
 
         // initiallize
@@ -26,19 +30,21 @@ public class ShortestPathCalculator{
 
             // load stations in current level(level num = dist)
             while (stationsToExplore.size() > 0){
-                Station s = stationsToExplore.removeFirst(); 
-                stationsExploring.add(s); 
+                stationsExploring.add(stationsToExplore.removeFirst()); 
             }
 
             // check whether dst is in this level
             while (stationsExploring.size() > 0){
-                Station s = stationsExploring.getFirst(); 
-                stationsExploring.remove(s); 
+                Station s = stationsExploring.removeFirst(); 
                 if (s == dst){
                     return dist; 
                 }
                 
-                stationsToExplore.addAll(s.getAdjacents()); 
+                stationsToExplore.addAll(s.getAdjacents()
+                                            .stream()
+                                            .filter(station -> !stationsExplored.contains(station))
+                                            .collect(Collectors.toList())); 
+                stationsExplored.add(s); 
             }
             dist += 1; 
         }

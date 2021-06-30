@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import meowtro.Position;
+import meowtro.game.City;
 import meowtro.game.Game;
 import meowtro.game.obstacle.Obstacle;
 import meowtro.metro_system.station.Station;
@@ -35,7 +36,6 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         }
         if (!isInitialized){
             initOccupancyMap(allStations);
-            printOccupancyMap(); 
         }
 
         for (Station s: allStations){
@@ -50,7 +50,6 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         this.start = startStation.getPosition();
         this.end = endStation.getPosition();
 
-        printOccupancyMap(); 
         this.isValid = false; 
         if (judgeLine()){
             this.isValid = true; 
@@ -94,19 +93,18 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         OccupancyMap = new ArrayList<List<Boolean>>(); 
         OccupancyMap.add(new ArrayList<Boolean>()); 
         
-        int height = 0; 
-        int width = 0; 
-        for (Station s: allStations){
-            Position p = s.getPosition(); 
-            if (p.i > height){
-                height = (int)(p.i); 
-            }
-            if (p.j > width){
-                width = (int)(p.j); 
-            }
+        int height = City.getHeight(); 
+        int width = City.getWidth(); 
+
+        System.out.printf("OccupancyMap.shape = (%d, %d)\n", height, width); 
+        for (int i = 0; i < height; i++){
+            OccupancyMap.add(new ArrayList<Boolean>(Collections.nCopies(width, false))); 
         }
-        extendOccupancyMapHeight(height); 
-        extendOccupancyMapWidth(width); 
+
+        assert OccupancyMap.size() == height; 
+        for (List<Boolean> row: OccupancyMap){
+            assert row.size() == width; 
+        }
         isInitialized = true; 
     }
 
