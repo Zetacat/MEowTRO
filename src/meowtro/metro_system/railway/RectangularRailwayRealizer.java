@@ -103,6 +103,9 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
 
     static void addStationToOccupancyMap(Station s){
         Position p = s.getPosition(); 
+        extendOccupancyMapHeight((int)p.i + (int)(nearbyThreshold * 1.5)); 
+        extendOccupancyMapWidth((int)p.j + (int)(nearbyThreshold * 1.5)); 
+
         for (int i = (int)(p.i - nearbyThreshold); i <= (int)(p.i + nearbyThreshold); i++){
             for (int j = (int)(p.j - nearbyThreshold); j <= (int)(p.j + nearbyThreshold); j++){
                 if (i > 0 && i < OccupancyMap.size()){
@@ -222,14 +225,15 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
 
     private boolean judgeZShape(){
         // search along axis 1
-        int startIdx = (int) (Math.abs(start.j + end.j) / 2); 
+        int startIdx = (int) ((start.j + end.j) / 2); 
         int maxOffset = (int) (Math.abs(start.j - end.j) / 2) - (int)(nearbyThreshold * 1.5); 
         int offset = 0; 
         List<Boolean> oMap = ORAlongAxis(OccupancyMap, 0); 
+        System.out.printf("OccupancyMap.sum(axis=0).shape = %d\n", oMap.size()); 
         int resultIdx = -1; 
         while (offset < maxOffset && resultIdx < 0){
-            for (int i = -1; i <= 1; i+=2){
-                int index = startIdx + offset * i; 
+            for (int sign = -1; sign <= 1; sign+=2){
+                int index = startIdx + offset * sign; 
                 if (oMap.get(index) == false){
                     // found it
                     resultIdx = index; 
