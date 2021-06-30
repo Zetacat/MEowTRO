@@ -129,16 +129,16 @@ public class Line {
     }
 
     public void destroyAll(){
-        for (Railway r: railways){
-            r.destroy();
+        for (int i = railways.size()-1; i >= 0; i--) {
+            railways.get(i).destroy();
         }
         this.railways.clear();
 
-        for (Locomotive l: locomotives){
-            l.destroy(); 
+        for (int i = locomotives.size()-1; i >= 0; i--) {
+            locomotives.get(i).destroy();
         }
-        this.locomotives.clear(); 
-        // city.removeLine(); 
+        this.locomotives.clear();
+        // city.removeLine();
     }
 
     public boolean isCircular(){

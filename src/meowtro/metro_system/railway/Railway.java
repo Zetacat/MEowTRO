@@ -201,12 +201,10 @@ public class Railway {
     }
 
     private int parsePositionToAbstractPosition(Position p){
-        // TODO
         return (int) (Math.abs(p.i-start.getPosition().i) + Math.abs(p.j-start.getPosition().j));
     }
 
     private Position parseAbstractPositionToPosition(double abstractPosition){
-        // TODO
         for (int i = 1; i < turningPositions.size(); i++) {
             double l_i = Math.abs(turningPositions.get(i).i-turningPositions.get(i-1).i);
             double l_j = Math.abs(turningPositions.get(i).j-turningPositions.get(i-1).j);
