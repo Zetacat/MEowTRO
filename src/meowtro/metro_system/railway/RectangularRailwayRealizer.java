@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import meowtro.Position;
+import meowtro.game.Game;
 import meowtro.game.obstacle.Obstacle;
 import meowtro.metro_system.station.Station;
 
@@ -27,6 +28,11 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
 
     
     public RectangularRailwayRealizer(Station startStation, Station endStation, List<Station> allStations, List<Obstacle> obstacles){
+        if (startStation == endStation){
+            System.out.println("Two station connected to the railway can't be the same");
+            isValid = false; 
+            return; 
+        }
         if (!isInitialized){
             initOccupancyMap(allStations);
         }
@@ -53,11 +59,21 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         } 
 
         if (isValid){
+            if (true){
+                if (Nodes.size() == 2){
+                    System.out.println("Railway Shape: Straight Line");
+                }
+                else if (Nodes.size() == 3){
+                    System.out.println("Railway Shape: L shaped");
+                }
+                else if (Nodes.size() == 4){
+                    System.out.println("Railway Shape: Z shaped");
+                }
+            }
             judgeObstacles(obstacles); 
+            addStationToOccupancyMap(startStation);
+            addStationToOccupancyMap(endStation);
         }
-
-        addStationToOccupancyMap(startStation);
-        addStationToOccupancyMap(endStation);
     }
 
     private static void initOccupancyMap(List<Station> allStations){
@@ -189,6 +205,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
             this.Nodes.add(b); 
             return true; 
         }
+        System.out.println("L bad :(");
         return false; 
     }
 
@@ -229,7 +246,6 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
         int maxOffset = (int) (Math.abs(start.j - end.j) / 2) - (int)(nearbyThreshold * 1.5); 
         int offset = 0; 
         List<Boolean> oMap = ORAlongAxis(OccupancyMap, 0); 
-        System.out.printf("OccupancyMap.sum(axis=0).shape = %d\n", oMap.size()); 
         int resultIdx = -1; 
         while (offset < maxOffset && resultIdx < 0){
             for (int sign = -1; sign <= 1; sign+=2){

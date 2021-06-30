@@ -72,6 +72,9 @@ public class Railway {
     }
 
     public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive, List<Position> turningPositions, HashMap<List<Position>, Obstacle> obstacleEndPositions, Game game){
+        if (s1 == s2){
+            return; 
+        }
         init();
         this.maxLimitedRemainTimeToLive = maxLimitedRemainTimeToLive;
         this.remainTimeToLive = maxLimitedRemainTimeToLive;
