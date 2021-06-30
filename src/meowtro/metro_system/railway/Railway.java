@@ -59,7 +59,7 @@ public class Railway {
             new EventHandler<MouseEvent>() {    
                 @Override
                 public void handle(MouseEvent event) {
-                    onClick();
+                    onClick(event);
                 }
             }
         );
@@ -67,8 +67,8 @@ public class Railway {
     public Path getImage() {
         return this.image;
     }
-    private void onClick() {
-        this.game.railwayOnClick(this);
+    private void onClick(MouseEvent event) {
+        this.game.railwayOnClick(this, new Position(event.getSceneY(), event.getSceneX()));
     }
 
     public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive, List<Position> turningPositions, HashMap<List<Position>, Obstacle> obstacleEndPositions, Game game){
@@ -85,9 +85,9 @@ public class Railway {
 
         if (s1.getAdjacents().contains(s2) || s2.getAdjacents().contains(s1)){
             if (DEBUG){
-                System.out.println("Can't have two railways between two stations! ");
+                System.out.println("Can't have two railways between two stations!");
             }
-            return; 
+            return;
         }
 
         List<Railway> s1AdjRailways = s1.getRailwaysWithLine(line); 
@@ -214,7 +214,11 @@ public class Railway {
             if (abstractPosition >= (l_i+l_j)) {
                 abstractPosition -= (l_i+l_j);
             } else {
-                return new Position(turningPositions.get(i-1).i+(abstractPosition*(turningPositions.get(i).i-turningPositions.get(i-1).i)/l_i),turningPositions.get(i-1).j+(abstractPosition*(turningPositions.get(i).j-turningPositions.get(i-1).j)/l_j));
+                if (l_i == 0.0) {
+                    return new Position(turningPositions.get(i-1).i, turningPositions.get(i-1).j+(abstractPosition*(turningPositions.get(i).j-turningPositions.get(i-1).j)/l_j));
+                } else {
+                    return new Position(turningPositions.get(i-1).i+(abstractPosition*(turningPositions.get(i).i-turningPositions.get(i-1).i)/l_i), turningPositions.get(i-1).j);
+                }
             }
         }
         return null;
@@ -299,13 +303,12 @@ public class Railway {
         }
         
         int newAbstractPosition = positionsInAbstractLine.get(l) + (speed * orientation); 
-        
+
         newAbstractPosition = Math.min(newAbstractPosition, length); 
         newAbstractPosition = Math.max(newAbstractPosition, 0); 
         positionsInAbstractLine.put(l, newAbstractPosition); 
         if (Game.DEBUG){
-            System.out.printf("Move %s to %d/%d in railway %s with %d passengers\n", 
-                                    l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
+            System.out.printf("Move %s to %d/%d in railway %s with %d passengers\n", l.toString(), newAbstractPosition, length, this.toString(), l.getAllPassenger().size());
         }
 
         l.setSpeed(maxSpeed);
@@ -324,7 +327,7 @@ public class Railway {
 
         LinkedList<Locomotive> updateQueue = new LinkedList<Locomotive>(locomotives); 
         while (!updateQueue.isEmpty()){
-            Locomotive l = updateQueue.removeFirst(); 
+            Locomotive l = updateQueue.removeFirst();
             l.update();
         }
     }
@@ -333,7 +336,7 @@ public class Railway {
     public boolean isArrived(Locomotive locomotive, Station nextStation) {
         int abstractPosition = positionsInAbstractLine.get(locomotive); 
         if (nextStation == end){
-            return abstractPosition == length; 
+            return abstractPosition == length;
         }
         return abstractPosition == 0;
     }

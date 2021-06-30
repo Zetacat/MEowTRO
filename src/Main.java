@@ -24,6 +24,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import meowtro.Position;
 import meowtro.button.DestroyButton;
+import meowtro.button.LocomotiveButton;
 import meowtro.button.MyButton;
 import meowtro.button.RailwayButton;
 import meowtro.button.StationButton;
@@ -31,6 +32,7 @@ import meowtro.game.Config;
 import meowtro.game.Game;
 import meowtro.game.GameFactory;
 import meowtro.game.Region;
+import meowtro.game.entityManager.LocomotiveManager;
 import meowtro.game.entityManager.RailwayManager;
 import meowtro.game.entityManager.StationManager;
 import meowtro.game.passenger.Passenger;
@@ -38,6 +40,7 @@ import meowtro.metro_system.railway.Line;
 import meowtro.metro_system.railway.LineColor;
 import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.station.Station;
+import meowtro.metro_system.train.Locomotive;
 
 public class Main extends Application {
     private Pane root;
@@ -58,6 +61,7 @@ public class Main extends Application {
         
         StationManager sm = new StationManager(game);
         RailwayManager rm = new RailwayManager(game);
+        LocomotiveManager lm = new LocomotiveManager(game);
         
         game.start(sm);
 
@@ -79,9 +83,13 @@ public class Main extends Application {
         DestroyButton destroyButton = new DestroyButton(0, game);
         root.getChildren().add(destroyButton.getButton());
         
+        // TEMPORARILY add a new line after game start
         Line line = new Line(game.getCity(), LineColor.BLUE);
         RailwayButton railwayButton = new RailwayButton(2, game, rm, line);
         root.getChildren().add(railwayButton.getButton());
+
+        LocomotiveButton locomotiveButton = new LocomotiveButton(2, game, lm);
+        root.getChildren().add(locomotiveButton.getButton());
 
         Scene scene = new Scene(root, 640, 480);
         primaryStage.setTitle("MEwoTRO");
@@ -104,6 +112,13 @@ public class Main extends Application {
                         for (Railway railway : line.getRailways()) {
                             if (!root.getChildren().contains(railway.getImage())) {
                                 root.getChildren().add(railway.getImage());
+                            }
+                        }
+                    }
+                    for (Line line : game.getCity().getAllLines()) {
+                        for (Locomotive locomotive : line.getLocomotives()) {
+                            if (!root.getChildren().contains(locomotive.getImage())) {
+                                root.getChildren().add(locomotive.getImage());
                             }
                         }
                     }
