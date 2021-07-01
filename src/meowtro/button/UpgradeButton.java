@@ -9,21 +9,15 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import meowtro.game.Game;
-import meowtro.game.entityManager.RailwayManager;
-import meowtro.game.onClickEvent.RailwayBuilder;
-import meowtro.metro_system.railway.Line;
+import meowtro.game.onClickEvent.Destroyer;
 
-public class RailwayButton extends MyButton {
+public class UpgradeButton extends MyButton {
     private Game game;
-    private RailwayManager railwayManager;
-    private Line line;
 
-    public RailwayButton(int cost, Game game, RailwayManager railwayManager, Line line, String iconPath) {
+    public UpgradeButton(int cost, Game game, String iconPath) {
         this.cost = cost;
         this.btn = new Button();
         this.game = game;
-        this.railwayManager = railwayManager;
-        this.line = line;
         try {
             ImageView image = new ImageView(new Image(new FileInputStream(iconPath)));
             image.setFitHeight(30);
@@ -33,7 +27,7 @@ public class RailwayButton extends MyButton {
             e.printStackTrace();
         }
         btn.setLayoutX(100);
-        btn.setLayoutY(150);
+        btn.setLayoutY(100);
         btn.setOnAction(
             new EventHandler<ActionEvent>() {    
                 @Override
@@ -44,7 +38,7 @@ public class RailwayButton extends MyButton {
         );
     }
     protected void onClick() {
-        RailwayBuilder b = new RailwayBuilder(this.railwayManager, this.game, this.line, this.cost);
-        this.game.setNowEvent(b);
+        Upgrader d = new Upgrader(this.game);
+        game.setNowEvent(d);
     }
 }

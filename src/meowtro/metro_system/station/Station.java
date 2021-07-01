@@ -2,35 +2,23 @@ package meowtro.metro_system.station;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import meowtro.Position;
 import meowtro.game.*;
 import meowtro.game.entityManager.EntityManager;
 import meowtro.game.passenger.Passenger;
-import meowtro.metro_system.Direction;
 import meowtro.metro_system.railway.Line;
-import meowtro.metro_system.railway.LineColor;
 import meowtro.metro_system.railway.Railway;
-import meowtro.metro_system.train.Car;
 import meowtro.metro_system.train.Locomotive;
 
 // for testing
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.awt.Color;
-import javax.imageio.ImageIO;
 
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape;
 
 
 public class Station {
@@ -40,9 +28,11 @@ public class Station {
     private ArrayList<Passenger> queue = new ArrayList<Passenger>(); 
     private HashSet<Line> lines = new HashSet<Line>(); 
     private ArrayList<Locomotive> arrivedLocomotives = new ArrayList<Locomotive>(); 
-    private int level = 0; 
+    private int level = 0;
+    private int upgradeCost = 0;
+    private int maxLevel = 6;
     private Position position; 
-    private Region region; 
+    private Region region;
     private int maxLineNum = 6; 
     private int index = 0;
     private static int nextIndex = 0;
@@ -61,7 +51,22 @@ public class Station {
     * Parse game config and set proper value. 
     */
     public void init(){
-        this.maxLineNum = Integer.valueOf(Game.getConfig().get("metro_system.station.max_line_num")); 
+        this.maxLineNum = Integer.valueOf(Game.getConfig().get("metro_system.station.max_line_num"));
+        // get upgrade cost
+        // get max level
+    }
+
+    public int getLevel() {
+        return this.level;
+    }
+    public int getMaxLevel() {
+        return this.maxLevel;
+    }
+    public int getUpgradeCost() {
+        return this.upgradeCost;
+    }
+    public void upgrade() {
+        this.level ++;
     }
 
     private double stationSize = 30;
@@ -129,7 +134,7 @@ public class Station {
     }
 
     private int getMaxLineNum(){
-        return maxLineNum; 
+        return maxLineNum;
     }
 
     private int getMaxQueueSize(){

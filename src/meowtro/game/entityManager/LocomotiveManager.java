@@ -13,9 +13,29 @@ public class LocomotiveManager extends EntityManager {
         this.game = game;
     }
 
-    public void build(Railway railway, Position position) {
-        Locomotive locomotive = new Locomotive(railway, position, Direction.FORWARD, this.colorMap.get(railway.getLine().getColor()), this.game);
-        railway.getLine().addLocomotive(locomotive);
+    public void build(Railway railway, Position position, int cost) {
+        if (Game.getBalance() >= cost) {
+            Game.setBalance(Game.getBalance()-cost);
+            Locomotive locomotive = new Locomotive(railway, position, Direction.FORWARD, this.colorMap.get(railway.getLine().getColor()), this.game);
+            locomotive.setManager(this);
+            railway.getLine().addLocomotive(locomotive);
+        } else {
+            // Game.showText("Not Enough Money!");
+        }
+    }
+
+    public void upgrade(Locomotive locomotive) {
+        if (Game.getBalance() >= locomotive.getUpgradeCost()) {
+            if (locomotive.getLevel() < locomotive.getMaxLevel()) {
+                Game.setBalance(Game.getBalance()-locomotive.getUpgradeCost());
+                locomotive.setLevel(locomotive.getLevel()+1);
+            } else {
+                // Game.showText("Already Max Level!!");
+            }
+
+        } else {
+            // Game.showText("Not Enough Money!");
+        }
     }
 
     public void destroy(Locomotive locomotive) {

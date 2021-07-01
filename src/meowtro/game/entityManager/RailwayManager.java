@@ -17,7 +17,7 @@ public class RailwayManager extends EntityManager{
         this.maxTimeToLive = Long.parseLong(Game.getConfig().get("metro_system.railway.maxTimeToLive"));
     }
     List<Railway> railways = new ArrayList<Railway>(); 
-    public void build(Station s1, Station s2, Line line, List<Station> allStations, List<Obstacle> obstacles){
+    public void build(Station s1, Station s2, Line line, List<Station> allStations, List<Obstacle> obstacles, int cost){
         if (s1.isAdjTo(s2) || s2.isAdjTo(s1)){
             return;
         }
@@ -26,6 +26,11 @@ public class RailwayManager extends EntityManager{
                 return; 
             }
         }
-        new Railway(s1, s2, line, this.maxTimeToLive, allStations, obstacles, this.game, this.colorMap.get(line.getColor()));
+        if (Game.getBalance() >= cost) {
+            Game.setBalance(Game.getBalance()-cost);
+            new Railway(s1, s2, line, this.maxTimeToLive, allStations, obstacles, this.game, this.colorMap.get(line.getColor()));
+        } else {
+            // Game.showText("Not Enough Money!!");
+        }
     }
 }
