@@ -53,7 +53,9 @@ public class Station {
     public void init(){
         this.maxLineNum = Integer.valueOf(Game.getConfig().get("metro_system.station.max_line_num"));
         // get upgrade cost
+        this.upgradeCost = Integer.parseInt(Game.getConfig().get("price.station.upgrade"));
         // get max level
+        this.maxLevel = Integer.parseInt(Game.getConfig().get("metro_system.station.max_level"));
     }
 
     public int getLevel() {

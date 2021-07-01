@@ -46,7 +46,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" onMouseClicked="#levelup" text="500">
+            <Button ellipsisString="" mnemonicParsing="false" onMouseClicked="#levelup" text="------">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -73,7 +73,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button disable="true" mnemonicParsing="false" opacity="0.6" text="200">
+            <Button disable="true" mnemonicParsing="false" opacity="0.6" text="050">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>

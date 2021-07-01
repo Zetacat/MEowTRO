@@ -31,6 +31,8 @@ public class LocomotiveManager extends EntityManager {
             if (locomotive.getLevel() < locomotive.getMaxLevel()) {
                 Game.setBalance(Game.getBalance()-locomotive.getUpgradeCost());
                 locomotive.setLevel(locomotive.getLevel()+1);
+                Game.showText("Upgrade Success!");
+
             } else {
                 Game.showText("Already Max Level!!");
             }

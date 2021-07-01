@@ -18,7 +18,7 @@ public class GameFactory {
                 continue;
             }
             String[] eventInfo = eventsStr[i].strip().split("\\$");
-            System.out.println(eventInfo[0]);
+            // System.out.println(eventInfo[0]);
             if(eventInfo[0].equals("FireEvent")){
                 allEvents.add(new FireEvent(city, eventInfo[1], Double.parseDouble(eventInfo[2])));
             }

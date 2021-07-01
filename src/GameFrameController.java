@@ -15,15 +15,6 @@ import meowtro.game.entityManager.StationManager;
 import javafx.scene.input.MouseEvent;
 import meowtro.Position;
 import meowtro.PlayTime;
-import meowtro.button.CarButton;
-import meowtro.button.DestroyButton;
-import meowtro.button.FastforwardButton;
-import meowtro.button.LocomotiveButton;
-import meowtro.button.MyButton;
-import meowtro.button.PauseButton;
-import meowtro.button.PlayButton;
-import meowtro.button.RailwayButton;
-import meowtro.button.StationButton;
 import meowtro.button.*;
 import meowtro.metro_system.railway.*;
 import meowtro.metro_system.train.*;
@@ -31,6 +22,7 @@ import meowtro.metro_system.station.Station;
 import javafx.animation.AnimationTimer;
 import meowtro.game.passenger.Passenger;
 import meowtro.timeSystem.*;
+import javafx.scene.Node;
 public class GameFrameController {
     private AnimationTimer timer;
     private AnimationTimer innerTimer;
@@ -79,35 +71,41 @@ public class GameFrameController {
         this.carManager = carManager;
     }
     public void addButton(){
-        this.stationButton = new StationButton(10, game, statoionManager, "./image/button/station.png");
+        int railwayPrice = Integer.parseInt(Game.getConfig().get("price.railway"));
+        int stationPrice = Integer.parseInt(Game.getConfig().get("price.station"));
+        int locomotivePrice = Integer.parseInt(Game.getConfig().get("price.locomotive"));
+        int carPrice = Integer.parseInt(Game.getConfig().get("price.car"));
+        this.stationButton = new StationButton(stationPrice, game, statoionManager, "./image/button/station.png");
         this.destroyButton = new DestroyButton(0, game, "./image/button/remove.png");
 
         Line blueLine = new Line(game.getCity(), LineColor.BLUE);
-        this.blueRailwayButton = new RailwayButton(2, game, railwayManager, blueLine, "./image/button/railway.png");
+        this.blueRailwayButton = new RailwayButton(railwayPrice, game, railwayManager, blueLine, "./image/button/railway.png");
 
         Line brownLine = new Line(game.getCity(), LineColor.PURPLE);
-        this.brownRailwayButton = new RailwayButton(2, game, railwayManager, brownLine, "./image/button/railway.png");
+        this.brownRailwayButton = new RailwayButton(railwayPrice, game, railwayManager, brownLine, "./image/button/railway.png");
 
         Line greenLine = new Line(game.getCity(), LineColor.GREEN);
-        this.greenRailwayButton = new RailwayButton(2, game, railwayManager, greenLine, "./image/button/railway.png");
+        this.greenRailwayButton = new RailwayButton(railwayPrice, game, railwayManager, greenLine, "./image/button/railway.png");
 
         Line orangeLine = new Line(game.getCity(), LineColor.ORANGE);
-        this.orangeRailwayButton = new RailwayButton(2, game, railwayManager, orangeLine, "./image/button/railway.png");
+        this.orangeRailwayButton = new RailwayButton(railwayPrice, game, railwayManager, orangeLine, "./image/button/railway.png");
 
         Line redLine = new Line(game.getCity(), LineColor.RED);
-        this.redRailwayButton = new RailwayButton(2, game, railwayManager, redLine, "./image/button/railway.png");
+        this.redRailwayButton = new RailwayButton(railwayPrice, game, railwayManager, redLine, "./image/button/railway.png");
 
         Line yellowLine = new Line(game.getCity(), LineColor.YELLOW);
-        this.yellowRailwayButton = new RailwayButton(2, game, railwayManager, yellowLine, "./image/button/railway.png");
+        this.yellowRailwayButton = new RailwayButton(railwayPrice, game, railwayManager, yellowLine, "./image/button/railway.png");
 
-        this.locomotiveButton = new LocomotiveButton(2, game, locomotiveManager, "./image/button/locomotive.png");
-        this.carButton = new CarButton(1, game, carManager, "./image/button/car.png");
+        this.locomotiveButton = new LocomotiveButton(locomotivePrice, game, locomotiveManager, "./image/button/locomotive.png");
+        this.carButton = new CarButton(carPrice, game, carManager, "./image/button/car.png");
+        this.upgradeButton = new UpgradeButton(0, game, "./image/button/car.png");
     }
     public void setTimerAndButton(){
         Pane root = this.myMap;
         this.timer = new AnimationTimer() {
             @Override public void handle(long currentNanoTime) {
                 duration_animate = PlayTime.duration_animate;
+                balanceText.setText(Game.getBalance()+"$");
                 // implement timer
                 if (Game.textMessage.size() > 0){
                     String msg = Game.textMessage.poll();
@@ -132,6 +130,11 @@ public class GameFrameController {
                         for (Railway railway : line.getRailways()) {
                             if (!root.getChildren().contains(railway.getImage())) {
                                 root.getChildren().add(railway.getImage());
+                            }
+                            for (Node obstacle : railway.getObstacleImages()) {
+                                if (!root.getChildren().contains(obstacle)) {
+                                    root.getChildren().add(obstacle);
+                                }
                             }
                         }
                     }
@@ -176,7 +179,7 @@ public class GameFrameController {
                     TimeLine gameTimer = TimeLine.getInstance();
                     String calenderTime = gameTimer.getCalenderTime();
                     gameCalenderTime.setText(calenderTime);;
-                    balanceText.setText(Game.getBalance()+"$");
+                    
                     for (Region region : game.getCity().getRegions()) {
                         for (Passenger passenger : region.getPassengers()) {
                             if (!root.getChildren().contains(passenger.getImage())) {

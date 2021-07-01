@@ -90,6 +90,7 @@ public class Locomotive {
             System.out.println("ValueError: metro_system.locomotive.level_to_maxspeed < maxLevel"); 
         
         // get upgrade cost
+        this.upgradeCost = Integer.parseInt(Game.getConfig().get("price.locomotive.upgrade"));
     }
     public int getUpgradeCost() {
         return this.upgradeCost;
