@@ -84,7 +84,7 @@ public class GameFrameController {
         Line blueLine = new Line(game.getCity(), LineColor.BLUE);
         this.blueRailwayButton = new RailwayButton(2, game, railwayManager, blueLine, "./image/button/railway.png");
 
-        Line brownLine = new Line(game.getCity(), LineColor.BROWN);
+        Line brownLine = new Line(game.getCity(), LineColor.PURPLE);
         this.brownRailwayButton = new RailwayButton(2, game, railwayManager, brownLine, "./image/button/railway.png");
 
         Line greenLine = new Line(game.getCity(), LineColor.GREEN);
