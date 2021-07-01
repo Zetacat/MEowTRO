@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -86,6 +87,9 @@ public class Main extends Application {
 
         root.getChildren().add(new ImageView(new Image(new FileInputStream("./image/map_3.png"))));
 
+        ProgressBar satisfactionBar = new ProgressBar(0);
+        root.getChildren().add(satisfactionBar);
+
         StationButton stationButton = new StationButton(10, game, sm, "./image/button/station.png");
         root.getChildren().add(stationButton.getButton());
         
@@ -147,6 +151,8 @@ public class Main extends Application {
                             root.getChildren().add(Game.textMessage.peek());
                         }
                     }
+
+                    satisfactionBar.setProgress(Game.satisfactionBarRate);
 
                     for (Object o : game.getObjectToBeRemoved()) {
                         if (root.getChildren().contains(o)) {

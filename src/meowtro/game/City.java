@@ -222,7 +222,7 @@ public class City {
         return null;
     }
 
-    public int getGlobalStatisfaction() {
+    public int getGlobalSatisfaction() {
         // compute the average of all region satisfactions
         int totalSatisfaction = 0;
         for (Region region: this.regions)
