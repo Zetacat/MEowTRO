@@ -16,6 +16,7 @@ import meowtro.game.onClickEvent.WaitForClick;
 import meowtro.timeSystem.TimeLine;
 import meowtro.Position;
 import meowtro.eventSystem.*;
+import meowtro.game.gameMode.*;
 public class Game {
     
     private static Config config = null;
@@ -25,17 +26,20 @@ public class Game {
     }
     // private Stack<OnClickEvent> onClickEventStack = new Stack<OnClickEvent>();
     private EventTrigger eventTrigger = null;
-    // private GameTerminateChecker gameTerminatChecker = null;
+    private GameTerminateChecker gameTerminatChecker = null;
     // private History history = null;
     // private ReplayVideoPage replayVideoPage = null;
     // private ExitPage exitPage = null;
-    private int globalSatisfaction = 0;
+    private double globalSatisfaction = 0;
     private static int balance = 0;
     public static Random randomGenerator = new Random();
     public static boolean DEBUG = false;
     public static String DEBUG_hash = "loco";
 
     private int maxStationNum;
+    public double getGlobalSatisfaction(){
+        return this.globalSatisfaction;
+    }
     public int getMaxStationNum() {
         return this.maxStationNum;
     }
@@ -43,6 +47,9 @@ public class Game {
     public ArrayList<String> getIconPaths() {
         return this.iconPaths;
     }
+    // public void setTerminateChecker(GameTerminateChecker gameTerminatChecker ){
+    //     this.gameTerminatChecker = gameTerminatChecker;
+    // }
     public static ArrayList<String> listFiles(String dir) {
         File file = null;
         ArrayList<String> files = new ArrayList<>();
@@ -57,11 +64,12 @@ public class Game {
         return files;
     }
 
-    public Game(Config config) {
+    public Game(Config config, GameTerminateChecker gameTerminatChecker) {
         Game.config = config;
         Game.setBalance(Integer.parseInt(config.get("balance.default")));
         Game.randomGenerator.setSeed(Long.parseLong(config.get("game.random.seed")));
         this.startTimeLine();
+        this.gameTerminatChecker = gameTerminatChecker;
         this.setNowEvent(new WaitForClick(this));
     }
 
@@ -122,6 +130,11 @@ public class Game {
 
         this.city.update();
         this.globalSatisfaction = this.city.getGlobalStatisfaction();
+        boolean gameIsEnded = this.gameTerminatChecker.gameIsEnded();
+        if(gameIsEnded){
+            System.out.println("\n\n\nGame Is Ended\n\n\n");
+        }
+
     }
 
     public void start(StationManager stationManager) {

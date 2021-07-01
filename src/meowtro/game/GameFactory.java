@@ -6,6 +6,7 @@ import meowtro.eventSystem.holidayEvent.RushHourEvent;
 import meowtro.eventSystem.holidayEvent.NewYearEvent;
 import java.util.List;
 import java.util.ArrayList;
+import meowtro.game.gameMode.*;
 public class GameFactory {
     private List<Event> creatEvents(Config config, City city){
         String eventsSetting = config.get("eventSystem.allEvents");
@@ -37,9 +38,26 @@ public class GameFactory {
         return allEvents;
 
     }
+    private  GameTerminateChecker createTerminater(Config config){
+        GameTerminateChecker gameTerminatChecker = null;
+        String modeStr = config.get("game.mode");
+        assert modeStr != null;
+        String[] modeInfo = modeStr.split("\\$");
+        if(modeInfo[0].equals("SpeedRunMode")){
+            gameTerminatChecker = new SpeedRunMode(modeInfo[1]);
+        }
+        else if (modeInfo[0].equals("MaxProfitMode")){
+            gameTerminatChecker = new MaxProfitMode(Integer.parseInt(modeInfo[1]));
+        }
+        else{
+            System.out.println("Wrong Game Mode");
+        }
+        System.out.println("GameMode:" + modeInfo[0]);
+        return gameTerminatChecker;
+    }
     public Game createGame(Config config) {
-        
-        Game game = new Game(config);
+        GameTerminateChecker gameTerminatChecker = createTerminater(config);
+        Game game = new Game(config, gameTerminatChecker);
         City city = new City();
         game.setCity(city);
         if (config.get("eventSystem.allEvents") != null){
