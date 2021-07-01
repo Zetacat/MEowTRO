@@ -27,7 +27,7 @@ public class UpgradeButton extends MyButton {
             e.printStackTrace();
         }
         btn.setLayoutX(100);
-        btn.setLayoutY(100);
+        btn.setLayoutY(300);
         btn.setOnAction(
             new EventHandler<ActionEvent>() {    
                 @Override
@@ -38,7 +38,7 @@ public class UpgradeButton extends MyButton {
         );
     }
     protected void onClick() {
-        Upgrader d = new Upgrader(this.game);
-        game.setNowEvent(d);
+        Upgrader u = new Upgrader(this.game);
+        game.setNowEvent(u);
     }
 }

@@ -33,6 +33,7 @@ import meowtro.button.PauseButton;
 import meowtro.button.PlayButton;
 import meowtro.button.RailwayButton;
 import meowtro.button.StationButton;
+import meowtro.button.UpgradeButton;
 import meowtro.game.Config;
 import meowtro.game.Game;
 import meowtro.game.GameFactory;
@@ -102,6 +103,9 @@ public class Main extends Application {
         CarButton carButton = new CarButton(1, game, cm, "./image/button/car.png");
         root.getChildren().add(carButton.getButton());
 
+        UpgradeButton upgradeButton = new UpgradeButton(0, game, "./image/button/levelup.png");
+        root.getChildren().add(upgradeButton.getButton());
+
         this.timer = new AnimationTimer() {
             @Override public void handle(long currentNanoTime) {
                 duration_animate = PlayTime.duration_animate;
@@ -134,6 +138,16 @@ public class Main extends Application {
                             }
                         }
                     }
+
+                    if (Game.textMessage.size() > 0) {
+                        if (root.getChildren().contains(Game.textMessage.peek())) {
+                            root.getChildren().remove(Game.textMessage.poll());
+                        }
+                        if (Game.textMessage.size() > 0) {
+                            root.getChildren().add(Game.textMessage.peek());
+                        }
+                    }
+
                     for (Object o : game.getObjectToBeRemoved()) {
                         if (root.getChildren().contains(o)) {
                             root.getChildren().remove(o);

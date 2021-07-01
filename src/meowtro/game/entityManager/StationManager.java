@@ -35,7 +35,7 @@ public class StationManager extends EntityManager {
                 this.stationNum ++;
                 Game.setBalance(Game.getBalance()-cost);
             } else {
-                // Game.showText("Not Enough Money!");
+                Game.showText("Not Enough Money!");
             }
         }
     }
@@ -45,11 +45,12 @@ public class StationManager extends EntityManager {
             if (station.getLevel() < station.getMaxLevel()) {
                 Game.setBalance(Game.getBalance()-station.getUpgradeCost());
                 station.upgrade();
+                Game.showText("Upgrade success");
             } else {
-                // Game.showText("Already Max Level!!");
+                Game.showText("Already Max Level!!");
             }
         } else {
-            // Game.showText("Not Enough Money!");
+            Game.showText("Not Enough Money!");
         }
     }
 
