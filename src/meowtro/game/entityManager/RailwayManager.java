@@ -30,7 +30,7 @@ public class RailwayManager extends EntityManager{
             Game.setBalance(Game.getBalance()-cost);
             new Railway(s1, s2, line, this.maxTimeToLive, allStations, obstacles, this.game, this.colorMap.get(line.getColor()));
         } else {
-            // Game.showText("Not Enough Money!!");
+            Game.showText("Not Enough Money!!");
         }
     }
 }

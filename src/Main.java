@@ -128,6 +128,11 @@ public class Main extends Application {
                             if (!root.getChildren().contains(railway.getImage())) {
                                 root.getChildren().add(railway.getImage());
                             }
+                            for (javafx.scene.shape.Path obstacle : railway.getObstacleImages()) {
+                                if (!root.getChildren().contains(obstacle)) {
+                                    root.getChildren().add(obstacle);
+                                }
+                            }
                         }
                     }
                     for (Line line : game.getCity().getAllLines()) {

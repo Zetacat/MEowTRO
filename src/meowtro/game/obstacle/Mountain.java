@@ -32,6 +32,10 @@ public class Mountain extends Obstacle {
             System.out.println("Mountain constructed");
         }
     }
+
+    public int getAdditionalCost() {
+        return Integer.parseInt(Game.getConfig().get("price.tunnel"));
+    }
     
 
     /****** MAIN ******/
