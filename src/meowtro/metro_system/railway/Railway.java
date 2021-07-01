@@ -84,7 +84,7 @@ public class Railway {
         this.maxLimitedRemainTimeToLive = maxLimitedRemainTimeToLive;
         this.remainTimeToLive = maxLimitedRemainTimeToLive;
         boolean DEBUG = true; 
-        this.line = line; 
+        this.line = line;
         this.game = game;
 
         if (s1.getAdjacents().contains(s2) || s2.getAdjacents().contains(s1)){

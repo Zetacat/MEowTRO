@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import meowtro.game.Game;
-import meowtro.game.onClickEvent.Destroyer;
+import meowtro.game.onClickEvent.Upgrader;
 
 public class UpgradeButton extends MyButton {
     private Game game;
