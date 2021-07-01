@@ -13,5 +13,6 @@ public class NewYearEvent extends HolidayEvent{
             double curRate = r.getSpawnRate();
             r.setSpawnRate(curRate*this.growthRate);
         }       
+        Game.showText("NewYearEvent occurs!");
     }
 }

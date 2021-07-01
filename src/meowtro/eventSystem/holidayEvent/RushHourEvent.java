@@ -12,5 +12,7 @@ public class RushHourEvent extends HolidayEvent {
         int rushIdx = Game.randomGenerator.nextInt(allRegions.size());
         double curRate = allRegions.get(rushIdx).getSpawnRate();
         allRegions.get(rushIdx).setSpawnRate(curRate*this.growthRate);
+        Game.showText("RushHourEvent occurs!");
+        // System.out.println("RushHourEvent occurs!");
     }
 }

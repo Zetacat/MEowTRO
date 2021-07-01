@@ -25,15 +25,18 @@ public class EventTrigger {
         TimeLine curreTimeLine = TimeLine.getInstance();
         if(curreTimeLine.matchCalenderwoYear(comingEvent.getHappenedTime())){
             comingEvent.trigger();
+            this.currentEventIndex += 1;
+            if(this.currentEventIndex >= this.yearEvents.size()){
+                this.currentEventIndex = 0;
+            }
+            System.out.println("trigger event at: "+comingEvent.getHappenedTime());
         }
-        this.currentEventIndex += 1;
-        if(this.currentEventIndex >= this.yearEvents.size()){
-            this.currentEventIndex = 0;
-        }
+        
+        
         if (curreTimeLine.getCurrentTotalSecond() % 2592000L == 0) {
             ss.trigger();
-            System.out.println(Game.satisfactionBarRate);
-            System.out.println(curreTimeLine.getCurrentTotalSecond());
+            // System.out.println(Game.satisfactionBarRate);
+            // System.out.println(curreTimeLine.getCurrentTotalSecond());
         }
     }
 }

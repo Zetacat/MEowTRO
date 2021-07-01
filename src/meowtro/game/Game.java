@@ -34,7 +34,7 @@ public class Game {
     private double globalSatisfaction = 0;
     private static int balance = 0;
     public static Random randomGenerator = new Random();
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     public static String DEBUG_hash = "loco";
     private boolean gameIsEnded = false;
 
@@ -212,15 +212,15 @@ public class Game {
         tmpStation = null;
     }
 
-    public static int textDuration = 50;
-    public static Queue<Text> textMessage = new LinkedList<>();
+    public static int textDuration = 100;
+    public static Queue<String> textMessage = new LinkedList<>();
     public static void showText(String s) {
         for (int i = 0; i < textDuration; i++) {
-            Text t = new Text();
-            t.setText(s);
-            t.setX(100);
-            t.setY(400);
-            textMessage.offer(t);
+            // Text t = new Text();
+            // t.setText(s);
+            // t.setX(100);
+            // t.setY(400);
+            textMessage.offer(s);
         }
     }
 

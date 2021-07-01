@@ -47,6 +47,7 @@ public class GameFrameController {
     
     public Text gameCalenderTime; 
     public Text balanceText;
+    public Text message;
 
     @FXML
     void initialize() {
@@ -108,6 +109,14 @@ public class GameFrameController {
             @Override public void handle(long currentNanoTime) {
                 duration_animate = PlayTime.duration_animate;
                 // implement timer
+                if (Game.textMessage.size() > 0){
+                    String msg = Game.textMessage.poll();
+                    message.setText(msg);
+                    // System.out.println(msg);
+                }
+                else{
+                    message.setText("");
+                }
                 if (currentNanoTime-formerTimeStamp_cmd > duration_cmd) {
                     // conduct command
                     for (Region region : game.getCity().getRegions()) {

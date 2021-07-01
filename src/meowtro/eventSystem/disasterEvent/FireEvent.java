@@ -17,11 +17,15 @@ public class FireEvent extends DisasterEvent {
                 allNotEmptyLines.add(l);
             }
         }
+        if (allNotEmptyLines.size()==0){
+            return;
+        }
         int fireLineIdx = Game.randomGenerator.nextInt(allNotEmptyLines.size());
         Line fireLine = allNotEmptyLines.get(fireLineIdx);
         int fireRailwayIdx = Game.randomGenerator.nextInt(fireLine.getRailways().size());
         long curRemainTimeToLive = fireLine.getRailways().get(fireRailwayIdx).getRemainLive();
         fireLine.getRailways().get(fireRailwayIdx).setRemainTimeToLive((long)(this.remainPortion*curRemainTimeToLive));
+        Game.showText("FireEvent occurs!");
     }
     
 }

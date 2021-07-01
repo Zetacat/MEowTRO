@@ -2,7 +2,7 @@ package meowtro.eventSystem.disasterEvent;
 import meowtro.game.City;
 import java.util.List;
 import meowtro.metro_system.railway.*;
-
+import meowtro.game.*;
 public class EarthQuakeEvent extends DisasterEvent{
     // private int remainTimeUnit;
     public EarthQuakeEvent(City city, String happenedTimeString, Double remainPortion){
@@ -18,5 +18,6 @@ public class EarthQuakeEvent extends DisasterEvent{
                 r.setRemainTimeToLive((long)(this.remainPortion*curRemainTimeToLive));
             }
         }
+        Game.showText("EarthQuakeEvent occurs!");
     }
 }

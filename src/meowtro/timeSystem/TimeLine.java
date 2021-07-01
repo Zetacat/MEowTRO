@@ -14,7 +14,7 @@ public class TimeLine{
         this.hour = 0;
         this.minute = 0;
         this.second = 0;
-        this.timeUnit = 60*60; // seconds
+        this.timeUnit = 30*60; // seconds
         this.totalSeconds = 0;
         this.totalTimeUnit = 0;
         this.year = 0;
