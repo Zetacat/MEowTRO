@@ -25,7 +25,7 @@ public class Car {
         this.maxLevel = Integer.valueOf(Game.getConfig().get("metro_system.car.max_level")); 
     }
 
-    private int length = 10*level;
+    private int length = capacity*100/20;
     private int width = 20;
     public int getLength() {
         return this.length;
@@ -106,6 +106,32 @@ public class Car {
         return locomotive; 
     }
 
+    private void setPassengerImage() {
+        List<Position> seats = new ArrayList<>();
+        if (this.vector.i != 0) {
+            seats.add(new Position(this.position.i-this.length/2, this.position.j-this.width/2));
+            seats.add(new Position(this.position.i-this.length/4, this.position.j-this.width/2));
+            seats.add(new Position(this.position.i, this.position.j-this.width/2));
+            seats.add(new Position(this.position.i+this.length/4, this.position.j-this.width/2));
+            seats.add(new Position(this.position.i-this.length/2, this.position.j));
+            seats.add(new Position(this.position.i-this.length/4, this.position.j));
+            seats.add(new Position(this.position.i, this.position.j));
+            seats.add(new Position(this.position.i+this.length/4, this.position.j));
+        } else {
+            seats.add(new Position(this.position.i-this.width/2, this.position.j-this.length/2));
+            seats.add(new Position(this.position.i-this.width/2, this.position.j-this.length/4));
+            seats.add(new Position(this.position.i-this.width/2, this.position.j));
+            seats.add(new Position(this.position.i-this.width/2, this.position.j+this.length/4));
+            seats.add(new Position(this.position.i, this.position.j-this.length/2));
+            seats.add(new Position(this.position.i, this.position.j-this.length/4));
+            seats.add(new Position(this.position.i, this.position.j));
+            seats.add(new Position(this.position.i, this.position.j+this.length/4));
+        }
+        for (int i = 0; i < this.passengers.size(); i++) {
+            this.passengers.get(i).setImagePosition(seats.get(i), 0);
+        }
+    }
+
     private Position vector;
     private Position newVector;
     private boolean isTurning = false;
@@ -128,7 +154,7 @@ public class Car {
             } else {
                 setImagePosition(this.position, this.length/2, this.width/2);
             }
-            // setPassengerImage();
+            setPassengerImage();
         }
     }
 
