@@ -13,12 +13,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameFrameController">
    <left>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="42.0" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <Button ellipsisString="100" mnemonicParsing="false" prefHeight="29.0" prefWidth="47.0" text="100">
+            <Button ellipsisString="100" mnemonicParsing="false" onMouseClicked="#buildStation" prefHeight="29.0" prefWidth="47.0" text="100">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -72,7 +71,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" text="100">
+            <Button disable="true" mnemonicParsing="false" opacity="0.6" text="100">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -81,7 +80,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" text="100">
+            <Button disable="true" mnemonicParsing="false" opacity="0.6" text="100">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -90,7 +89,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" text="100">
+            <Button disable="true" mnemonicParsing="false" opacity="0.6" text="100">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
