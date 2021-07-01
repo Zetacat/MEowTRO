@@ -74,6 +74,14 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
             addStationToOccupancyMap(startStation);
             addStationToOccupancyMap(endStation);
         }
+
+        System.out.printf("obstacle endpoints cnt: %d\n", obsticleEndPoints.size()); 
+        for (List<Position> l: obsticleEndPoints.keySet()){
+            for (Position p: l){
+                System.out.printf("%s ", p.toString()); 
+            }
+            System.out.print("\n"); 
+        }
     }
 
     private void printOccupancyMap(){
