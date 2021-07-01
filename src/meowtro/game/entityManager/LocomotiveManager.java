@@ -21,8 +21,8 @@ public class LocomotiveManager extends EntityManager {
             locomotive.setManager(this);
             railway.getLine().addLocomotive(locomotive);
         } else {
-            System.out.println("Not Enough Money!");
-            // Game.showText("Not Enough Money!");
+            // System.out.println("Not Enough Money!");
+            Game.showText("Not Enough Money!");
         }
     }
 
@@ -32,11 +32,11 @@ public class LocomotiveManager extends EntityManager {
                 Game.setBalance(Game.getBalance()-locomotive.getUpgradeCost());
                 locomotive.setLevel(locomotive.getLevel()+1);
             } else {
-                // Game.showText("Already Max Level!!");
+                Game.showText("Already Max Level!!");
             }
 
         } else {
-            // Game.showText("Not Enough Money!");
+            Game.showText("Not Enough Money!");
         }
     }
 

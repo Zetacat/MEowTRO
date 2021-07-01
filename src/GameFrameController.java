@@ -116,7 +116,9 @@ public class GameFrameController {
                 }
                 else{
                     message.setText("");
+                    
                 }
+                
                 if (currentNanoTime-formerTimeStamp_cmd > duration_cmd) {
                     // conduct command
                     for (Region region : game.getCity().getRegions()) {
@@ -161,6 +163,12 @@ public class GameFrameController {
         this.innerTimer = new AnimationTimer() {
             @Override public void handle(long currentNanoTime) {
                 // implement timer
+                if (game.gameIsEnded){
+                    timer.stop();
+                    message.setText("Game is End!!!");
+                    message.setStyle("-fx-text-fill: #A1B56C");
+                    innerTimer.stop();
+                }
                 if (currentNanoTime-formerTimeStamp_animate > duration_animate) {
                     // conduct command
                     game.update();

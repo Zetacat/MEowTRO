@@ -163,6 +163,7 @@ public class Passenger {
             return 0;
         double timeSpent = (double)(TimeLine.getInstance().getCurrentTotalTimeUnit() - this.spawnTime);
         double expectedTravelTime = (double)(Passenger.expectedTimePerStation * this.traveledStationCount);
+        System.out.println((int) Math.round(expectedTravelTime / timeSpent));
         return (int) Math.round(expectedTravelTime / timeSpent);
     }
 

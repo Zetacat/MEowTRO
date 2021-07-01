@@ -16,7 +16,7 @@ public class CarManager extends EntityManager {
             Game.setBalance(Game.getBalance()-cost);
             new Car(locomotive);
         } else {
-            // Game.showText("Not Enough Money!");
+            Game.showText("Not Enough Money!");
         }
     }
 
