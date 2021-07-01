@@ -5,10 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import meowtro.game.Game;
 import meowtro.game.entityManager.LocomotiveManager;
-import meowtro.game.entityManager.RailwayManager;
 import meowtro.game.onClickEvent.LocomotiveBuilder;
-import meowtro.game.onClickEvent.RailwayBuilder;
-import meowtro.metro_system.railway.Line;
 
 public class LocomotiveButton extends MyButton {
     private Button btn;
@@ -26,7 +23,7 @@ public class LocomotiveButton extends MyButton {
         
         btn.setText("Build Locomotive");
         btn.setLayoutX(100);
-        btn.setLayoutY(400);
+        btn.setLayoutY(200);
         btn.setOnAction(
             new EventHandler<ActionEvent>() {    
                 @Override

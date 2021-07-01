@@ -21,7 +21,6 @@ public class StationManager extends EntityManager {
         this.iconPaths = game.getIconPaths();
     }
 
-    public void build(Position position) {}
     public void build(City city, Position position) {
         if (this.stationNum >= game.getMaxStationNum() || this.iconPaths.size() == 0) {
             // throw exception
@@ -36,7 +35,6 @@ public class StationManager extends EntityManager {
         }
     }
 
-    public void destroy(Position position) {}
     public void destroy(Station station) {
         if (this.stationNum > 1) {
             this.iconPaths.add(station.getIconPath());

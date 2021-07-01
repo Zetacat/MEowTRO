@@ -26,7 +26,7 @@ public class RailwayButton extends MyButton {
         
         btn.setText("Build Railway");
         btn.setLayoutX(100);
-        btn.setLayoutY(300);
+        btn.setLayoutY(150);
         btn.setOnAction(
             new EventHandler<ActionEvent>() {    
                 @Override

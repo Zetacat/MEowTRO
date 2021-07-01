@@ -24,6 +24,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import meowtro.PlayTime;
 import meowtro.Position;
+import meowtro.button.CarButton;
 import meowtro.button.DestroyButton;
 import meowtro.button.FastforwardButton;
 import meowtro.button.LocomotiveButton;
@@ -36,6 +37,7 @@ import meowtro.game.Config;
 import meowtro.game.Game;
 import meowtro.game.GameFactory;
 import meowtro.game.Region;
+import meowtro.game.entityManager.CarManager;
 import meowtro.game.entityManager.LocomotiveManager;
 import meowtro.game.entityManager.RailwayManager;
 import meowtro.game.entityManager.StationManager;
@@ -44,6 +46,7 @@ import meowtro.metro_system.railway.Line;
 import meowtro.metro_system.railway.LineColor;
 import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.station.Station;
+import meowtro.metro_system.train.Car;
 import meowtro.metro_system.train.Locomotive;
 
 public class Main extends Application {
@@ -66,6 +69,7 @@ public class Main extends Application {
         StationManager sm = new StationManager(game);
         RailwayManager rm = new RailwayManager(game);
         LocomotiveManager lm = new LocomotiveManager(game);
+        CarManager cm = new CarManager(game);
         
         game.start(sm);
 
@@ -95,6 +99,9 @@ public class Main extends Application {
         LocomotiveButton locomotiveButton = new LocomotiveButton(2, game, lm);
         root.getChildren().add(locomotiveButton.getButton());
 
+        CarButton carButton = new CarButton(1, game, cm);
+        root.getChildren().add(carButton.getButton());
+
         this.timer = new AnimationTimer() {
             @Override public void handle(long currentNanoTime) {
                 duration_animate = PlayTime.duration_animate;
@@ -119,6 +126,11 @@ public class Main extends Application {
                         for (Locomotive locomotive : line.getLocomotives()) {
                             if (!root.getChildren().contains(locomotive.getImage())) {
                                 root.getChildren().add(locomotive.getImage());
+                            }
+                            for (Car car : locomotive.getCars()) {
+                                if (!root.getChildren().contains(car.getImage())) {
+                                    root.getChildren().add(car.getImage());
+                                }
                             }
                         }
                     }

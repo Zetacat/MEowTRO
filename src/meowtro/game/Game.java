@@ -9,6 +9,7 @@ import java.util.Random;
 import javafx.animation.Timeline;
 import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.station.Station;
+import meowtro.metro_system.train.Locomotive;
 import meowtro.game.entityManager.StationManager;
 import meowtro.game.onClickEvent.OnClickEvent;
 import meowtro.game.onClickEvent.WaitForClick;
@@ -187,4 +188,8 @@ public class Game {
         tmpStation = null;
     }
 
+    public void locomotiveOnClick(Locomotive locomotive) {
+        this.nowEvent.conduct(locomotive);
+        tmpStation = null;
+    }
 }

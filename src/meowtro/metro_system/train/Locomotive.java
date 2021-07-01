@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -38,6 +42,7 @@ public class Locomotive {
     private Position position; 
     private Direction direction; 
     private ArrayList<Car> cars = new ArrayList<Car>(); 
+    private Game game;
 
     private int takePassengerInterval = 10; 
     private int dropPassengerInterval = 10; 
@@ -84,13 +89,18 @@ public class Locomotive {
     }
 
     private Color color;
+    public Color getColor() {
+        return this.color;
+    }
     private int length = 20;
     private int width = 10;
+    public int getLength() {
+        return this.length;
+    }
     private Rectangle image;
     private void setImage(Color color) {
         this.image = new Rectangle();
         this.image.setFill(color);
-        System.out.printf("vector: (%f,%f)%n", this.vector.i, this.vector.j);
         if (this.vector.i != 0) {
             this.image.setHeight(this.length);
             this.image.setWidth(this.width);
@@ -100,9 +110,19 @@ public class Locomotive {
             this.image.setWidth(this.length);
             setImagePosition(this.position, this.length/2, this.width/2);
         }
+        this.image.setOnMouseClicked(
+            new EventHandler<MouseEvent>() {    
+                @Override
+                public void handle(MouseEvent event) {
+                    onClick(event);
+                }
+            }
+        );
+    }
+    private void onClick(MouseEvent event) {
+        this.game.locomotiveOnClick(this);
     }
     private void resetImage() {
-        System.out.printf("vector: (%f,%f)%n", this.vector.i, this.vector.j);
         if (this.vector.i != 0) {
             this.image.setHeight(this.length);
             this.image.setWidth(this.width);
@@ -128,12 +148,13 @@ public class Locomotive {
     private Position vector;
     private Position newVector;
 
-    public Locomotive(Railway railway, Position position, Direction direction, Color color){
+    public Locomotive(Railway railway, Position position, Direction direction, Color color, Game game){
         init();
         this.railway = railway; 
         this.position = position; 
         this.direction = direction;
         this.color = color;
+        this.game = game;
         this.state = State.MOVING; 
         this.index = Locomotive.getNextIndex();
         this.vector = this.railway.getVector(this.position, this.direction, this.length);
@@ -170,6 +191,10 @@ public class Locomotive {
         return direction; 
     }
 
+    public Railway getRailway() {
+        return this.railway;
+    }
+
     public Line getLine(){
         return railway.getLine(); 
     }
@@ -179,7 +204,12 @@ public class Locomotive {
     }
 
     public void addCar(Car car){
-        this.cars.add(car); 
+        this.cars.add(car);
+        this.railway.moveCars(this, this.railway.parsePositionToAbstractPosition(this.position));
+    }
+
+    public List<Car> getCars() {
+        return this.cars;
     }
 
     public int getMaxCarNumber(){

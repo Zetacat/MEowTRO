@@ -19,6 +19,7 @@ import meowtro.game.Game;
 import meowtro.game.obstacle.Obstacle;
 import meowtro.metro_system.Direction;
 import meowtro.metro_system.station.Station;
+import meowtro.metro_system.train.Car;
 import meowtro.metro_system.train.Locomotive;
 
 public class Railway {
@@ -223,7 +224,7 @@ public class Railway {
         return line; 
     }
 
-    private double parsePositionToAbstractPosition(Position p){
+    public double parsePositionToAbstractPosition(Position p){
         return realizer.parsePositionToAbstractPosition(p); 
     }
 
@@ -313,7 +314,28 @@ public class Railway {
 
     private double computeLength(){
         return Math.abs(end.getPosition().i-start.getPosition().i) + Math.abs(end.getPosition().j-start.getPosition().j);
-        // return (int) start.getPosition().l2distance(end.getPosition());
+    }
+
+    public void moveCars(Locomotive l, double abstractPosition) {
+        if (l.getDirection() == Direction.FORWARD) {
+            abstractPosition -= (l.getLength()/2-2);
+        } else {
+            abstractPosition += (l.getLength()/2+2);
+        }
+        
+        for (Car car : l.getCars()) {
+            if (l.getDirection() == Direction.FORWARD) {
+                double newAbstractPosition = abstractPosition - car.getLength()/2;
+                newAbstractPosition = Math.max(newAbstractPosition, 0);
+                car.setPosition(parseAbstractPositionToPosition(newAbstractPosition));
+                abstractPosition -= car.getLength()-2;
+            } else {
+                double newAbstractPosition = abstractPosition + car.getLength()/2;
+                newAbstractPosition = Math.min(newAbstractPosition, length);
+                car.setPosition(parseAbstractPositionToPosition(newAbstractPosition));
+                abstractPosition += car.getLength()+2;
+            }
+        }
     }
 
     public Position moveLocomotive(Locomotive l){
@@ -332,6 +354,8 @@ public class Railway {
         }
         
         double newAbstractPosition = positionsInAbstractLine.get(l) + (speed * orientation);
+
+        moveCars(l, newAbstractPosition);
 
         newAbstractPosition = Math.min(newAbstractPosition, length);
         newAbstractPosition = Math.max(newAbstractPosition, 0);

@@ -4,22 +4,26 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import meowtro.game.Game;
-import meowtro.game.onClickEvent.Destroyer;
+import meowtro.game.entityManager.CarManager;
+import meowtro.game.onClickEvent.CarBuilder;
 
-public class DestroyButton extends MyButton {
+public class CarButton extends MyButton {
     private Button btn;
     public Button getButton() {
         return this.btn;
     }
     private Game game;
+    private CarManager carManager;
 
-    public DestroyButton(int cost, Game game) {
+    public CarButton(int cost, Game game, CarManager carManager) {
         this.cost = cost;
         this.btn = new Button();
         this.game = game;
-        btn.setText("Destroy");
+        this.carManager = carManager;
+        
+        btn.setText("Build car");
         btn.setLayoutX(100);
-        btn.setLayoutY(100);
+        btn.setLayoutY(250);
         btn.setOnAction(
             new EventHandler<ActionEvent>() {    
                 @Override
@@ -30,7 +34,7 @@ public class DestroyButton extends MyButton {
         );
     }
     protected void onClick() {
-        Destroyer d = new Destroyer(this.game);
-        game.setNowEvent(d);
+        CarBuilder b = new CarBuilder(this.carManager, this.game);
+        this.game.setNowEvent(b);
     }
 }

@@ -12,6 +12,7 @@ import meowtro.metro_system.railway.Line;
 import meowtro.metro_system.railway.LineColor;
 import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.station.Station;
+import meowtro.metro_system.train.Car;
 import meowtro.metro_system.train.Locomotive;
 
 public abstract class EntityManager {
@@ -28,8 +29,10 @@ public abstract class EntityManager {
     public void build(City city, Position position) {}
     public void build(Station s1, Station s2, Line line, List<Station> allStations, List<Obstacle> obstacles){}
     public void build(Railway railway, Position position) {}
+    public void build(Locomotive locomotive) {}
 
     public void destroy(Position position) {}
     public void destroy(Station station) {}
     public void destroy(Locomotive locomotive) {}
+    public void destroy(Car car) {}
 }

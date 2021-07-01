@@ -22,7 +22,7 @@ public class StationButton extends MyButton {
         this.stationManager = stationManager;
         btn.setText("Build Station");
         btn.setLayoutX(100);
-        btn.setLayoutY(100);
+        btn.setLayoutY(50);
         btn.setOnAction(
             new EventHandler<ActionEvent>() {    
                 @Override
