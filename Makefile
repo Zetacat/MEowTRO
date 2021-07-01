@@ -1,5 +1,5 @@
 SRCFILES := $(shell find . -name "*.java")
-JAVAFX_PATH := ../javafx-sdk-11.0.2/lib
+JAVAFX_PATH := ./javafx-sdk-11.0.2/lib
 MODULE_FLAG := --module-path $(JAVAFX_PATH) --add-modules javafx.controls,javafx.fxml
 SOURCEPATH := src/
 OBJ_DIR := out/

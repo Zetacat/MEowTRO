@@ -111,7 +111,11 @@ PlayButton、PauseButton、FastFowardButton 亦均繼承 MyButton。在 onClick(
 
 為了捕捉地鐵系統中各物件之間的互動，我們讓地鐵系統的各類別僅處理與系統內其他物件互動的邏輯，對於較複雜的演算法，則委派給其他類別來實作，例如 ShortestPathCalculator 處理最短路徑規劃，以及 RectangularRailwayRealizer 處理建造鐵道時的轉折點選擇。
 
-另外，對於遊戲中諸多常數，例如城市的圖檔、乘客行走速度、列車移動最大速度等，或是事件的時刻，我們將它們抽出寫至獨立的 .properties 檔，在 run time 才運用 Config 進行讀取。這樣在未來僅需對 .properties 進行更改，即可產生不同的關卡
+另外，對於遊戲中諸多常數，例如城市的圖檔、乘客行走速度、列車移動最大速度等，或是事件的時刻，我們將它們抽出寫至獨立的 .properties 檔，在 run time 才運用 Config 進行讀取。這樣在未來僅需對 .properties 進行更改，即可產生不同的關卡。
+
+然而，我們的設計還是有一些缺陷。
+
+在實作上為了存取方便，我們經常在多個地方握有一份參考。舉例來說，Railway 可取得目前行駛於其上的火車頭，不過並不保證每一個鐵道在每個時間點都有火車頭行駛中，火車頭應該由 Line 儲存即可。雖然這樣寫在更新火車頭位置時較為方便，也較 robust，但在設計上有 tightly couple 的問題。除此之外，我們將 Config 及 balance 存成 Game 中的 static variable，亦不是好的設計。
 
 ## 環境
 
