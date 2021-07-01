@@ -37,7 +37,7 @@ public class PauseButton extends MyButton {
             }
         );
     }
-    protected void onClick() {
+    public void onClick() {
         this.timer.stop();
     }
 

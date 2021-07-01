@@ -38,7 +38,7 @@ public class PlayButton extends MyButton {
             }
         );
     }
-    protected void onClick() {
+    public void onClick() {
         this.timer.start();
         if (PlayTime.isFF) {
             PlayTime.duration_animate *= 8;

@@ -37,7 +37,7 @@ public class UpgradeButton extends MyButton {
             }
         );
     }
-    protected void onClick() {
+    public void onClick() {
         Upgrader d = new Upgrader(this.game);
         game.setNowEvent(d);
     }

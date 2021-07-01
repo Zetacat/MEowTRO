@@ -40,7 +40,7 @@ public class CarButton extends MyButton {
             }
         );
     }
-    protected void onClick() {
+    public void onClick() {
         CarBuilder b = new CarBuilder(this.carManager, this.game, this.cost);
         this.game.setNowEvent(b);
     }
