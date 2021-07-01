@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -33,6 +34,7 @@ import meowtro.button.PauseButton;
 import meowtro.button.PlayButton;
 import meowtro.button.RailwayButton;
 import meowtro.button.StationButton;
+import meowtro.button.UpgradeButton;
 import meowtro.game.Config;
 import meowtro.game.Game;
 import meowtro.game.GameFactory;
@@ -85,6 +87,9 @@ public class Main extends Application {
 
         root.getChildren().add(new ImageView(new Image(new FileInputStream("./image/map_3.png"))));
 
+        ProgressBar satisfactionBar = new ProgressBar(0);
+        root.getChildren().add(satisfactionBar);
+
         StationButton stationButton = new StationButton(10, game, sm, "./image/button/station.png");
         root.getChildren().add(stationButton.getButton());
         
@@ -101,6 +106,9 @@ public class Main extends Application {
 
         CarButton carButton = new CarButton(1, game, cm, "./image/button/car.png");
         root.getChildren().add(carButton.getButton());
+
+        UpgradeButton upgradeButton = new UpgradeButton(0, game, "./image/button/levelup.png");
+        root.getChildren().add(upgradeButton.getButton());
 
         this.timer = new AnimationTimer() {
             @Override public void handle(long currentNanoTime) {
@@ -134,6 +142,18 @@ public class Main extends Application {
                             }
                         }
                     }
+
+                    if (Game.textMessage.size() > 0) {
+                        if (root.getChildren().contains(Game.textMessage.peek())) {
+                            root.getChildren().remove(Game.textMessage.poll());
+                        }
+                        if (Game.textMessage.size() > 0) {
+                            root.getChildren().add(Game.textMessage.peek());
+                        }
+                    }
+
+                    satisfactionBar.setProgress(Game.satisfactionBarRate);
+
                     for (Object o : game.getObjectToBeRemoved()) {
                         if (root.getChildren().contains(o)) {
                             root.getChildren().remove(o);

@@ -2,9 +2,12 @@ package meowtro.game;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 
+import javafx.scene.text.Text;
 import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.station.Station;
 import meowtro.metro_system.train.Locomotive;
@@ -132,7 +135,7 @@ public class Game {
             this.eventTrigger.trigger();
 
         this.city.update();
-        this.globalSatisfaction = this.city.getGlobalStatisfaction();
+        this.globalSatisfaction = this.city.getGlobalSatisfaction();
         this.gameIsEnded = this.gameTerminatChecker.gameIsEnded();
         // if(gameIsEnded){
         //     System.out.println("\n\n\nGame Is Ended\n\n\n");
@@ -208,4 +211,18 @@ public class Game {
         this.nowEvent.conduct(locomotive);
         tmpStation = null;
     }
+
+    public static int textDuration = 50;
+    public static Queue<Text> textMessage = new LinkedList<>();
+    public static void showText(String s) {
+        for (int i = 0; i < textDuration; i++) {
+            Text t = new Text();
+            t.setText(s);
+            t.setX(100);
+            t.setY(400);
+            textMessage.offer(t);
+        }
+    }
+
+    public static double satisfactionBarRate = 0;
 }

@@ -323,12 +323,19 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
             for (int j = (int)Math.min(start.j, end.j); j <= (int)Math.max(start.j, end.j); j++){
                 for (Obstacle obs: obstacles){
                     if (obs.getPositions().get(i).get(j)){
-                        if (!isRecordingIntersection){
+                        if (currentObstacle == null && !isRecordingIntersection){
                             isRecordingIntersection = true; 
                             currentObstacle = obs; 
                             ObstacleStartEndPair = new ArrayList<Position>(); 
                             ObstacleStartEndPair.add(new Position(i, j)); 
                             break; 
+                        }else if (currentObstacle != null && currentObstacle != obs){
+                            ObstacleStartEndPair.add(new Position(i, j)); 
+                            assert (ObstacleStartEndPair.size() == 2); 
+                            obsticleEndPoints.put(ObstacleStartEndPair, currentObstacle); 
+                            ObstacleStartEndPair = new ArrayList<Position>(); 
+                            ObstacleStartEndPair.add(new Position(i, j)); 
+                            currentObstacle = obs; 
                         }
                     }else{
                         if (isRecordingIntersection){
@@ -350,12 +357,19 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
             for (int i = (int)Math.min(start.i, end.i); i <= (int)Math.max(start.i, end.i); i++){
                 for (Obstacle obs: obstacles){
                     if (obs.getPositions().get(i).get(j)){
-                        if (!isRecordingIntersection){
+                        if (currentObstacle == null && !isRecordingIntersection){
                             isRecordingIntersection = true; 
                             currentObstacle = obs; 
                             ObstacleStartEndPair = new ArrayList<Position>(); 
                             ObstacleStartEndPair.add(new Position(i, j)); 
                             break; 
+                        }else if (currentObstacle != null && currentObstacle != obs){
+                            ObstacleStartEndPair.add(new Position(i, j)); 
+                            assert (ObstacleStartEndPair.size() == 2); 
+                            obsticleEndPoints.put(ObstacleStartEndPair, currentObstacle); 
+                            ObstacleStartEndPair = new ArrayList<Position>(); 
+                            ObstacleStartEndPair.add(new Position(i, j)); 
+                            currentObstacle = obs; 
                         }
                     }else{
                         if (isRecordingIntersection){
