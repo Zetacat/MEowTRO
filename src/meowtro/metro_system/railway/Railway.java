@@ -39,7 +39,7 @@ public class Railway {
     private double warmupDist = 32.0; 
     private HashMap<Locomotive, Double> positionsInAbstractLine = new HashMap<Locomotive, Double>();
 
-    private List<Path> obstacleImages;
+    private List<Path> obstacleImages = new ArrayList<>();
     public List<Path> getObstacleImages() {
         return this.obstacleImages;
     }
