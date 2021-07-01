@@ -4,20 +4,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import meowtro.PlayTime;
-import meowtro.game.Game;
 
 public class PlayButton extends MyButton {
-    private Button btn;
-    public Button getButton() {
-        return this.btn;
-    }
     private AnimationTimer timer;
 
     public PlayButton(int cost, String iconPath, AnimationTimer timer) {

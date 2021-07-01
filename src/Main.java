@@ -85,21 +85,21 @@ public class Main extends Application {
 
         root.getChildren().add(new ImageView(new Image(new FileInputStream("./image/map_3.png"))));
 
-        StationButton stationButton = new StationButton(10, game, sm);
+        StationButton stationButton = new StationButton(10, game, sm, "./image/button/station.png");
         root.getChildren().add(stationButton.getButton());
         
-        DestroyButton destroyButton = new DestroyButton(0, game);
+        DestroyButton destroyButton = new DestroyButton(0, game, "./image/button/remove.png");
         root.getChildren().add(destroyButton.getButton());
         
         // TEMPORARILY add a new line after game start
         Line line = new Line(game.getCity(), LineColor.BLUE);
-        RailwayButton railwayButton = new RailwayButton(2, game, rm, line);
+        RailwayButton railwayButton = new RailwayButton(2, game, rm, line, "./image/button/railway.png");
         root.getChildren().add(railwayButton.getButton());
 
-        LocomotiveButton locomotiveButton = new LocomotiveButton(2, game, lm);
+        LocomotiveButton locomotiveButton = new LocomotiveButton(2, game, lm, "./image/button/locomotive.png");
         root.getChildren().add(locomotiveButton.getButton());
 
-        CarButton carButton = new CarButton(1, game, cm);
+        CarButton carButton = new CarButton(1, game, cm, "./image/button/car.png");
         root.getChildren().add(carButton.getButton());
 
         this.timer = new AnimationTimer() {

@@ -11,10 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class PauseButton extends MyButton {
-    private Button btn;
-    public Button getButton() {
-        return this.btn;
-    }
     private AnimationTimer timer;
 
     public PauseButton(int cost, String iconPath, AnimationTimer timer) {

@@ -11,11 +11,6 @@ import javafx.scene.image.ImageView;
 import meowtro.PlayTime;
 
 public class FastforwardButton extends MyButton {
-    private Button btn;
-    public Button getButton() {
-        return this.btn;
-    }
-
     public FastforwardButton(int cost, String iconPath) {
         this.cost = cost;
         this.btn = new Button();
