@@ -1,5 +1,6 @@
 package meowtro.eventSystem;
 
+import meowtro.game.Game;
 import meowtro.timeSystem.TimeLine;
 import java.util.List;
 
@@ -29,8 +30,10 @@ public class EventTrigger {
         if(this.currentEventIndex >= this.yearEvents.size()){
             this.currentEventIndex = 0;
         }
-        if (curreTimeLine.getCurrentTotalSecond() % 2592000 == 0) {
+        if (curreTimeLine.getCurrentTotalSecond() % 2592000L == 0) {
             ss.trigger();
+            System.out.println(Game.satisfactionBarRate);
+            System.out.println(curreTimeLine.getCurrentTotalSecond());
         }
     }
 }

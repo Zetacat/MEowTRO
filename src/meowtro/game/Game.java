@@ -34,7 +34,7 @@ public class Game {
     private double globalSatisfaction = 0;
     private static int balance = 0;
     public static Random randomGenerator = new Random();
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
     public static String DEBUG_hash = "loco";
     private boolean gameIsEnded = false;
 
@@ -224,5 +224,5 @@ public class Game {
         }
     }
 
-    public static double satisfactionBarRate = 0;
+    public static double satisfactionBarRate = 1.0;
 }

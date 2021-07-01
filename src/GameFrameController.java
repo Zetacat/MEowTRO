@@ -1,9 +1,12 @@
 import java.net.URL;
+import java.sql.Time;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import meowtro.game.*;
 import meowtro.game.entityManager.CarManager;
 import meowtro.game.entityManager.LocomotiveManager;
@@ -21,12 +24,13 @@ import meowtro.button.PauseButton;
 import meowtro.button.PlayButton;
 import meowtro.button.RailwayButton;
 import meowtro.button.StationButton;
-import meowtro.button.MyButton;
+import meowtro.button.*;
 import meowtro.metro_system.railway.*;
 import meowtro.metro_system.train.*;
 import meowtro.metro_system.station.Station;
 import javafx.animation.AnimationTimer;
 import meowtro.game.passenger.Passenger;
+import meowtro.timeSystem.*;
 public class GameFrameController {
     private AnimationTimer timer;
     private AnimationTimer innerTimer;
@@ -39,6 +43,10 @@ public class GameFrameController {
 
     @FXML
     private URL location;
+    public ProgressBar satisficBar;
+    
+    public Text gameCalenderTime; 
+    public Text balanceText;
 
     @FXML
     void initialize() {
@@ -58,7 +66,7 @@ public class GameFrameController {
     private LocomotiveManager locomotiveManager = null;
     private CarManager carManager = null;
     private MyButton blueRailwayButton, brownRailwayButton, greenRailwayButton, orangeRailwayButton, redRailwayButton, yellowRailwayButton;
-    private MyButton stationButton, destroyButton, locomotiveButton, carButton;
+    private MyButton stationButton, destroyButton, locomotiveButton, carButton, upgradeButton;
     private MyButton pauseButton, playButton, ffButton;
     public void setGame(Game game){
         this.game = game;
@@ -147,6 +155,11 @@ public class GameFrameController {
                 if (currentNanoTime-formerTimeStamp_animate > duration_animate) {
                     // conduct command
                     game.update();
+                    satisficBar.setProgress(Game.satisfactionBarRate);
+                    TimeLine gameTimer = TimeLine.getInstance();
+                    String calenderTime = gameTimer.getCalenderTime();
+                    gameCalenderTime.setText(calenderTime);;
+                    balanceText.setText(Game.getBalance()+"$");
                     for (Region region : game.getCity().getRegions()) {
                         for (Passenger passenger : region.getPassengers()) {
                             if (!root.getChildren().contains(passenger.getImage())) {
@@ -206,4 +219,11 @@ public class GameFrameController {
     public void play(){
         this.playButton.onClick();
     }
+    public void destroy(){
+        this.destroyButton.onClick();
+    }
+    public void levelup(){
+        this.upgradeButton.onClick();
+    }
+
 }
