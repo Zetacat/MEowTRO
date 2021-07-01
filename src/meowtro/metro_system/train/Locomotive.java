@@ -357,7 +357,7 @@ public class Locomotive {
                         System.out.printf("Passenger get off locomotive at station %s, %s\n", currentStation.toString(), position.toString());
                     }
                     this.takePassengerCountdown = takePassengerInterval; 
-                    break; 
+                    return; 
                 }
             }
             // no passenger want to get down

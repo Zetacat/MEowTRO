@@ -89,7 +89,7 @@ public class City {
             // skip colors with too less pixels (edges)
             if (colorPixelsPair.getValue().size() < areaThreshold)
                 continue;
-            
+            System.out.println(colorPixelsPair.getKey());
             // construct obstacle or region
             List<List<Boolean>> positions = this.positionList2Boolean2DList(colorPixelsPair.getValue(), background.getWidth(), background.getHeight());
 
