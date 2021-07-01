@@ -35,6 +35,7 @@ public class Game {
     public static Random randomGenerator = new Random();
     public static boolean DEBUG = false;
     public static String DEBUG_hash = "loco";
+    private boolean gameIsEnded = false;
 
     private int maxStationNum;
     public double getGlobalSatisfaction(){
@@ -42,6 +43,9 @@ public class Game {
     }
     public int getMaxStationNum() {
         return this.maxStationNum;
+    }
+    public boolean getGameIsEnded(){
+        return this.gameIsEnded;
     }
     private ArrayList<String> iconPaths;
     public ArrayList<String> getIconPaths() {
@@ -130,10 +134,10 @@ public class Game {
 
         this.city.update();
         this.globalSatisfaction = this.city.getGlobalStatisfaction();
-        boolean gameIsEnded = this.gameTerminatChecker.gameIsEnded();
-        if(gameIsEnded){
-            System.out.println("\n\n\nGame Is Ended\n\n\n");
-        }
+        this.gameIsEnded = this.gameTerminatChecker.gameIsEnded();
+        // if(gameIsEnded){
+        //     System.out.println("\n\n\nGame Is Ended\n\n\n");
+        // }
 
     }
 
