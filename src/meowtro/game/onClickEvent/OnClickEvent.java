@@ -20,6 +20,8 @@ public abstract class OnClickEvent {
     public City getCity() {
         return this.city;
     }
+    protected int cost;
+
     public void conduct(Station station) {}
     public void conduct(Position position) {}
     public void conduct(Station s1, Station s2) {}

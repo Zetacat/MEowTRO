@@ -21,17 +21,35 @@ public class StationManager extends EntityManager {
         this.iconPaths = game.getIconPaths();
     }
 
-    public void build(City city, Position position) {
+    public void build(City city, Position position, int cost) {
         if (this.stationNum >= game.getMaxStationNum() || this.iconPaths.size() == 0) {
             // throw exception
         } else {
-            String iconPath = this.iconPaths.get(0);
-            this.iconPaths.remove(iconPath);
-            Station station = new Station(city, position, iconPath);
-            station.setManager(this);
-            Region region = city.getRegionByPosition(position);
-            region.addStation(station);
-            this.stationNum ++;
+            if (Game.getBalance() >= cost) {
+                String iconPath = this.iconPaths.get(0);
+                this.iconPaths.remove(iconPath);
+                Station station = new Station(city, position, iconPath);
+                station.setManager(this);
+                Region region = city.getRegionByPosition(position);
+                region.addStation(station);
+                this.stationNum ++;
+                Game.setBalance(Game.getBalance()-cost);
+            } else {
+                // Game.showText("Not Enough Money!");
+            }
+        }
+    }
+
+    public void upgrade(Station station) {
+        if (Game.getBalance() >= station.getUpgradeCost()) {
+            if (station.getLevel() < station.getMaxLevel()) {
+                Game.setBalance(Game.getBalance()-station.getUpgradeCost());
+                station.upgrade();
+            } else {
+                // Game.showText("Already Max Level!!");
+            }
+        } else {
+            // Game.showText("Not Enough Money!");
         }
     }
 

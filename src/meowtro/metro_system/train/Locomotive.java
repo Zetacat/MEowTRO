@@ -19,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import meowtro.Position;
 import meowtro.game.*;
+import meowtro.game.entityManager.EntityManager;
 import meowtro.game.passenger.Passenger;
 import meowtro.metro_system.*;
 import meowtro.metro_system.railway.*;
@@ -35,6 +36,7 @@ public class Locomotive {
     private Station currentStation;  // Station | null
     private int level = 0; 
     private int maxLevel; 
+    private int upgradeCost = 0;
     private double currentSpeed; 
     private Map<Integer, Integer> levelToMaxSpeed; 
     private Map<Integer, Integer> levelToMaxCar; 
@@ -86,6 +88,11 @@ public class Locomotive {
         }
         if (level < maxLevel)
             System.out.println("ValueError: metro_system.locomotive.level_to_maxspeed < maxLevel"); 
+        
+        // get upgrade cost
+    }
+    public int getUpgradeCost() {
+        return this.upgradeCost;
     }
 
     private Color color;
@@ -165,6 +172,14 @@ public class Locomotive {
         setImage(color);
     }
 
+    private EntityManager manager;
+    public void setManager(EntityManager manager) {
+        this.manager = manager;
+    }
+    public EntityManager getManager() {
+        return this.manager;
+    }
+
     public Position getPosition(){
         return position; 
     }
@@ -234,9 +249,11 @@ public class Locomotive {
     public void setLevel(int l){
         this.level = l; 
     }
-
     public int getLevel(){
         return level; 
+    }
+    public int getMaxLevel() {
+        return this.maxLevel;
     }
 
     private boolean assignPassengerToCar(Passenger p){

@@ -41,7 +41,7 @@ public class StationButton extends MyButton {
         );
     }
     protected void onClick() {
-        StationBuilder b = new StationBuilder(this.stationManager, this.game);
+        StationBuilder b = new StationBuilder(this.stationManager, this.game, this.cost);
         this.game.setNowEvent(b);
     }
 

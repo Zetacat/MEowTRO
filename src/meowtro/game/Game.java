@@ -2,11 +2,9 @@ package meowtro.game;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import javafx.animation.Timeline;
 import meowtro.metro_system.railway.Railway;
 import meowtro.metro_system.station.Station;
 import meowtro.metro_system.train.Locomotive;
@@ -80,13 +78,14 @@ public class Game {
     public static int getBalance() {
         return Game.balance;
     }
-
     public static void setBalance(int newBalance) {
         Game.balance = newBalance;
     }
     public void setEventTrigger(EventTrigger eventTrigger){
         this.eventTrigger = eventTrigger;
     }
+
+
     public void setCity(City city) {
         this.city = city;
         this.iconPaths = listFiles("./image/icon/");
@@ -146,7 +145,7 @@ public class Game {
         List<Region> regions2AddStation = this.city.getNRandomRegions(2);
         for (Region region: regions2AddStation) {
             Position newStationPosition = region.getRandomPositionInRegion();
-            stationManager.build(this.city, newStationPosition);
+            stationManager.build(this.city, newStationPosition,0);
         }
 
         // // run game

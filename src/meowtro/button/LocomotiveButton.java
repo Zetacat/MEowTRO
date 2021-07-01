@@ -41,7 +41,7 @@ public class LocomotiveButton extends MyButton {
         );
     }
     protected void onClick() {
-        LocomotiveBuilder b = new LocomotiveBuilder(this.locomotiveManager, this.game);
+        LocomotiveBuilder b = new LocomotiveBuilder(this.locomotiveManager, this.game, this.cost);
         this.game.setNowEvent(b);
     }
 }

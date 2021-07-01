@@ -26,10 +26,13 @@ public abstract class EntityManager {
     );
 
     public void build(Position position) {}
-    public void build(City city, Position position) {}
-    public void build(Station s1, Station s2, Line line, List<Station> allStations, List<Obstacle> obstacles){}
-    public void build(Railway railway, Position position) {}
-    public void build(Locomotive locomotive) {}
+    public void build(City city, Position position, int cost) {}
+    public void build(Station s1, Station s2, Line line, List<Station> allStations, List<Obstacle> obstacles, int cost){}
+    public void build(Railway railway, Position position, int cost) {}
+    public void build(Locomotive locomotive, int cost) {}
+
+    public void upgrade(Station station) {};
+    public void upgrade(Locomotive locomtive) {};
 
     public void destroy(Position position) {}
     public void destroy(Station station) {}

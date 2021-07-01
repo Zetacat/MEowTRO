@@ -115,6 +115,7 @@ public class Railway {
         //     s1AdjRailways = s1.getRailwaysWithLine(line); 
         //     s2AdjRailways = s2.getRailwaysWithLine(line); 
             
+<<<<<<< Updated upstream
         //     // --S1 --this- S2---
         //     assert s1AdjRailways.size() <= 1 && s2AdjRailways.size() <= 1; 
         //     if (s1AdjRailways.size() == 1 && s2AdjRailways.size() == 1){
@@ -137,6 +138,27 @@ public class Railway {
         // }
         if (s1.isEndStationInLine(line) && s2.isEndStationInLine(line)){
             System.out.println("Circular line is illegal");
+=======
+            // --S1 --this- S2---
+            assert s1AdjRailways.size() <= 1 && s2AdjRailways.size() <= 1; 
+            if (s1AdjRailways.size() == 1 && s1AdjRailways.size() == 1){
+                Railway r1 = s1AdjRailways.get(0); 
+                Railway r2 = s2AdjRailways.get(0); 
+                if (r1.end == s1 && r2.start == s2){
+                    this.end = s2; 
+                    this.start = s1; 
+                }else if (r1.start == s1 && r2.end == s2){
+                    this.end = s1; 
+                    this.start = s2; 
+                }else{
+                    // error
+                    if (DEBUG){
+                        System.out.println("Create shortcut railway error: mismatched directions");
+                    }
+                    return; 
+                }
+            }
+>>>>>>> Stashed changes
         }
         else if (s1AdjRailways.size() == 0 && s2AdjRailways.size() == 0){
             // brand new line

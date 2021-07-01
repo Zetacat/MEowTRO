@@ -34,7 +34,6 @@ public class Car {
     private void setImage(Color color) {
         this.image = new Rectangle();
         this.image.setFill(color);
-        System.out.printf("vector: (%f,%f)%n", this.vector.i, this.vector.j);
         if (this.vector.i != 0) {
             this.image.setHeight(this.length);
             this.image.setWidth(this.width);
@@ -46,7 +45,6 @@ public class Car {
         }
     }
     private void resetImage() {
-        System.out.printf("vector: (%f,%f)%n", this.vector.i, this.vector.j);
         if (this.vector.i != 0) {
             this.image.setHeight(this.length);
             this.image.setWidth(this.width);

@@ -11,8 +11,13 @@ public class CarManager extends EntityManager {
         this.game = game;
     }
 
-    public void build(Locomotive locomotive) {
-        new Car(locomotive);
+    public void build(Locomotive locomotive, int cost) {
+        if (Game.getBalance() >= cost) {
+            Game.setBalance(Game.getBalance()-cost);
+            new Car(locomotive);
+        } else {
+            // Game.showText("Not Enough Money!");
+        }
     }
 
     public void destroy(Car car) {
