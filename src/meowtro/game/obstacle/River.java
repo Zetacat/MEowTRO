@@ -33,6 +33,10 @@ public class River extends Obstacle {
         }
     }
 
+    public int getAdditionalCost() {
+        return Integer.parseInt(Game.getConfig().get("price.bridge"));
+    }
+
     /****** MAIN ******/
     public static void main(String[] args) {
         // read image

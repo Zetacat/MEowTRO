@@ -28,6 +28,8 @@ public abstract class Obstacle {
         this.positions = positions;
     }
 
+    public int getAdditionalCost() {return 0;}
+
     public Boolean isBlocked(Position position) {
         int roundedI = (int) Math.round(position.i);
         int roundedJ = (int) Math.round(position.j);

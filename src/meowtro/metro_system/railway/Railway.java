@@ -3,8 +3,8 @@ package meowtro.metro_system.railway;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -12,7 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeLineJoin;
 import meowtro.Position;
 import meowtro.game.Game;
@@ -38,7 +37,12 @@ public class Railway {
 
     private double length; 
     private double warmupDist = 32.0; 
-    private HashMap<Locomotive, Double> positionsInAbstractLine = new HashMap<Locomotive, Double>(); 
+    private HashMap<Locomotive, Double> positionsInAbstractLine = new HashMap<Locomotive, Double>();
+
+    private List<Path> obstacleImages = new ArrayList<>();
+    public List<Path> getObstacleImages() {
+        return this.obstacleImages;
+    }
 
     private Game game;
     private List<Position> turningPositions;
@@ -177,6 +181,19 @@ public class Railway {
         this.realizer = new RectangularRailwayRealizer(start, end, allStations, obstacles);
         this.turningPositions = realizer.Nodes;
         
+        if (this.realizer.isIntersectedWithObstacle()) {
+            for (Entry<List<Position>, Obstacle> mapElement : this.realizer.obsticleEndPoints.entrySet()) {
+                List<Position> positionPair = mapElement.getKey();
+                Game.setBalance(Game.getBalance()-mapElement.getValue().getAdditionalCost());
+                Path o = new Path();
+                o.getElements().add(new MoveTo(positionPair.get(0).j, positionPair.get(0).i));
+                o.getElements().add(new LineTo(positionPair.get(1).j, positionPair.get(1).i));
+                o.setStrokeWidth(3);
+                o.setStrokeLineJoin(StrokeLineJoin.ROUND);
+                this.obstacleImages.add(o);
+            }
+        }
+
         if ((start == null && end == null) || !realizer.isValidRailway()){
             if (DEBUG)
                 System.out.println("construct Railway() error");
@@ -310,6 +327,9 @@ public class Railway {
         }
         this.game.deleteObject(this.image);
         line.removeRailways(this);
+        for (Path o : this.obstacleImages) {
+            this.game.deleteObject(o);
+        }
     }
 
     private double computeLength(){
