@@ -93,7 +93,7 @@ public class Locomotive {
         return this.color;
     }
     private int length = 20;
-    private int width = 10;
+    private int width = 20;
     public int getLength() {
         return this.length;
     }
@@ -353,8 +353,10 @@ public class Locomotive {
     public void destroy(){
         for (Car c: cars){
             c.destroy();
+            this.game.deleteObject(c.getImage());
         }
-        cars.clear(); 
+        this.game.deleteObject(this.getImage());
+        cars.clear();
     }
 
     private boolean isTurning = false;

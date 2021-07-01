@@ -297,11 +297,10 @@ public class Railway {
         if (DEBUG){
             System.out.printf("Railway %d in Line %s destroyed\n", railwayID, line.getColor()); 
         }
-        for (Locomotive l: locomotives){
-            l.destroy();
-            removeLocomotive(l);
+        for (int i = locomotives.size()-1; i>= 0; i--) {
+            locomotives.get(i).destroy();
+            removeLocomotive(locomotives.get(i));   
         }
-
         if (start != null){
             start.removeRailway(this);
         }
@@ -318,7 +317,7 @@ public class Railway {
 
     public void moveCars(Locomotive l, double abstractPosition) {
         if (l.getDirection() == Direction.FORWARD) {
-            abstractPosition -= (l.getLength()/2-2);
+            abstractPosition -= (l.getLength()/2+2);
         } else {
             abstractPosition += (l.getLength()/2+2);
         }
@@ -328,7 +327,7 @@ public class Railway {
                 double newAbstractPosition = abstractPosition - car.getLength()/2;
                 newAbstractPosition = Math.max(newAbstractPosition, 0);
                 car.setPosition(parseAbstractPositionToPosition(newAbstractPosition));
-                abstractPosition -= car.getLength()-2;
+                abstractPosition -= (car.getLength()+2);
             } else {
                 double newAbstractPosition = abstractPosition + car.getLength()/2;
                 newAbstractPosition = Math.min(newAbstractPosition, length);
@@ -378,11 +377,11 @@ public class Railway {
             destroy();
         }
 
-        LinkedList<Locomotive> updateQueue = new LinkedList<Locomotive>(locomotives); 
-        while (!updateQueue.isEmpty()){
-            Locomotive l = updateQueue.removeFirst();
-            l.update();
-        }
+        // LinkedList<Locomotive> updateQueue = new LinkedList<Locomotive>(locomotives); 
+        // while (!updateQueue.isEmpty()){
+        //     Locomotive l = updateQueue.removeFirst();
+        //     l.update();
+        // }
     }
 
 

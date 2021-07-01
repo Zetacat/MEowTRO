@@ -26,7 +26,7 @@ public class Car {
     }
 
     private int length = 10*level;
-    private int width = 10;
+    private int width = 20;
     public int getLength() {
         return this.length;
     }
@@ -73,7 +73,6 @@ public class Car {
         init(); 
         this.locomotive = locomotive;
         this.locomotive.addCar(this);
-        System.out.printf("position after addCar: (%f,%f)%n", this.position.i, this.position.j);
         this.vector = this.locomotive.getRailway().getVector(this.position, this.locomotive.getDirection(), this.length);
         setImage(this.locomotive.getColor());
     }
@@ -129,15 +128,17 @@ public class Car {
             } else {
                 setImagePosition(this.position, this.length/2, this.width/2);
             }
-
+            // setPassengerImage();
         }
     }
 
     public void destroy(){
-        for (Passenger p: passengers){
-            p.selfExplode();
+        if (passengers != null) {
+            for (int i = passengers.size()-1; i >= 0; i--) {
+                passengers.get(i).selfExplode();
+            }
+            passengers.clear();
         }
-        passengers.clear();
     }
 
     public boolean isFull() {
