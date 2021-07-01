@@ -135,7 +135,7 @@ public class Game {
             this.eventTrigger.trigger();
 
         this.city.update();
-        this.globalSatisfaction = this.city.getGlobalStatisfaction();
+        this.globalSatisfaction = this.city.getGlobalSatisfaction();
         this.gameIsEnded = this.gameTerminatChecker.gameIsEnded();
         // if(gameIsEnded){
         //     System.out.println("\n\n\nGame Is Ended\n\n\n");
@@ -223,4 +223,6 @@ public class Game {
             textMessage.offer(t);
         }
     }
+
+    public static double satisfactionBarRate = 0;
 }

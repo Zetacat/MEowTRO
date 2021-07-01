@@ -9,10 +9,12 @@ public class EventTrigger {
     private List<Event> yearEvents = null;
     private int currentEventIndex;
     // private int totalEventNum;
-    public EventTrigger(List<Event> yearEvents){
+    private SatisfactionSettle ss;
+    public EventTrigger(List<Event> yearEvents, SatisfactionSettle ss){
         // this.map = map;
         this.yearEvents = yearEvents;
         this.currentEventIndex = 0;
+        this.ss = ss;
     }
     public void trigger(){
         if(this.yearEvents.size()==0){
@@ -26,6 +28,9 @@ public class EventTrigger {
         this.currentEventIndex += 1;
         if(this.currentEventIndex >= this.yearEvents.size()){
             this.currentEventIndex = 0;
+        }
+        if (curreTimeLine.getCurrentTotalSecond() % 2592000 == 0) {
+            ss.trigger();
         }
     }
 }

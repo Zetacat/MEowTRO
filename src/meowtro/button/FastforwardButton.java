@@ -34,7 +34,7 @@ public class FastforwardButton extends MyButton {
             }
         );
     }
-    protected void onClick() {
+    public void onClick() {
         if (!PlayTime.isFF) {
             PlayTime.duration_animate /= 8;
             PlayTime.isFF = true;

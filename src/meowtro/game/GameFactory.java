@@ -60,8 +60,14 @@ public class GameFactory {
         Game game = new Game(config, gameTerminatChecker);
         City city = new City();
         game.setCity(city);
+        SatisfactionSettle ss = new SatisfactionSettle(city,
+            Double.parseDouble(config.get("satisfaction.money.weight")),
+            Double.parseDouble(config.get("satisfaction.spawn.weight")),
+            Integer.parseInt(config.get("satisfaction.standard.value")),
+            Integer.parseInt(config.get("satisfaction.standard.bonus")));
+        
         if (config.get("eventSystem.allEvents") != null){
-            EventTrigger eventTrigger = new EventTrigger(creatEvents(config, city));
+            EventTrigger eventTrigger = new EventTrigger(creatEvents(config, city), ss);
             game.setEventTrigger(eventTrigger);
         }
         return game;

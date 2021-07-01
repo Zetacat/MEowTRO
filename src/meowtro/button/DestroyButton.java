@@ -37,7 +37,7 @@ public class DestroyButton extends MyButton {
             }
         );
     }
-    protected void onClick() {
+    public void onClick() {
         Destroyer d = new Destroyer(this.game);
         game.setNowEvent(d);
     }

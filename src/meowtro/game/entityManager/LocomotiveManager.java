@@ -16,10 +16,12 @@ public class LocomotiveManager extends EntityManager {
     public void build(Railway railway, Position position, int cost) {
         if (Game.getBalance() >= cost) {
             Game.setBalance(Game.getBalance()-cost);
+            System.out.println(position);
             Locomotive locomotive = new Locomotive(railway, position, Direction.FORWARD, this.colorMap.get(railway.getLine().getColor()), this.game);
             locomotive.setManager(this);
             railway.getLine().addLocomotive(locomotive);
         } else {
+            System.out.println("Not Enough Money!");
             // Game.showText("Not Enough Money!");
         }
     }

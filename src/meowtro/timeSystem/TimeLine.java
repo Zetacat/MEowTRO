@@ -114,6 +114,9 @@ public class TimeLine{
     public long getCurrentTotalTimeUnit(){
         return this.totalTimeUnit;
     }
+    public long getCurrentTotalSecond() {
+        return this.totalTimeUnit*this.timeUnit;
+    }
     public String getCalenderTime(){
         return String.format("%02d-%02d-%02d %02d:%02d:%02d", this.year, this.month, this.day, this.hour, this.minute, this.second);
     }
