@@ -70,6 +70,7 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
                     System.out.println("Railway Shape: Z shaped");
                 }
             }
+            System.out.printf("obs.size()= %d\n", obstacles.size());
             judgeObstacles(obstacles); 
             addStationToOccupancyMap(startStation);
             addStationToOccupancyMap(endStation);
@@ -357,6 +358,14 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
                     }
                 }
             }
+            if (isRecordingIntersection){
+                isRecordingIntersection = false; 
+                ObstacleStartEndPair.add(new Position(i, (int)Math.max(start.j, end.j))); 
+                assert (ObstacleStartEndPair.size() == 2); 
+                obsticleEndPoints.put(ObstacleStartEndPair, currentObstacle); 
+                ObstacleStartEndPair = null; 
+                currentObstacle = null; 
+            }
         }else{
             int j = (int) start.j; 
             boolean isRecordingIntersection = false; 
@@ -390,6 +399,14 @@ public class RectangularRailwayRealizer implements RailwayRealizer{
                         }
                     }
                 }
+            }
+            if (isRecordingIntersection){
+                isRecordingIntersection = false; 
+                ObstacleStartEndPair.add(new Position((int)Math.max(start.i, end.i), j)); 
+                assert (ObstacleStartEndPair.size() == 2); 
+                obsticleEndPoints.put(ObstacleStartEndPair, currentObstacle); 
+                ObstacleStartEndPair = null; 
+                currentObstacle = null; 
             }
         } 
     }
