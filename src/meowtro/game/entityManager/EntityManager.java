@@ -22,7 +22,7 @@ public abstract class EntityManager {
         new AbstractMap.SimpleEntry<LineColor,Color>(LineColor.GREEN, Color.GREEN),
         new AbstractMap.SimpleEntry<LineColor,Color>(LineColor.YELLOW, Color.YELLOW),
         new AbstractMap.SimpleEntry<LineColor,Color>(LineColor.ORANGE, Color.ORANGE),
-        new AbstractMap.SimpleEntry<LineColor,Color>(LineColor.BROWN, Color.BROWN)
+        new AbstractMap.SimpleEntry<LineColor,Color>(LineColor.PURPLE, Color.PURPLE)
     );
 
     public void build(Position position) {}

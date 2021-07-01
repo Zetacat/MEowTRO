@@ -1,4 +1,0 @@
-FireEvent
-EarthQuakeEvent
-RushHourEvent
-NewYearEvent

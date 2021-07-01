@@ -14,6 +14,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
@@ -85,7 +86,7 @@ public class Main extends Application {
             }
         );
 
-        root.getChildren().add(new ImageView(new Image(new FileInputStream("./image/map_3.png"))));
+        root.getChildren().add(new ImageView(new Image(new FileInputStream("./image/map_1.png"))));
 
         ProgressBar satisfactionBar = new ProgressBar(0);
         root.getChildren().add(satisfactionBar);
@@ -127,6 +128,11 @@ public class Main extends Application {
                         for (Railway railway : line.getRailways()) {
                             if (!root.getChildren().contains(railway.getImage())) {
                                 root.getChildren().add(railway.getImage());
+                            }
+                            for (Node obstacle : railway.getObstacleImages()) {
+                                if (!root.getChildren().contains(obstacle)) {
+                                    root.getChildren().add(obstacle);
+                                }
                             }
                         }
                     }
