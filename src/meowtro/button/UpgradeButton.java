@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import meowtro.game.Game;
-import meowtro.game.onClickEvent.Destroyer;
+import meowtro.game.onClickEvent.Upgrader;
 
 public class UpgradeButton extends MyButton {
     private Game game;
@@ -27,7 +27,7 @@ public class UpgradeButton extends MyButton {
             e.printStackTrace();
         }
         btn.setLayoutX(100);
-        btn.setLayoutY(100);
+        btn.setLayoutY(300);
         btn.setOnAction(
             new EventHandler<ActionEvent>() {    
                 @Override
@@ -38,7 +38,7 @@ public class UpgradeButton extends MyButton {
         );
     }
     protected void onClick() {
-        Upgrader d = new Upgrader(this.game);
-        game.setNowEvent(d);
+        Upgrader u = new Upgrader(this.game);
+        game.setNowEvent(u);
     }
 }
