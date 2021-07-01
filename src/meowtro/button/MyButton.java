@@ -8,5 +8,5 @@ public abstract class MyButton {
     public Button getButton() {
         return this.btn;
     }
-    protected abstract void onClick();
+    public abstract void onClick();
 }

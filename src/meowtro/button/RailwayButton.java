@@ -43,7 +43,7 @@ public class RailwayButton extends MyButton {
             }
         );
     }
-    protected void onClick() {
+    public void onClick() {
         RailwayBuilder b = new RailwayBuilder(this.railwayManager, this.game, this.line, this.cost);
         this.game.setNowEvent(b);
     }

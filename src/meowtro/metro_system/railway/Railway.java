@@ -68,6 +68,7 @@ public class Railway {
             new EventHandler<MouseEvent>() {    
                 @Override
                 public void handle(MouseEvent event) {
+                    System.out.println("Click rail way");
                     onClick(event);
                 }
             }
@@ -77,7 +78,7 @@ public class Railway {
         return this.image;
     }
     private void onClick(MouseEvent event) {
-        this.game.railwayOnClick(this, new Position(event.getSceneY(), event.getSceneX()));
+        this.game.railwayOnClick(this, new Position(event.getY(), event.getX()));
     }
 
     public Railway(Station s1, Station s2, Line line, long maxLimitedRemainTimeToLive, List<Station> allStations, List<Obstacle> obstacles, Game game, Color color){
