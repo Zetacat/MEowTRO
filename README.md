@@ -2,7 +2,16 @@
 
 ## Game Overview
 
-MEowTRO is a subway planning game. In the city, passengers appear from various locations and designate destination stations in other areas. At the start of the game, players have initial funding and must use it to invest in resources like stations, routes, railways, locomotives, carriages, bridges, tunnels, and other construction resources. The goal is to build a subway system that efficiently transports passengers to their destinations and collects ticket fares. Passengers’ satisfaction, which reflects how smoothly they reach their destinations, indirectly impacts monthly bonuses. Throughout the game, unexpected events such as festivals, holidays, fires, and earthquakes may disrupt operations by affecting passenger generation speed in various areas or the reliability of the subway system. The game features two modes: in “MaxProfit” mode, players aim to earn as much money as possible within a limited time; in “SpeedRun” mode, they must reach a financial target in the shortest time possible.
+**MEowTRO is a subway planning game**. In the city, passengers appear from various locations and designate destination stations in other areas. At the start of the game, players have initial funding and must use it to invest in resources like stations, routes, railways, locomotives, carriages, bridges, tunnels, and other construction resources. The goal is to build a subway system that efficiently transports passengers to their destinations and collects ticket fares. Passengers’ satisfaction, which reflects how smoothly they reach their destinations, indirectly impacts monthly bonuses. Throughout the game, unexpected events such as festivals, holidays, fires, and earthquakes may disrupt operations by affecting passenger generation speed in various areas or the reliability of the subway system. The game features two modes: in “MaxProfit” mode, players aim to earn as much money as possible within a limited time; in “SpeedRun” mode, they must reach a financial target in the shortest time possible.
+
+<img width="516" alt="https://www.youtube.com/watch?v=BYTUWBNhjlk" src="https://github.com/user-attachments/assets/156bb7bd-78da-4630-936a-0e5654a7f72c">
+
+## Members & Division of Work
+
+- **劉育嘉** (B06902008): Event, Timeline, GameTerminateChecker, UI elements related to buttons.
+- **朱紹瑜** (B06705028): City components (including City, Region, Obstacle, Passenger, Position), and written report.
+- **黃柏豪 (Po-Hao Huang)** (B06902124): Subway system (including Station, Line, Railway, Locomotive, Car, EntityManager), RectangularRailwayRealizer, ShortestPathCalculator.
+- **尹聖翔** (B06902103): OnClickEvent, UI elements related to the subway system.
 
 ## Model Design
 
